@@ -621,12 +621,6 @@
                 </a>
             </div>
         </div>
-
-        {{-- Scroll indicator --}}
-        <div class="scroll-indicator">
-            <span>👇</span>
-            <p>Scroll ke bawah</p>
-        </div>
     </section>
 
     {{-- Featured Section --}}
