@@ -11,6 +11,9 @@
 
     <style>
         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
             font-family: 'Comic Neue', cursive;
         }
 
@@ -21,8 +24,6 @@
         body {
             background: linear-gradient(135deg, #a8e6cf 0%, #d0f0c0 50%, #ffeaa7 100%);
             min-height: 100vh;
-            margin: 0;
-            padding: 0;
             animation: bgMove 25s infinite alternate;
         }
 
@@ -31,119 +32,209 @@
             100% { background-position: 100% 50%; }
         }
 
+        /* Floating emojis background */
+        .bg-emoji {
+            position: fixed;
+            font-size: 2.5em;
+            opacity: 0.2;
+            z-index: 0;
+            pointer-events: none;
+            animation: floatEmoji 8s ease-in-out infinite;
+        }
+
+        @keyframes floatEmoji {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        .bg-e1 { top: 10%; left: 3%; animation-delay: 0s; }
+        .bg-e2 { top: 20%; right: 5%; animation-delay: 1s; }
+        .bg-e3 { bottom: 15%; left: 8%; animation-delay: 2s; }
+        .bg-e4 { bottom: 25%; right: 3%; animation-delay: 0.5s; }
+        .bg-e5 { top: 50%; left: 2%; animation-delay: 1.5s; }
+        .bg-e6 { top: 40%; right: 8%; animation-delay: 2.5s; }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            transition: margin-left 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        body.sidebar-collapsed .main-content {
+            margin-left: 80px;
+        }
+
         /* Header */
-        header {
-            background: linear-gradient(90deg, #6c5ce7, #a29bfe);
-            color: white;
-            padding: 25px 20px;
+        .header {
+            background: white;
+            border-radius: 25px;
+            padding: 25px 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             text-align: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
             position: relative;
             overflow: hidden;
         }
 
-        header::before {
-            content: '🎮 ⭐ 🌟 🎯 🎨';
+        .header::before {
+            content: '';
             position: absolute;
-            top: -15px;
+            top: 0;
             left: 0;
-            width: 100%;
-            font-size: 1.8em;
-            opacity: 0.3;
-            animation: float 4s infinite;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #ff6b6b, #ffd93d, #a8e6cf, #6c5ce7, #ff6b6b);
+            background-size: 200% 100%;
+            animation: rainbow 3s linear infinite;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
         }
 
-        .logo {
-            font-size: 2.5em;
-            margin: 0;
-            text-shadow: 4px 4px 0 rgba(0,0,0,0.2);
-            animation: bounce 2s infinite;
+        .header-icon {
+            font-size: 3.5em;
+            margin-bottom: 10px;
+            animation: bounce 2s ease-in-out infinite;
+            display: block;
         }
 
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
+            50% { transform: translateY(-10px); }
         }
 
-        /* Container */
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 30px 20px;
+        .header-title {
+            font-size: 2.2em;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .header-subtitle {
+            color: #888;
+            font-size: 1.1em;
         }
 
         /* Games Grid */
         .games-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
+            gap: 25px;
         }
 
         /* Game Card */
         .game-card {
             background: white;
-            border-radius: 30px;
+            border-radius: 25px;
             padding: 30px;
             text-align: center;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
             transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
             cursor: pointer;
-            border: 8px solid #fff;
+            border: 5px solid #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .game-card:hover::before {
+            transform: translateX(100%);
         }
 
         .game-card:hover {
             transform: translateY(-15px) scale(1.05) rotate(2deg);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            border-color: #ffd93d;
         }
 
         .game-icon {
-            font-size: 6em;
+            font-size: 5em;
             margin-bottom: 15px;
             display: block;
-            animation: wiggle 3s infinite;
+            animation: wiggle 3s ease-in-out infinite;
         }
 
         @keyframes wiggle {
-            0%, 100% { transform: rotate(-5deg); }
-            50% { transform: rotate(5deg); }
+            0%, 100% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg); }
         }
 
-        .game-card:nth-child(2) .game-icon { animation-delay: 0.5s; }
-        .game-card:nth-child(3) .game-icon { animation-delay: 1s; }
-        .game-card:nth-child(4) .game-icon { animation-delay: 1.5s; }
-        .game-card:nth-child(5) .game-icon { animation-delay: 2s; }
-        .game-card:nth-child(6) .game-icon { animation-delay: 2.5s; }
+        .game-card:nth-child(1) .game-icon { animation-delay: 0s; color: #f472b6; }
+        .game-card:nth-child(2) .game-icon { animation-delay: 0.3s; color: #fbbf24; }
+        .game-card:nth-child(3) .game-icon { animation-delay: 0.6s; color: #a78bfa; }
+        .game-card:nth-child(4) .game-icon { animation-delay: 0.9s; color: #6ee7b7; }
+        .game-card:nth-child(5) .game-icon { animation-delay: 1.2s; color: #60a5fa; }
+        .game-card:nth-child(6) .game-icon { animation-delay: 1.5s; color: #f97316; }
+
+        .difficulty {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .easy {
+            background: linear-gradient(135deg, #a8e6cf, #22c55e);
+            color: white;
+        }
+
+        .medium {
+            background: linear-gradient(135deg, #ffeaa7, #f59e0b);
+            color: white;
+        }
+
+        .hard {
+            background: linear-gradient(135deg, #fca5a5, #ef4444);
+            color: white;
+        }
 
         .game-title {
-            font-size: 1.6em;
+            font-size: 1.4em;
             color: #333;
             margin-bottom: 10px;
+            font-family: 'Fredoka One', cursive;
         }
 
         .game-desc {
             color: #777;
-            font-size: 1.05em;
+            font-size: 1em;
             margin-bottom: 20px;
+            line-height: 1.5;
         }
 
         .play-btn {
             background: linear-gradient(135deg, #ff6b6b, #ff9f1c);
             color: white;
             border: none;
-            padding: 15px 35px;
-            font-size: 1.2em;
+            padding: 15px 30px;
+            font-size: 1.1em;
             border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
             font-family: 'Fredoka One', cursive;
             box-shadow: 0 8px 25px rgba(255,107,107,0.4);
             transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .play-btn:hover {
@@ -151,22 +242,107 @@
             box-shadow: 0 12px 35px rgba(255,107,107,0.5);
         }
 
-        /* Section Title */
+        /* Section Card */
+        .section-card {
+            background: white;
+            border-radius: 25px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
         .section-title {
-            text-align: center;
             color: #6c5ce7;
-            font-size: 2.2em;
-            margin-bottom: 10px;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
-        .section-subtitle {
+        /* How to Play */
+        .how-to-play {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .how-to-play h3 {
             text-align: center;
-            color: #888;
-            font-size: 1.2em;
-            margin-bottom: 30px;
+            color: #92400e;
+            font-size: 1.3em;
+            margin-bottom: 15px;
         }
 
-        /* Back to home */
+        .how-to-play-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .how-to-play-item {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .how-to-play-icon {
+            font-size: 2.5em;
+            margin-bottom: 8px;
+        }
+
+        .how-to-play-text {
+            color: #92400e;
+            font-size: 0.95em;
+            font-weight: bold;
+        }
+
+        /* Stats */
+        .stats-row {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 20px;
+            text-align: center;
+            min-width: 140px;
+        }
+
+        .stat-box:nth-child(2) {
+            background: linear-gradient(135deg, #f472b6, #ec4899);
+        }
+
+        .stat-box:nth-child(3) {
+            background: linear-gradient(135deg, #34d399, #10b981);
+        }
+
+        .stat-emoji {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        .stat-number {
+            font-size: 1.8em;
+            font-weight: bold;
+            font-family: 'Fredoka One', cursive;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        /* Back link */
         .back-link {
             display: inline-flex;
             align-items: center;
@@ -184,586 +360,85 @@
 
         .back-link:hover {
             transform: translateX(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
 
-        /* Footer */
         footer {
             text-align: center;
             padding: 30px;
-            color: #555;
-            font-size: 1.1em;
+            color: #666;
         }
 
-        /* Difficulty badges */
-        .difficulty {
-            display: inline-block;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
+        /* Responsive */
+        @media (max-width: 900px) {
+            .main-content {
+                margin-left: 0 !important;
+                padding-top: 80px;
+            }
 
-        .easy { background: #a8e6cf; color: #27ae60; }
-        .medium { background: #ffeaa7; color: #d63031; }
-        .hard { background: #ffcccc; color: #c0392b; }
+            .bg-emoji {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
-    <header>
-        <h1 class="logo">🎮🎮 GAMES EDUKASI ANAK TK 🎮🎮</h1>
-        <p style="font-size:1.2em;margin:8px 0 0;">Belajar Sambil Bermain dan Bersenang-senang! 🌟✨</p>
-    </header>
+    {{-- Background floating emojis --}}
+    <div class="bg-emoji bg-e1">🎮</div>
+    <div class="bg-emoji bg-e2">🧩</div>
+    <div class="bg-emoji bg-e3">🎯</div>
+    <div class="bg-emoji bg-e4">🎨</div>
+    <div class="bg-emoji bg-e5">🧠</div>
+    <div class="bg-emoji bg-e6">⭐</div>
 
-    <div class="container">
-        {{-- Back link --}}
-        <a href="{{ route('ebooks.index') }}" class="back-link">
-            ← Kembali ke Perpustakaan
+    @include('components.sidebar')
+
+    <main class="main-content">
+        {{-- Back Link --}}
+        <a href="{{ route('home') }}" class="back-link">
+            ← Kembali ke Beranda 🏠
         </a>
 
-        {{-- Section Title --}}
-        <h2 class="section-title">🎯 PILIH GAME YANG SERU! 🎯</h2>
-        <p class="section-subtitle">Klik game yang kamu mau main!</p>
+        {{-- Header --}}
+        <div class="header">
+            <span class="header-icon">🎮🎮🎮</span>
+            <h1 class="header-title">GAMES EDUKASI 🎉</h1>
+            <p class="header-subtitle">Belajar Sambil Bermain dan Bersenang-senang! ✨🧠</p>
+        </div>
 
         {{-- Games Grid --}}
         <div class="games-grid">
-            {{-- Game 1: Matching Hewan --}}
-            <div class="game-card" onclick="startGame('matching-hewan')">
-                <span class="game-icon">🐱</span>
-                <span class="difficulty easy">MUDAH</span>
-                <h3 class="game-title">Cocokkan Hewan</h3>
-                <p class="game-desc">Tarik garis atau klik pasangan hewan yang cocok!</p>
-                <button class="play-btn">🎮 MAIN SEKARANG!</button>
-            </div>
-
-            {{-- Game 2: Susun Buah --}}
-            <div class="game-card" onclick="startGame('susunan-buah')">
-                <span class="game-icon">🍎</span>
-                <span class="difficulty easy">MUDAH</span>
-                <h3 class="game-title">Susun Buah</h3>
-                <p class="game-desc">Cocokkan gambar buah dengan nama yang benar!</p>
-                <button class="play-btn">🎮 MAIN SEKARANG!</button>
-            </div>
-
-            {{-- Game 3: Memory Game --}}
-            <div class="game-card" onclick="startGame('memory')">
-                <span class="game-icon">🧠</span>
-                <span class="difficulty medium">SEDANG</span>
-                <h3 class="game-title">Kartu Memory</h3>
-                <p class="game-desc">Balik kartu dan cari pasangan yang sama!</p>
-                <button class="play-btn">🎮 MAIN SEKARANG!</button>
-            </div>
-
-            {{-- Game 4: Warna --}}
-            <div class="game-card" onclick="startGame('warna')">
-                <span class="game-icon">🌈</span>
-                <span class="difficulty easy">MUDAH</span>
-                <h3 class="game-title">Cocokkan Warna</h3>
-                <p class="game-desc">Cocokkan warna dengan bendanya!</p>
-                <button class="play-btn">🎮 MAIN SEKARANG!</button>
-            </div>
-
-            {{-- Game 5: Susun Huruf --}}
-            <div class="game-card" onclick="startGame('huruf')">
+            {{-- Game 1: Susun Huruf --}}
+            <div class="game-card" onclick="window.location.href='{{ route('games.susun-huruf') }}'">
                 <span class="game-icon">🔤</span>
-                <span class="difficulty medium">SEDANG</span>
-                <h3 class="game-title">Susun Huruf</h3>
-                <p class="game-desc">Klik huruf untuk menyusun kata yang benar!</p>
-                <button class="play-btn">🎮 MAIN SEKARANG!</button>
+                <span class="difficulty medium">🔥 SEDANG</span>
+                <h3 class="game-title">Susun Huruf ABC 📝</h3>
+                <p class="game-desc">Klik huruf untuk menyusun kata yang benar! A-P-E-L = ...? 🤔💡</p>
+                <button class="play-btn">🎮 BUKA HALAMAN!</button>
             </div>
 
-            {{-- Game 6: Angka --}}
-            <div class="game-card" onclick="startGame('angka')">
+            {{-- Game 2: Angka --}}
+            <div class="game-card" onclick="window.location.href='{{ route('games.angka') }}'">
                 <span class="game-icon">🔢</span>
-                <span class="difficulty hard">AGAK SULIT</span>
-                <h3 class="game-title">Belajar Angka</h3>
-                <p class="game-desc">Klik angka sesuai jumlah benda!</p>
-                <button class="play-btn">🎮 MAIN SEKARANG!</button>
+                <span class="difficulty hard">💪 AGAK SULIT</span>
+                <h3 class="game-title">Belajar Angka 🔢</h3>
+                <p class="game-desc">Klik angka sesuai jumlah benda! Berapa瓢🍌🍌🍌? Hitung yuk! 🧮</p>
+                <button class="play-btn">🎮 BUKA HALAMAN!</button>
+            </div>
+
+            {{-- Game 3: Huruf Abjad --}}
+            <div class="game-card" onclick="window.location.href='{{ route('games.abjad') }}'">
+                <span class="game-icon">🔤</span>
+                <span class="difficulty easy">✨ MUDAH</span>
+                <h3 class="game-title">Huruf A-Z 🌟</h3>
+                <p class="game-desc">Klik huruf yang benar! A-B-C... Yuk belajar abjad! 📖</p>
+                <button class="play-btn">🎮 BUKA HALAMAN!</button>
             </div>
         </div>
-    </div>
 
-    {{-- Game Modal --}}
-    <div id="game-modal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1000; overflow:auto;">
-        <div style="max-width:800px; margin:50px auto; background:white; border-radius:30px; padding:30px; position:relative;">
-            <button onclick="closeGame()" style="position:absolute; top:15px; right:20px; background:#ff6b6b; color:white; border:none; width:45px; height:45px; border-radius:50%; font-size:1.5em; cursor:pointer;">×</button>
-
-            <div id="game-container">
-                <h2 id="game-title" style="text-align:center; color:#6c5ce7; font-size:2em; margin-bottom:20px;"></h2>
-                <div id="game-content" style="min-height:400px;"></div>
-                <div id="game-result" style="text-align:center; margin-top:20px; font-size:1.5em;"></div>
-            </div>
-        </div>
-    </div>
-
-    <footer>
-        <p>🚀 Dibuat dengan cinta untuk anak-anak Indonesia 🇮🇩</p>
-        <p>© 2026 Games Edukasi Anak TK</p>
-    </footer>
-
-    <script>
-        // Game data
-        const gameData = {
-            'matching-hewan': {
-                title: '🐱 Cocokkan Hewan',
-                animals: [
-                    { emoji: '🐱', name: 'Kucing' },
-                    { emoji: '🐶', name: 'Anjing' },
-                    { emoji: '🐦', name: 'Burung' },
-                    { emoji: '🐰', name: 'Kelinci' },
-                    { emoji: '🐸', name: 'Katak' },
-                    { emoji: '🦊', name: 'Rubah' }
-                ]
-            },
-            'susunan-buah': {
-                title: '🍎 Susun Buah',
-                fruits: [
-                    { emoji: '🍎', name: 'Apel' },
-                    { emoji: '🍌', name: 'Pisang' },
-                    { emoji: '🍊', name: 'Jeruk' },
-                    { emoji: '🍇', name: 'Anggur' },
-                    { emoji: '🍓', name: 'Stroberi' },
-                    { emoji: '🍉', name: 'Semangka' }
-                ]
-            },
-            'warna': {
-                title: '🌈 Cocokkan Warna',
-                colors: [
-                    { color: '#ef4444', name: 'Merah', emoji: '🍎' },
-                    { color: '#3b82f6', name: 'Biru', emoji: '🐟' },
-                    { color: '#eab308', name: 'Kuning', emoji: '☀️' },
-                    { color: '#22c55e', name: 'Hijau', emoji: '🌲' },
-                    { color: '#a855f7', name: 'Ungu', emoji: '🍇' },
-                    { color: '#f97316', name: 'Oranye', emoji: '🍊' }
-                ]
-            },
-            'huruf': {
-                title: '🔤 Susun Huruf',
-                words: [
-                    { word: 'APEL', emoji: '🍎' },
-                    { word: 'BUKU', emoji: '📚' },
-                    { word: 'RUMAH', emoji: '🏠' },
-                    { word: 'KUCING', emoji: '🐱' },
-                    { word: 'BINTANG', emoji: '⭐' }
-                ]
-            },
-            'angka': {
-                title: '🔢 Belajar Angka',
-                numbers: [
-                    { count: 1, emoji: '🍎' },
-                    { count: 2, emoji: '🍌🍌' },
-                    { count: 3, emoji: '🍊🍊🍊' },
-                    { count: 4, emoji: '🍇🍇🍇🍇' },
-                    { count: 5, emoji: '🍓🍓🍓🍓🍓' },
-                    { count: 6, emoji: '🥝🥝🥝🥝🥝🥝' }
-                ]
-            }
-        };
-
-        let currentGame = null;
-        let selectedItem = null;
-        let matchedPairs = 0;
-        let totalPairs = 0;
-        let memoryCards = [];
-        let flippedCards = [];
-        let currentWord = null;
-        let scrambledLetters = [];
-        let userAnswer = [];
-
-        function startGame(gameType) {
-            currentGame = gameType;
-            selectedItem = null;
-            matchedPairs = 0;
-            document.getElementById('game-result').innerHTML = '';
-
-            const modal = document.getElementById('game-modal');
-            const title = document.getElementById('game-title');
-            const content = document.getElementById('game-content');
-
-            title.innerHTML = gameData[gameType].title;
-            modal.style.display = 'block';
-
-            switch(gameType) {
-                case 'matching-hewan':
-                case 'susunan-buah':
-                    loadMatchingGame(gameType);
-                    break;
-                case 'warna':
-                    loadColorGame();
-                    break;
-                case 'memory':
-                    loadMemoryGame();
-                    break;
-                case 'huruf':
-                    loadLetterGame();
-                    break;
-                case 'angka':
-                    loadNumberGame();
-                    break;
-            }
-        }
-
-        function loadMatchingGame(type) {
-            const data = type === 'matching-hewan' ? gameData['matching-hewan'].animals : gameData['susunan-buah'].fruits;
-            totalPairs = data.length;
-            matchedPairs = 0;
-
-            const items = data.map(item => ({...item, type: 'emoji'}));
-            const names = data.map(item => ({...item, type: 'name'}));
-
-            // Shuffle arrays
-            items.sort(() => Math.random() - 0.5);
-            names.sort(() => Math.random() - 0.5);
-
-            const content = document.getElementById('game-content');
-            content.innerHTML = `
-                <div style="display:flex; justify-content:center; gap:60px; flex-wrap:wrap;">
-                    <div style="display:flex; flex-direction:column; gap:15px;">
-                        ${items.map((item, i) => `
-                            <div onclick="selectMatch(this, '${type}', '${item.name}')"
-                                 class="match-card"
-                                 data-type="${type}"
-                                 data-name="${item.name}"
-                                 style="width:120px; height:120px; background:white; border-radius:20px; display:flex; align-items:center; justify-content:center; font-size:4em; cursor:pointer; box-shadow:0 5px 15px rgba(0,0,0,0.1); transition:all 0.3s; border:4px solid #eee;">
-                                ${item.emoji}
-                            </div>
-                        `).join('')}
-                    </div>
-                    <div style="display:flex; flex-direction:column; gap:15px;">
-                        ${names.map((item, i) => `
-                            <div onclick="selectMatch(this, '${type}', '${item.name}')"
-                                 class="match-card"
-                                 data-type="${type}"
-                                 data-name="${item.name}"
-                                 style="width:120px; height:120px; background:white; border-radius:20px; display:flex; align-items:center; justify-content:center; font-size:1.5em; cursor:pointer; box-shadow:0 5px 15px rgba(0,0,0,0.1); transition:all 0.3s; border:4px solid #eee; font-weight:bold;">
-                                ${item.name}
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-        }
-
-        function selectMatch(el, type, name) {
-            if (el.classList.contains('matched')) return;
-
-            el.style.border = '4px solid #22c55e';
-
-            if (!selectedItem) {
-                selectedItem = { el, name };
-            } else {
-                if (selectedItem.name === name) {
-                    // Correct match
-                    document.querySelectorAll(`[data-name="${name}"]`).forEach(card => {
-                        card.classList.add('matched');
-                        card.style.background = '#a8e6cf';
-                        card.style.border = '4px solid #22c55e';
-                    });
-                    matchedPairs++;
-
-                    if (matchedPairs === totalPairs) {
-                        document.getElementById('game-result').innerHTML = '🎉🎉 BENAR! HEBAT SEKALI! 🎉🎉';
-                        launchConfetti();
-                    }
-                } else {
-                    // Wrong match
-                    setTimeout(() => {
-                        selectedItem.el.style.border = '4px solid #eee';
-                        el.style.border = '4px solid #eee';
-                    }, 500);
-                }
-                selectedItem = null;
-            }
-        }
-
-        function loadColorGame() {
-            const colors = gameData.warna.colors;
-            totalPairs = colors.length;
-            matchedPairs = 0;
-
-            const colorItems = colors.map(c => ({...c, type: 'color'}));
-            const emojiItems = colors.map(c => ({...c, type: 'emoji'}));
-
-            colorItems.sort(() => Math.random() - 0.5);
-            emojiItems.sort(() => Math.random() - 0.5);
-
-            const content = document.getElementById('game-content');
-            content.innerHTML = `
-                <div style="display:flex; justify-content:center; gap:60px; flex-wrap:wrap;">
-                    <div style="display:flex; flex-direction:column; gap:15px;">
-                        ${colorItems.map((item, i) => `
-                            <div onclick="selectMatch(this, 'warna', '${item.name}')"
-                                 class="match-card"
-                                 data-name="${item.name}"
-                                 style="width:100px; height:100px; border-radius:20px; cursor:pointer; box-shadow:0 5px 15px rgba(0,0,0,0.2); transition:all 0.3s; border:4px solid #eee;"
-                                 data-color="${item.color}">
-                            </div>
-                        `).join('')}
-                    </div>
-                    <div style="display:flex; flex-direction:column; gap:15px;">
-                        ${emojiItems.map((item, i) => `
-                            <div onclick="selectMatch(this, 'warna', '${item.name}')"
-                                 class="match-card"
-                                 data-name="${item.name}"
-                                 style="width:100px; height:100px; background:white; border-radius:20px; display:flex; align-items:center; justify-content:center; font-size:3em; cursor:pointer; box-shadow:0 5px 15px rgba(0,0,0,0.1); transition:all 0.3s; border:4px solid #eee;">
-                                ${item.emoji}
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-
-            // Apply colors
-            document.querySelectorAll('[data-color]').forEach(el => {
-                el.style.backgroundColor = el.dataset.color;
-            });
-        }
-
-        function loadMemoryGame() {
-            const emojis = ['🍎', '🍌', '🍊', '🍇', '🐱', '🐶'];
-            memoryCards = [...emojis, ...emojis];
-            memoryCards.sort(() => Math.random() - 0.5);
-            flippedCards = [];
-            matchedPairs = 0;
-            totalPairs = 6;
-
-            const content = document.getElementById('game-content');
-            content.innerHTML = `
-                <div style="display:flex; justify-content:center;">
-                    <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:15px; max-width:450px;">
-                        ${memoryCards.map((emoji, i) => `
-                            <div onclick="flipCard(this, ${i})"
-                                 class="memory-card"
-                                 data-index="${i}"
-                                 style="width:90px; height:90px; background:linear-gradient(135deg, #6c5ce7, #a29bfe); border-radius:15px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:2.5em; transition:all 0.3s; box-shadow:0 5px 15px rgba(0,0,0,0.2);">
-                                ❓
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-                <div style="text-align:center; margin-top:20px;">
-                    <button onclick="resetMemory()" style="background:#00b894; color:white; border:none; padding:12px 30px; font-size:1.2em; border-radius:50px; cursor:pointer; font-weight:bold;">🔄 Main Lagi</button>
-                </div>
-            `;
-        }
-
-        function flipCard(el, index) {
-            if (el.classList.contains('flipped') || el.classList.contains('matched')) return;
-            if (flippedCards.length >= 2) return;
-
-            el.classList.add('flipped');
-            el.innerHTML = memoryCards[index];
-            flippedCards.push({ el, index, emoji: memoryCards[index] });
-
-            if (flippedCards.length === 2) {
-                checkMemoryMatch();
-            }
-        }
-
-        function checkMemoryMatch() {
-            const [first, second] = flippedCards;
-
-            if (first.emoji === second.emoji) {
-                first.el.classList.add('matched');
-                second.el.classList.add('matched');
-                first.el.style.background = 'linear-gradient(135deg, #00b894, #00cec9)';
-                second.el.style.background = 'linear-gradient(135deg, #00b894, #00cec9)';
-                matchedPairs++;
-
-                if (matchedPairs === totalPairs) {
-                    document.getElementById('game-result').innerHTML = '🎉🎉 HEBAT! SEMUA PASANGAN DITEMUKAN! 🎉🎉';
-                    launchConfetti();
-                }
-                flippedCards = [];
-            } else {
-                setTimeout(() => {
-                    first.el.classList.remove('flipped');
-                    second.el.classList.remove('flipped');
-                    first.el.innerHTML = '❓';
-                    second.el.innerHTML = '❓';
-                    flippedCards = [];
-                }, 800);
-            }
-        }
-
-        function resetMemory() {
-            loadMemoryGame();
-        }
-
-        function loadLetterGame() {
-            const words = gameData.huruf.words;
-            currentWord = words[Math.floor(Math.random() * words.length)];
-            scrambledLetters = currentWord.word.split('').sort(() => Math.random() - 0.5);
-            userAnswer = [];
-
-            const content = document.getElementById('game-content');
-            content.innerHTML = `
-                <div style="text-align:center;">
-                    <div style="font-size:6em; margin-bottom:10px;">${currentWord.emoji}</div>
-                    <p style="font-size:1.5em; color:#666; margin-bottom:30px;">Apa nama ini?</p>
-
-                    <div id="answer-box" style="min-height:80px; border:4px dashed #a29bfe; border-radius:20px; margin-bottom:25px; display:flex; align-items:center; justify-content:center; font-size:3em; font-weight:bold; color:#6c5ce7;">
-                    </div>
-
-                    <div style="display:flex; justify-content:center; gap:15px; flex-wrap:wrap; margin-bottom:25px;" id="letter-buttons">
-                        ${scrambledLetters.map((letter, i) => `
-                            <button onclick="selectLetter('${letter}', this)"
-                                    style="width:60px; height:60px; background:white; border:4px solid #6c5ce7; border-radius:15px; font-size:2em; font-weight:bold; cursor:pointer; color:#6c5ce7; transition:all 0.2s;">
-                                ${letter}
-                            </button>
-                        `).join('')}
-                    </div>
-
-                    <div style="display:flex; justify-content:center; gap:15px;">
-                        <button onclick="checkLetterAnswer()" style="background:#22c55e; color:white; border:none; padding:15px 35px; font-size:1.3em; border-radius:50px; cursor:pointer; font-weight:bold;">✅ Cek Jawaban</button>
-                        <button onclick="resetLetters()" style="background:#fdcb6e; color:#d63031; border:none; padding:15px 35px; font-size:1.3em; border-radius:50px; cursor:pointer; font-weight:bold;">🔄 Ulangi</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function selectLetter(letter, el) {
-            if (el.disabled) return;
-            userAnswer.push(letter);
-            el.disabled = true;
-            el.style.opacity = '0.3';
-            updateLetterAnswer();
-        }
-
-        function updateLetterAnswer() {
-            const box = document.getElementById('answer-box');
-            box.innerHTML = userAnswer.join(' ');
-        }
-
-        function checkLetterAnswer() {
-            const answer = userAnswer.join('');
-            const result = document.getElementById('game-result');
-
-            if (answer === currentWord.word) {
-                result.innerHTML = `🎉🎉 BENAR! KAMU HEBAT! 🎉🎉`;
-                result.style.color = '#22c55e';
-                launchConfetti();
-            } else {
-                result.innerHTML = `❌ Belum tepat... Coba lagi ya!`;
-                result.style.color = '#e74c3c';
-            }
-        }
-
-        function resetLetters() {
-            userAnswer = [];
-            document.getElementById('game-result').innerHTML = '';
-            document.querySelectorAll('#letter-buttons button').forEach(btn => {
-                btn.disabled = false;
-                btn.style.opacity = '1';
-            });
-            updateLetterAnswer();
-        }
-
-        function loadNumberGame() {
-            const numbers = gameData.angka.numbers;
-            currentWord = numbers[Math.floor(Math.random() * numbers.length)];
-
-            const otherNumbers = numbers.filter(n => n.count !== currentWord.count).sort(() => Math.random() - 0.5).slice(0, 3);
-            const options = [currentWord, ...otherNumbers].sort(() => Math.random() - 0.5);
-
-            const content = document.getElementById('game-content');
-            content.innerHTML = `
-                <div style="text-align:center;">
-                    <p style="font-size:1.8em; color:#6c5ce7; margin-bottom:20px;">Hitung benda ini!</p>
-
-                    <div style="font-size:4em; margin-bottom:30px; background:white; padding:30px 50px; border-radius:25px; display:inline-block; box-shadow:0 10px 30px rgba(0,0,0,0.1);">
-                        ${currentWord.emoji}
-                    </div>
-
-                    <p style="font-size:1.5em; color:#666; margin-bottom:20px;">Berapa jumlahnya?</p>
-
-                    <div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap;">
-                        ${options.map(opt => `
-                            <button onclick="checkNumberAnswer(${opt.count})"
-                                    style="width:100px; height:100px; background:linear-gradient(135deg, #fd79a8, #e84393); color:white; border:none; border-radius:20px; font-size:2.5em; font-weight:bold; cursor:pointer; box-shadow:0 8px 25px rgba(0,0,0,0.2); transition:all 0.3s;">
-                                ${opt.count}
-                            </button>
-                        `).join('')}
-                    </div>
-
-                    <div style="margin-top:30px;">
-                        <button onclick="loadNumberGame()" style="background:#6c5ce7; color:white; border:none; padding:15px 30px; font-size:1.2em; border-radius:50px; cursor:pointer; font-weight:bold;">🔄 Ganti Soal</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function checkNumberAnswer(count) {
-            const result = document.getElementById('game-result');
-            if (count === currentWord.count) {
-                result.innerHTML = '🎉🎉 BENAR! KAMU HEBAT! 🎉🎉';
-                result.style.color = '#22c55e';
-                launchConfetti();
-            } else {
-                result.innerHTML = `❌ Belum tepat... Jawabannya adalah ${currentWord.count}!`;
-                result.style.color = '#e74c3c';
-            }
-        }
-
-        function closeGame() {
-            document.getElementById('game-modal').style.display = 'none';
-        }
-
-        // Confetti animation
-        function launchConfetti() {
-            const canvas = document.createElement('canvas');
-            canvas.style.position = 'fixed';
-            canvas.style.top = '0';
-            canvas.style.left = '0';
-            canvas.style.width = '100%';
-            canvas.style.height = '100%';
-            canvas.style.pointerEvents = 'none';
-            canvas.style.zIndex = '2000';
-            document.body.appendChild(canvas);
-
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            const particles = [];
-            for (let i = 0; i < 100; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height - canvas.height,
-                    r: Math.random() * 8 + 4,
-                    color: ['#ff6b6b', '#ffd93d', '#a8e6cf', '#6c5ce7', '#fd79a8'][Math.floor(Math.random() * 5)],
-                    d: Math.random() * 4 + 2
-                });
-            }
-
-            let animation = setInterval(() => {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                let alive = false;
-
-                particles.forEach(p => {
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                    ctx.fillStyle = p.color;
-                    ctx.fill();
-
-                    p.y += p.d;
-                    if (p.y < canvas.height) alive = true;
-                });
-
-                if (!alive) {
-                    clearInterval(animation);
-                    canvas.remove();
-                }
-            }, 25);
-        }
-
-        // Close modal on outside click
-        document.getElementById('game-modal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeGame();
-            }
-        });
-    </script>
+        <footer>
+            <p>Dibuat dengan ❤️ untuk anak-anak Indonesia 🇮🇩</p>
+            <p style="margin-top: 5px;">© 2026 Games Edukasi Anak TK 🎮✨</p>
+        </footer>
+    </main>
 </body>
 </html>

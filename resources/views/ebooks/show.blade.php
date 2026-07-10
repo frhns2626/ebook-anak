@@ -11,6 +11,9 @@
 
     <style>
         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
             font-family: 'Comic Neue', cursive;
         }
 
@@ -21,8 +24,6 @@
         body {
             background: linear-gradient(135deg, #ffeaa7 0%, #a8e6cf 50%, #dcedc1 100%);
             min-height: 100vh;
-            margin: 0;
-            padding: 0;
             animation: bgMove 30s infinite alternate;
         }
 
@@ -31,107 +32,162 @@
             100% { background-position: 100% 50%; }
         }
 
-        /* Header */
-        header {
-            background: linear-gradient(90deg, #ff6b6b, #ff9f1c);
-            color: white;
-            padding: 20px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            transition: margin-left 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            min-height: 100vh;
         }
 
-        .back-btn {
+        body.sidebar-collapsed .main-content {
+            margin-left: 80px;
+        }
+
+        .back-link {
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            background: rgba(255,255,255,0.2);
-            color: white;
-            padding: 12px 24px;
+            background: white;
+            color: #6c5ce7;
+            padding: 12px 25px;
             border-radius: 50px;
             text-decoration: none;
             font-weight: bold;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             transition: all 0.3s;
         }
 
-        .back-btn:hover {
-            background: rgba(255,255,255,0.3);
+        .back-link:hover {
             transform: translateX(-5px);
         }
 
-        /* Container */
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 30px 20px;
-        }
-
-        /* Main card */
         .main-card {
             background: white;
-            border-radius: 30px;
-            padding: 40px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-            border: 8px solid #fff;
+            border-radius: 25px;
+            padding: 35px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+            margin-bottom: 25px;
         }
 
-        /* Book display */
         .book-display {
             display: flex;
             gap: 40px;
             align-items: flex-start;
             flex-wrap: wrap;
-        }
-
-        /* Cover */
-        .cover-wrapper {
-            flex: 0 0 280px;
-        }
-
-        .book-cover {
-            width: 100%;
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-            border: 8px solid white;
-        }
-
-        .cover-placeholder {
-            width: 100%;
-            height: 380px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-            border: 8px solid white;
-            font-size: 8em;
-            position: relative;
-            overflow: hidden;
         }
 
-        .cover-placeholder::before {
-            content: '';
+        .flip-book {
+            perspective: 1200px;
+            width: 280px;
+            height: 400px;
+            flex-shrink: 0;
+        }
+
+        .flip-book-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transition: transform 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .flip-book:hover .flip-book-inner,
+        .flip-book.flipped .flip-book-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-book-front,
+        .flip-book-back {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            width: 40px;
-            height: 40px;
-            background: rgba(255,255,255,0.4);
-            border-radius: 50%;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+        }
+
+        .flip-book-front {
+            background: white;
+            border: 6px solid #fff;
+        }
+
+        .flip-book-front img,
+        .flip-book-front .cover-placeholder {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .flip-book-back {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            color: white;
+            border: 6px solid #fff;
+        }
+
+        .back-icon {
+            font-size: 5em;
+            margin-bottom: 15px;
+            animation: wiggle 2s infinite;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg); }
+        }
+
+        .back-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+            font-family: 'Fredoka One', cursive;
+        }
+
+        .back-desc {
+            font-size: 0.95em;
+            text-align: center;
+            line-height: 1.5;
+            opacity: 0.95;
+        }
+
+        .flip-hint {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(108, 92, 231, 0.9);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-size: 0.85em;
+            font-weight: bold;
             animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.3); }
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.05); }
         }
 
-        /* Book info */
         .book-info {
             flex: 1;
             min-width: 280px;
+            text-align: center;
         }
 
         .badges {
             display: flex;
+            justify-content: center;
             gap: 10px;
             margin-bottom: 15px;
             flex-wrap: wrap;
@@ -155,28 +211,31 @@
         }
 
         .book-title {
-            font-size: 2.5em;
+            font-size: 2.2em;
             color: #333;
             margin: 10px 0;
             line-height: 1.2;
         }
 
         .book-author {
-            font-size: 1.3em;
+            font-size: 1.2em;
             color: #888;
             margin-bottom: 20px;
         }
 
         .book-desc {
-            font-size: 1.15em;
+            font-size: 1.1em;
             color: #555;
             line-height: 1.6;
             margin-bottom: 25px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        /* Stats */
         .stats-row {
             display: flex;
+            justify-content: center;
             gap: 15px;
             margin-bottom: 25px;
             flex-wrap: wrap;
@@ -204,7 +263,7 @@
         }
 
         .stat-number {
-            font-size: 1.8em;
+            font-size: 1.6em;
             font-weight: bold;
             font-family: 'Fredoka One', cursive;
         }
@@ -214,13 +273,12 @@
             opacity: 0.9;
         }
 
-        /* Read button */
         .read-btn {
             background: linear-gradient(135deg, #ff6b6b, #ff9f1c);
             color: white;
             border: none;
-            padding: 20px 50px;
-            font-size: 1.5em;
+            padding: 18px 45px;
+            font-size: 1.3em;
             border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
@@ -230,6 +288,7 @@
             display: inline-flex;
             align-items: center;
             gap: 12px;
+            text-decoration: none;
         }
 
         .read-btn:hover {
@@ -237,20 +296,17 @@
             box-shadow: 0 15px 40px rgba(255,107,107,0.5);
         }
 
-        /* Chapters section */
         .chapters-card {
             background: white;
-            border-radius: 30px;
-            padding: 35px;
-            margin-top: 30px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-            border: 8px solid #fff;
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
         }
 
         .chapters-title {
             text-align: center;
             color: #ff6b6b;
-            font-size: 2em;
+            font-size: 1.8em;
             margin-bottom: 25px;
         }
 
@@ -262,11 +318,11 @@
         .chapter-item {
             background: linear-gradient(135deg, #a29bfe, #6c5ce7);
             color: white;
-            padding: 20px 25px;
-            border-radius: 20px;
+            padding: 18px 25px;
+            border-radius: 18px;
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 18px;
             cursor: pointer;
             transition: all 0.3s;
         }
@@ -277,15 +333,15 @@
         }
 
         .chapter-number {
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             background: white;
             color: #6c5ce7;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5em;
+            font-size: 1.3em;
             font-weight: bold;
             font-family: 'Fredoka One', cursive;
         }
@@ -295,112 +351,102 @@
         }
 
         .chapter-title {
-            font-size: 1.2em;
+            font-size: 1.1em;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
         .chapter-page {
-            font-size: 0.95em;
+            font-size: 0.9em;
             opacity: 0.85;
         }
 
         .chapter-play {
-            font-size: 2em;
+            font-size: 1.8em;
         }
 
-        /* Empty chapters */
         .empty-chapters {
             text-align: center;
             padding: 50px 20px;
         }
 
         .empty-chapters .emoji {
-            font-size: 5em;
+            font-size: 4em;
             margin-bottom: 15px;
         }
 
         .empty-chapters h3 {
             color: #888;
-            font-size: 1.5em;
+            font-size: 1.3em;
             margin-bottom: 10px;
         }
 
-        .empty-chapters p {
-            color: #aaa;
-            font-size: 1.1em;
-        }
-
-        /* Footer */
         footer {
             text-align: center;
             padding: 30px;
-            color: #555;
-            font-size: 1.1em;
+            color: #666;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .book-display {
-                flex-direction: column;
-                align-items: center;
+        @media (max-width: 900px) {
+            .main-content {
+                margin-left: 0 !important;
+                padding-top: 80px;
             }
 
-            .cover-wrapper {
-                flex: none;
-                width: 100%;
-                max-width: 300px;
-            }
-
-            .book-info {
-                text-align: center;
-            }
-
-            .badges, .stats-row {
-                justify-content: center;
+            .flip-book {
+                width: 250px;
+                height: 350px;
             }
 
             .book-title {
-                font-size: 2em;
+                font-size: 1.8em;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <a href="{{ route('ebooks.index') }}" class="back-btn">
-                ← Kembali ke Perpustakaan
-            </a>
-        </div>
-    </header>
+    @include('components.sidebar')
 
-    <div class="container">
-        {{-- Main book card --}}
+    <main class="main-content">
+        <a href="{{ route('ebooks.index') }}" class="back-link">
+            ← Kembali ke Perpustakaan
+        </a>
+
         <div class="main-card">
             <div class="book-display">
-                {{-- Cover --}}
-                <div class="cover-wrapper">
-                    @if($book->cover_image)
-                        <img src="{{ asset('storage/covers/' . $book->cover_image) }}"
-                             alt="{{ $book->title }}"
-                             class="book-cover">
-                    @else
-                        <div class="cover-placeholder" style="background: linear-gradient(135deg, {{ $book->category->gradient_start ?? '#a29bfe' }}, {{ $book->category->gradient_end ?? '#6c5ce7' }});">
-                            {{ $book->category->icon ?? '📚' }}
+                <div class="flip-book" onclick="toggleBookFlip(this)">
+                    <div class="flip-book-inner">
+                        <div class="flip-book-front">
+                            @if($book->cover_image)
+                                <img src="{{ asset('storage/covers/' . $book->cover_image) }}" alt="{{ $book->title }}">
+                            @else
+                                <div class="cover-placeholder" style="background: linear-gradient(135deg, {{ $book->category->gradient_start ?? '#a29bfe' }}, {{ $book->category->gradient_end ?? '#6c5ce7' }}); width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
+                                    <span style="font-size: 7em;">{{ $book->category->icon ?? '📚' }}</span>
+                                </div>
+                            @endif
+                            <span class="flip-hint">👆 Hover untuk info!</span>
                         </div>
-                    @endif
+
+                        <div class="flip-book-back">
+                            <span class="back-icon">{{ $book->category->icon ?? '📚' }}</span>
+                            <h2 class="back-title">{{ $book->title }}</h2>
+                            <p class="back-desc">{{ $book->description ?? 'Cerita seru untuk anak-anak!' }}</p>
+                            <div style="margin-top:15px;">
+                                <span style="background:white; color:#6c5ce7; padding:6px 14px; border-radius:20px; font-weight:bold; font-size:0.9em;">
+                                    {{ $book->category->name ?? 'Umum' }}
+                                </span>
+                                <span style="background:#ffeaa7; color:#d63031; padding:6px 14px; border-radius:20px; font-weight:bold; font-size:0.9em; margin-left:8px;">
+                                    👶 {{ $book->age_range }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                {{-- Book info --}}
                 <div class="book-info">
                     <div class="badges">
-                        <span class="badge badge-category">
-                            {{ $book->category->icon ?? '📚' }} {{ $book->category->name ?? 'Umum' }}
-                        </span>
-                        <span class="badge badge-age">
-                            👶 {{ $book->age_range }}
-                        </span>
+                        <span class="badge badge-category">{{ $book->category->icon ?? '📚' }} {{ $book->category->name ?? 'Umum' }}</span>
+                        <span class="badge badge-age">👶 {{ $book->age_range }}</span>
                     </div>
 
                     <h1 class="book-title">{{ $book->title }}</h1>
@@ -425,14 +471,13 @@
                         </div>
                     </div>
 
-                    <button class="read-btn" onclick="startReading()">
+                    <a href="{{ route('ebooks.read', $book->slug) }}" class="read-btn">
                         🔊 MULAI MEMBACA
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
 
-        {{-- Chapters section --}}
         <div class="chapters-card">
             <h2 class="chapters-title">📖📖 Daftar Halaman 📖📖</h2>
 
@@ -457,15 +502,15 @@
                 </div>
             @endif
         </div>
-    </div>
 
-    <footer>
-        <p>🚀 Dibuat dengan cinta untuk anak-anak Indonesia 🇮🇩</p>
-    </footer>
+        <footer>
+            <p>🚀 Dibuat dengan cinta untuk anak-anak Indonesia 🇮🇩</p>
+        </footer>
+    </main>
 
     <script>
-        function startReading() {
-            alert('🎉 Siap untuk membaca! Halaman pertama akan dibuka soon!');
+        function toggleBookFlip(book) {
+            book.classList.toggle('flipped');
         }
 
         function readChapter(order) {
