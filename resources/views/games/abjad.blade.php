@@ -5,782 +5,234 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🔤 Belajar Huruf Abjad A-Z - Ebook Anak TK</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Fredoka+One&display=swap" rel="stylesheet">
+    @fonts
+
+    <!-- Styles / Scripts -->
+    @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @else
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    @endif
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
             font-family: 'Comic Neue', cursive;
             background: linear-gradient(180deg, #87CEEB 0%, #98FB98 30%, #FFE4B5 60%, #FFA07A 100%);
             min-height: 100vh;
-            overflow-x: hidden;
         }
-
-        /* Floating animals background */
-        .bg-animals {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        .animal {
-            position: absolute;
-            font-size: 4em;
-            opacity: 0.25;
-            filter: blur(1px);
-        }
-
-        @keyframes float1 {
-            0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); }
-            25% { transform: translateY(-30px) translateX(10px) rotate(5deg); }
-            50% { transform: translateY(-10px) translateX(-10px) rotate(-3deg); }
-            75% { transform: translateY(-40px) translateX(5px) rotate(3deg); }
-        }
-
-        @keyframes float2 {
-            0%, 100% { transform: translateY(0) translateX(0) rotate(0deg) scale(1); }
-            33% { transform: translateY(-25px) translateX(-15px) rotate(-5deg) scale(1.1); }
-            66% { transform: translateY(-35px) translateX(10px) rotate(5deg) scale(0.95); }
-        }
-
-        @keyframes float3 {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(10deg); }
-        }
-
-        @keyframes float4 {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-30px) scale(1.1); }
-        }
-
-        .a1 { top: 5%; left: 2%; animation: float1 8s ease-in-out infinite; }
-        .a2 { top: 8%; right: 3%; animation: float2 10s ease-in-out infinite 1s; font-size: 3em; }
-        .a3 { top: 20%; left: 8%; animation: float3 7s ease-in-out infinite 0.5s; }
-        .a4 { top: 25%; right: 10%; animation: float4 9s ease-in-out infinite 2s; }
-        .a5 { top: 40%; left: 3%; animation: float1 11s ease-in-out infinite 1.5s; font-size: 3.5em; }
-        .a6 { top: 45%; right: 5%; animation: float2 8s ease-in-out infinite 0.8s; }
-        .a7 { bottom: 30%; left: 5%; animation: float3 9s ease-in-out infinite 1.2s; font-size: 3.5em; }
-        .a8 { bottom: 25%; right: 8%; animation: float4 10s ease-in-out infinite 0.3s; }
-        .a9 { bottom: 15%; left: 10%; animation: float1 7s ease-in-out infinite 2s; font-size: 3em; }
-        .a10 { bottom: 10%; right: 3%; animation: float2 8s ease-in-out infinite 1.8s; font-size: 4em; }
-        .a11 { top: 60%; left: 15%; animation: float3 9s ease-in-out infinite 0.3s; font-size: 3em; }
-        .a12 { top: 65%; right: 12%; animation: float4 11s ease-in-out infinite 1.5s; }
-        .a13 { bottom: 40%; left: 25%; animation: float1 8s ease-in-out infinite 2s; font-size: 3em; }
-        .a14 { bottom: 45%; right: 20%; animation: float2 10s ease-in-out infinite 0.7s; }
-
-        /* Cloud shapes */
-        .cloud {
-            position: absolute;
-            background: rgba(255,255,255,0.4);
-            border-radius: 50%;
-            filter: blur(2px);
-        }
-
-        @keyframes cloudFloat {
-            0%, 100% { transform: translateX(0) translateY(0); }
-            50% { transform: translateX(20px) translateY(-10px); }
-        }
-
-        .cloud1 { top: 15%; left: 20%; width: 150px; height: 60px; animation: cloudFloat 12s ease-in-out infinite; }
-        .cloud2 { top: 35%; right: 15%; width: 120px; height: 50px; animation: cloudFloat 10s ease-in-out infinite 2s; }
-        .cloud3 { bottom: 35%; left: 30%; width: 100px; height: 40px; animation: cloudFloat 14s ease-in-out infinite 1s; }
-
-        /* Sun rays */
-        .sun {
-            position: fixed;
-            top: -50px;
-            right: -50px;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, #FFD700 0%, transparent 70%);
-            border-radius: 50%;
-            opacity: 0.3;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        /* Grass at bottom */
-        .grass {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 80px;
-            background: linear-gradient(180deg, transparent 0%, rgba(34,139,34,0.3) 100%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* Header */
-        .header {
-            background: linear-gradient(135deg, #ff6b6b, #ff9f1c);
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-            position: relative;
-            z-index: 20;
-        }
-
-        .header::before {
-            content: '🔤 ✨ 🌟 🎉 📚';
-            position: absolute;
-            top: -15px;
-            left: 0;
-            width: 100%;
-            font-size: 1.5em;
-            opacity: 0.3;
-        }
-
-        .back-link {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255,255,255,0.2);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-
-        .back-link:hover {
-            background: rgba(255,255,255,0.3);
-        }
-
-        .header h1 {
-            font-family: 'Fredoka One', cursive;
-            color: white;
-            font-size: 2.5em;
-            text-shadow: 3px 3px 0 rgba(0,0,0,0.2);
-            margin-bottom: 5px;
-        }
-
-        .header p {
-            color: rgba(255,255,255,0.9);
-            font-size: 1.2em;
-        }
-
-        /* Main container */
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 30px 20px;
-            position: relative;
-            z-index: 10;
-        }
-
-        /* Alphabet navigation arrows */
-        .alphabet-nav {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 25px;
-        }
-
-        .nav-arrow {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            border: none;
-            font-size: 2.5em;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-        }
-
-        .nav-arrow.prev {
-            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
-            color: white;
-        }
-
-        .nav-arrow.next {
-            background: linear-gradient(135deg, #f472b6, #ec4899);
-            color: white;
-        }
-
-        .nav-arrow:hover {
-            transform: scale(1.1);
-        }
-
-        .nav-arrow:active {
-            transform: scale(0.95);
-        }
-
-        .nav-arrow:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* Letter indicator dots */
-        .letter-dots {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            justify-content: center;
-            max-width: 400px;
-        }
-
-        .letter-dot {
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            background: #e5e7eb;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9em;
-            font-weight: bold;
-        }
-
-        .letter-dot:hover {
-            background: #c4b5fd;
-            transform: scale(1.2);
-        }
-
-        .letter-dot.current {
-            background: linear-gradient(135deg, #ff6b6b, #f59e0b);
-            color: white;
-            transform: scale(1.2);
-        }
-
-        .letter-card {
-            height: 100px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3em;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            transition: all 0.3s;
-            color: white;
-            border: 4px solid rgba(255,255,255,0.5);
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .letter-card:nth-child(1) { background: linear-gradient(135deg, #ff6b6b, #ff9f1c); }
-        .letter-card:nth-child(2) { background: linear-gradient(135deg, #f472b6, #ec4899); }
-        .letter-card:nth-child(3) { background: linear-gradient(135deg, #fb923c, #f97316); }
-        .letter-card:nth-child(4) { background: linear-gradient(135deg, #facc15, #eab308); }
-        .letter-card:nth-child(5) { background: linear-gradient(135deg, #4ade80, #22c55e); }
-        .letter-card:nth-child(6) { background: linear-gradient(135deg, #2dd4bf, #14b8a6); }
-        .letter-card:nth-child(7) { background: linear-gradient(135deg, #38bdf8, #0ea5e9); }
-        .letter-card:nth-child(8) { background: linear-gradient(135deg, #818cf8, #6366f1); }
-        .letter-card:nth-child(9) { background: linear-gradient(135deg, #a78bfa, #8b5cf6); }
-        .letter-card:nth-child(10) { background: linear-gradient(135deg, #f472b6, #db2777); }
-        .letter-card:nth-child(11) { background: linear-gradient(135deg, #fb7185, #e11d48); }
-        .letter-card:nth-child(12) { background: linear-gradient(135deg, #fb923c, #ea580c); }
-        .letter-card:nth-child(14) { background: linear-gradient(135deg, #a3e635, #65a30d); }
-        .letter-card:nth-child(15) { background: linear-gradient(135deg, #22d3ee, #0891b1); }
-        .letter-card:nth-child(16) { background: linear-gradient(135deg, #c084fc, #a855f7); }
-        .letter-card:nth-child(17) { background: linear-gradient(135deg, #f0abfc, #d946ef); }
-        .letter-card:nth-child(18) { background: linear-gradient(135deg, #fb7185, #f43f5e); }
-        .letter-card:nth-child(19) { background: linear-gradient(135deg, #fbbf24, #d97706); }
-        .letter-card:nth-child(20) { background: linear-gradient(135deg, #2dd4bf, #0d948c); }
-        .letter-card:nth-child(21) { background: linear-gradient(135deg, #60a5fa, #2563eb); }
-        .letter-card:nth-child(22) { background: linear-gradient(135deg, #a78bfa, #7c3aed); }
-        .letter-card:nth-child(23) { background: linear-gradient(135deg, #4ade80, #16a34a); }
-        .letter-card:nth-child(24) { background: linear-gradient(135deg, #f472b6, #be185d); }
-        .letter-card:nth-child(25) { background: linear-gradient(135deg, #fb923c, #f97316); }
-        .letter-card:nth-child(26) { background: linear-gradient(135deg, #facc15, #ca8a04); }
-        /* Z for letter Z */
-        .letter-card:last-child { background: linear-gradient(135deg, #a3e635, #84cc16); }
-
-        .letter-card:hover {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
-        }
-
-        .letter-card.active {
-            transform: scale(1.15);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-            border: 5px solid #ffe66d;
-        }
-
-        /* Main Display */
-        .main-display {
-            background: white;
-            border-radius: 30px;
-            padding: 50px 30px;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-            margin-bottom: 25px;
-        }
-
-        .big-letter {
-            font-size: 15em;
-            font-weight: bold;
-            line-height: 1;
-            margin: 20px 0;
-            text-shadow: 6px 6px 0 rgba(0,0,0,0.2);
-            animation: bounce 2s ease-in-out infinite;
-            background: linear-gradient(180deg, #ff6b6b 0%, #ff9f1c 50%, #ffd93d 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        /* Controls */
-        .controls {
-            margin: 30px 0;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 18px 35px;
-            font-size: 1.3em;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s;
-            font-family: 'Fredoka One', cursive;
-        }
-
-        .btn-listen {
-            background: linear-gradient(135deg, #4ecdc4, #26a69a);
-            color: white;
-            box-shadow: 0 8px 25px rgba(78, 205, 196, 0.4);
-        }
-
-        .btn-listen:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(78, 205, 196, 0.5);
-        }
-
-        .btn-speak {
-            background: linear-gradient(135deg, #ff9f1c, #f39c12);
-            color: white;
-            box-shadow: 0 8px 25px rgba(255, 159, 28, 0.4);
-        }
-
-        .btn-speak:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(255, 159, 28, 0.5);
-        }
-
-        .btn-speak.listening {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        /* Feedback */
-        .feedback {
-            min-height: 80px;
-            font-size: 1.6em;
-            padding: 20px;
-            border-radius: 20px;
-            margin: 20px auto;
-            max-width: 600px;
-            font-weight: bold;
-            display: none;
-        }
-
-        .feedback.show {
-            display: block;
-            animation: slideUp 0.3s ease;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .feedback.correct {
-            background: linear-gradient(135deg, #a8e6cf, #22c55e);
-            color: #065f46;
-        }
-
-        .feedback.incorrect {
-            background: linear-gradient(135deg, #fca5a5, #ef4444);
-            color: #7f1d1d;
-        }
-
-        /* Progress */
-        .progress-section {
-            background: white;
-            border-radius: 25px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        .progress-bar {
-            background: #e5e7eb;
-            border-radius: 20px;
-            height: 20px;
-            overflow: hidden;
-            margin-bottom: 10px;
-        }
-
-        .progress-fill {
-            background: linear-gradient(90deg, #6c5ce7, #a29bfe);
-            height: 100%;
-            border-radius: 20px;
-            transition: width 0.3s ease;
-            width: 0%;
-        }
-
-        .progress-text {
-            color: #6c5ce7;
-            font-size: 1.2em;
-            font-weight: bold;
-            font-family: 'Fredoka One', cursive;
-        }
-
-        /* Score */
-        .score-section {
-            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
-            border-radius: 25px;
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
-        .score-title {
-            font-size: 1.3em;
-            color: #92400e;
-            margin-bottom: 15px;
-            font-family: 'Fredoka One', cursive;
-        }
-
-        .score-display {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-        }
-
-        .score-item {
-            text-align: center;
-        }
-
-        .score-number {
-            font-size: 3em;
-            font-weight: bold;
-            font-family: 'Fredoka One', cursive;
-            color: #6c5ce7;
-        }
-
-        .score-label {
-            font-size: 1em;
-            color: #92400e;
-        }
-
-        .score-item.correct .score-number {
-            color: #22c55e;
-        }
-
-        .score-item.wrong .score-number {
-            color: #ef4444;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: #888;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .big-letter {
-                font-size: 10em;
-            }
-
-            .letter-card {
-                height: 80px;
-                font-size: 2.5em;
-            }
-
-            .btn {
-                padding: 15px 25px;
-                font-size: 1.1em;
-            }
-
-            .back-link {
-                position: static;
-                transform: none;
-                display: inline-block;
-                margin-bottom: 10px;
-            }
-        }
+        @keyframes float1 { 0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); } 25% { transform: translateY(-30px) translateX(10px) rotate(5deg); } 50% { transform: translateY(-10px) translateX(-10px) rotate(-3deg); } 75% { transform: translateY(-40px) translateX(5px) rotate(3deg); } }
+        @keyframes float2 { 0%, 100% { transform: translateY(0) translateX(0) rotate(0deg) scale(1); } 33% { transform: translateY(-25px) translateX(-15px) rotate(-5deg) scale(1.1); } 66% { transform: translateY(-35px) translateX(10px) rotate(5deg) scale(0.95); } }
+        @keyframes float3 { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(10deg); } }
+        @keyframes cloudFloat { 0%, 100% { transform: translateX(0) translateY(0); } 50% { transform: translateX(20px) translateY(-10px); } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .animate-float1 { animation: float1 8s ease-in-out infinite; }
+        .animate-float2 { animation: float2 10s ease-in-out infinite 1s; }
+        .animate-float3 { animation: float3 7s ease-in-out infinite 0.5s; }
+        .animate-cloudFloat { animation: cloudFloat 12s ease-in-out infinite; }
+        .animate-bounce { animation: bounce 2s ease-in-out infinite; }
     </style>
 </head>
-<body>
-    {{-- Background decorations --}}
-    <div class="bg-animals">
-        {{-- Animals floating around --}}
-        <span class="animal a1">🐰</span>
-        <span class="animal a2">🦊</span>
-        <span class="animal a3">🐻</span>
-        <span class="animal a4">🐱</span>
-        <span class="animal a5">🐶</span>
-        <span class="animal a6">🦋</span>
-        <span class="animal a7">🐸</span>
-        <span class="animal a8">🐰</span>
-        <span class="animal a9">🐼</span>
-        <span class="animal a10">🐨</span>
-        <span class="animal a11">🦁</span>
-        <span class="animal a12">🐯</span>
-        <span class="animal a13">🐻‍❄️</span>
-        <span class="animal a14">🦄</span>
+<body class="min-h-screen overflow-x-hidden">
+    {{-- Floating animals background --}}
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <span class="absolute text-[4rem] opacity-25 blur-[1px] animate-float1" style="top:5%;left:2%">🐱</span>
+        <span class="absolute text-[3rem] opacity-25 blur-[1px] animate-float2" style="top:8%;right:3%">🐶</span>
+        <span class="absolute text-[4rem] opacity-25 blur-[1px] animate-float3" style="top:20%;left:8%">🐰</span>
+        <span class="absolute text-[4rem] opacity-25 blur-[1px] animate-float1" style="top:25%;right:10%;animation-delay:2s">🦊</span>
+        <span class="absolute text-[3.5rem] opacity-25 blur-[1px] animate-float2" style="bottom:30%;left:5%">🐻</span>
+        <span class="absolute text-[4rem] opacity-25 blur-[1px] animate-float3" style="bottom:25%;right:8%">🦁</span>
+        <span class="absolute text-[3rem] opacity-25 blur-[1px] animate-float1" style="bottom:15%;left:10%;animation-delay:1s">🐸</span>
+        <span class="absolute text-[4rem] opacity-25 blur-[1px] animate-float2" style="bottom:10%;right:3%;animation-delay:1.5s">🐷</span>
 
         {{-- Clouds --}}
-        <div class="cloud cloud1"></div>
-        <div class="cloud cloud2"></div>
-        <div class="cloud cloud3"></div>
+        <div class="absolute bg-white/40 rounded-full blur-[2px] animate-cloudFloat" style="top:15%;left:20%;width:150px;height:60px;animation-delay:0s"></div>
+        <div class="absolute bg-white/40 rounded-full blur-[2px] animate-cloudFloat" style="top:35%;right:15%;width:120px;height:50px;animation-delay:2s"></div>
+        <div class="absolute bg-white/40 rounded-full blur-[2px] animate-cloudFloat" style="bottom:35%;left:30%;width:100px;height:40px;animation-delay:1s"></div>
     </div>
 
-    {{-- Sun --}}
-    <div class="sun"></div>
+    {{-- Sun rays --}}
+    <div class="fixed -top-[50px] -right-[50px] w-[200px] h-[200px] bg-gradient-to-b from-yellow-400 to-transparent rounded-full opacity-30 z-0 pointer-events-none"></div>
 
     {{-- Grass at bottom --}}
-    <div class="grass"></div>
+    <div class="fixed bottom-0 left-0 w-full h-20 bg-gradient-to-t from-green-400/30 to-transparent pointer-events-none z-0"></div>
 
-    {{-- Header --}}
-    <header class="header">
-        <a href="{{ route('games.index') }}" class="back-link">
-            ← Kembali
-        </a>
-        <h1>🔤🔤 Belajar Huruf Abjad A-Z 🔤🔤</h1>
-        <p>Klik huruf, dengar, lalu ucapkan sendiri! 🎤✨</p>
-    </header>
+    {{-- Main content --}}
+    <main class="relative z-10 p-6">
+        {{-- Header --}}
+        <div class="bg-gradient-to-r from-red-400 to-orange-400 p-5 text-center shadow-lg relative z-20 rounded-2xl mb-6 max-w-4xl mx-auto">
+            <a href="{{ route('home') }}" class="absolute left-5 top-1/2 -translate-y-1/2 bg-white/20 text-white px-5 py-2.5 rounded-full no-underline font-bold hover:bg-white/30 transition-all text-sm">← Kembali</a>
+            <h1 class="text-white text-[2rem] md:text-[2.5rem] drop-shadow-lg font-bold mb-1" style="font-family: 'Fredoka One', cursive;">🔤 Belajar Huruf A-Z 🌟</h1>
+            <p class="text-white/90 text-[1rem] md:text-[1.2rem]">Klik huruf untuk mendengar bunyinya! 📚✨</p>
+        </div>
 
-    <div class="container">
-        {{-- Main Display with Navigation --}}
-        <div class="main-display">
-            {{-- Navigation arrows --}}
-            <div class="alphabet-nav">
-                <button class="nav-arrow prev" id="prev-btn" onclick="prevLetter()">
-                    ◀️
-                </button>
+        <div class="max-w-4xl mx-auto">
+            {{-- Progress Section --}}
+            <div class="bg-white rounded-3xl p-6 mb-6 shadow-xl text-center">
+                <div class="bg-gray-200 rounded-2xl h-5 mb-3 overflow-hidden">
+                    <div id="progressFill" class="bg-gradient-to-r from-violet-500 to-purple-400 h-full rounded-2xl transition-all duration-300" style="width: 0%"></div>
+                </div>
+                <p id="progressText" class="text-violet-600 text-[1.2rem] font-bold" style="font-family: 'Fredoka One', cursive;">🎯 Mulai dari huruf A!</p>
+            </div>
 
-                <div style="text-align: center;">
-                    <div id="big-letter" class="big-letter">A</div>
+            {{-- Main Display --}}
+            <div class="bg-white rounded-3xl p-8 md:p-10 text-center shadow-xl mb-6">
+                <div class="text-[6rem] md:text-[10rem] font-bold leading-none mb-4 animate-bounce bg-gradient-to-b from-red-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent drop-shadow-lg" id="bigLetter">A</div>
+                <p class="text-gray-600 text-[1.1rem] md:text-[1.3rem] mb-4" id="letterDescription">Huruf A seperti... Apel 🍎</p>
 
-                    {{-- Letter dots --}}
-                    <div class="letter-dots" id="letter-dots"></div>
+                {{-- Controls --}}
+                <div class="flex justify-center gap-4 flex-wrap my-6">
+                    <button id="btnListen" onclick="playAudio()" class="bg-gradient-to-r from-teal-400 to-teal-600 text-white px-6 md:px-8 py-3 md:py-4 text-[1rem] md:text-[1.3rem] rounded-full font-bold shadow-lg hover:-translate-y-1 hover:shadow-xl transition-all" style="font-family: 'Fredoka One', cursive; display: inline-flex; align-items: center; gap: 8px;">
+                        🔊 Dengarkan
+                    </button>
+                    <button id="btnSpeak" onclick="startListening()" class="bg-gradient-to-r from-orange-400 to-amber-500 text-white px-6 md:px-8 py-3 md:py-4 text-[1rem] md:text-[1.3rem] rounded-full font-bold shadow-lg hover:-translate-y-1 hover:shadow-xl transition-all" style="font-family: 'Fredoka One', cursive; display: inline-flex; align-items: center; gap: 8px;">
+                        🎤 Ucapkan
+                    </button>
                 </div>
 
-                <button class="nav-arrow next" id="next-btn" onclick="nextLetter()">
-                    ▶️
-                </button>
+                {{-- Feedback --}}
+                <div id="feedback" class="hidden text-[1.3rem] md:text-[1.6rem] font-bold p-5 rounded-2xl my-5 max-w-md mx-auto"></div>
             </div>
 
-            <div class="controls">
-                <button class="btn btn-listen" onclick="speakLetter()">
-                    🔊 Dengarkan Huruf
-                </button>
-                <button id="speak-btn" class="btn btn-speak" onclick="startRecognition()">
-                    🎤 Ucapkan Sendiri
-                </button>
+            {{-- Letter Grid --}}
+            <div class="bg-white rounded-3xl p-6 shadow-xl mb-6">
+                <h3 class="text-center text-gray-700 text-[1.1rem] md:text-[1.3rem] font-bold mb-4">📝 Pilih Huruf:</h3>
+                <div id="letterGrid" class="grid grid-cols-6 md:grid-cols-9 gap-2 md:gap-3 justify-center"></div>
             </div>
 
-            <div id="feedback" class="feedback"></div>
+            {{-- Score Section --}}
+            <div class="bg-gradient-to-r from-yellow-200 to-amber-200 rounded-3xl p-6 text-center shadow-xl">
+                <h3 class="text-amber-800 text-[1.1rem] md:text-[1.3rem] font-bold mb-4" style="font-family: 'Fredoka One', cursive;">🏆 Skor Kamu</h3>
+                <div class="flex justify-center gap-8">
+                    <div class="text-center">
+                        <div class="text-[2rem] md:text-[3rem] font-bold text-green-600" style="font-family: 'Fredoka One', cursive;" id="correctCount">0</div>
+                        <div class="text-amber-800 text-sm md:text-base">✅ Benar</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-[2rem] md:text-[3rem] font-bold text-red-500" style="font-family: 'Fredoka One', cursive;" id="wrongCount">0</div>
+                        <div class="text-amber-800 text-sm md:text-base">❌ Salah</div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        {{-- Progress --}}
-        <div class="progress-section">
-            <div class="progress-bar">
-                <div class="progress-fill" id="progress-fill"></div>
-            </div>
-            <div class="progress-text" id="progress-text">Progress: 0/26 huruf</div>
-        </div>
-    </div>
-
-    <footer>
-        Belajar Huruf Abjad • Cocok untuk anak-anak 🔤✨ • Gunakan Chrome untuk fitur suara terbaik
-    </footer>
+    </main>
 
     <script>
         const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+        const letterData = {
+            A: { word: 'Apel 🍎', color: 'from-red-400 to-orange-400' },
+            B: { word: 'Bebek 🦆', color: 'from-blue-400 to-cyan-400' },
+            C: { word: 'Cumi-cumi 🦑', color: 'from-purple-400 to-pink-400' },
+            D: { word: 'Domba 🐑', color: 'from-gray-300 to-gray-400' },
+            E: { word: 'Elang 🦅', color: 'from-amber-400 to-yellow-400' },
+            F: { word: 'Facestar 🐘', color: 'from-gray-500 to-gray-600' },
+            G: { word: 'Gajah 🐘', color: 'from-gray-600 to-gray-700' },
+            H: { word: 'Harimau 🐯', color: 'from-orange-400 to-amber-400' },
+            I: { word: 'Ikan 🐟', color: 'from-blue-300 to-cyan-300' },
+            J: { word: 'Jerapah 🦒', color: 'from-yellow-300 to-orange-300' },
+            K: { word: 'Koala 🐨', color: 'from-gray-400 to-gray-500' },
+            L: { word: 'Leopard 🐆', color: 'from-yellow-500 to-amber-500' },
+            M: { word: 'Monyet 🐵', color: 'from-amber-600 to-brown-500' },
+            N: { word: 'Naga 🐉', color: 'from-green-500 to-emerald-500' },
+            O: { word: 'Owl 🦉', color: 'from-amber-700 to-brown-600' },
+            P: { word: 'Panda 🐼', color: 'from-white to-gray-200' },
+            Q: { word: 'Quail 🐦', color: 'from-green-400 to-teal-400' },
+            R: { word: 'Rubah 🦊', color: 'from-orange-500 to-red-500' },
+            S: { word: 'Singa 🦁', color: 'from-amber-500 to-orange-500' },
+            T: { word: 'Tupai 🐿️', color: 'from-amber-600 to-yellow-600' },
+            U: { word: 'Unta 🐪', color: 'from-amber-700 to-stone-600' },
+            V: { word: 'Vet 🐌', color: 'from-green-600 to-emerald-600' },
+            W: { word: 'Walrus 🦭', color: 'from-gray-400 to-slate-500' },
+            X: { word: 'Xenopus 🐸', color: 'from-green-500 to-lime-500' },
+            Y: { word: 'Yak 🦬', color: 'from-amber-700 to-stone-700' },
+            Z: { word: 'Zebra 🦓', color: 'from-white to-gray-300' }
+        };
+
         let currentLetter = 'A';
+        let correctCount = 0;
+        let wrongCount = 0;
         let recognition = null;
 
-        // Select letter
+        function initLetterGrid() {
+            const grid = document.getElementById('letterGrid');
+            alphabet.forEach(letter => {
+                const btn = document.createElement('button');
+                btn.className = `w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br ${letterData[letter].color} text-white font-bold text-base md:text-lg shadow-lg hover:scale-110 hover:shadow-xl transition-all cursor-pointer border-4 border-white/50`;
+                btn.textContent = letter;
+                btn.onclick = () => selectLetter(letter);
+                grid.appendChild(btn);
+            });
+        }
+
         function selectLetter(letter) {
             currentLetter = letter;
-            document.getElementById('big-letter').textContent = letter;
+            document.getElementById('bigLetter').textContent = letter;
+            document.getElementById('letterDescription').textContent = `Huruf ${letter} seperti... ${letterData[letter].word}`;
 
-            // Update active state
-            document.querySelectorAll('.letter-card').forEach(card => {
-                card.classList.toggle('active', card.textContent === letter);
+            document.querySelectorAll('#letterGrid button').forEach((btn) => {
+                btn.classList.toggle('ring-4', btn.textContent === letter);
+                btn.classList.toggle('ring-yellow-400', btn.textContent === letter);
+                btn.classList.toggle('scale-125', btn.textContent === letter);
             });
 
-            // Hide feedback
-            document.getElementById('feedback').classList.remove('show');
-
-            // Update nav buttons
-            updateNavButtons();
+            document.getElementById('progressText').textContent = `🎯 Huruf ${letter} dari 26`;
+            document.getElementById('progressFill').style.width = `${((alphabet.indexOf(letter) + 1) / 26) * 100}%`;
         }
 
-        // Speak letter using Web Speech API
-        function speakLetter() {
-            if ('speechSynthesis' in window) {
-                const utterance = new SpeechSynthesisUtterance(currentLetter);
-                utterance.lang = 'id-ID';
-                utterance.rate = 0.85;
-                utterance.pitch = 1.1;
-                speechSynthesis.speak(utterance);
-            } else {
-                alert('Browser tidak mendukung suara. Gunakan Chrome untuk fitur suara terbaik!');
-            }
+        function playAudio() {
+            const utterance = new SpeechSynthesisUtterance(currentLetter);
+            utterance.lang = 'id-ID';
+            utterance.rate = 0.8;
+            speechSynthesis.speak(utterance);
         }
 
-        // Speech recognition
-        function initRecognition() {
-            if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
-                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                recognition = new SpeechRecognition();
-                recognition.continuous = false;
-                recognition.interimResults = false;
-            }
-        }
-
-        function startRecognition() {
-            if (!recognition) {
-                alert('Fitur pengenalan suara tidak didukung di browser ini. Gunakan Google Chrome!');
+        function startListening() {
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                alert('Maaf, browser kamu tidak mendukung fitur ini! 😢');
                 return;
             }
 
-            const btn = document.getElementById('speak-btn');
-            btn.classList.add('listening');
-
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
             recognition.lang = 'id-ID';
+            recognition.start();
 
-            recognition.onresult = function(event) {
-                btn.classList.remove('listening');
-                const transcript = event.results[0][0].transcript.toUpperCase().trim();
-                checkAnswer(transcript);
+            const btnSpeak = document.getElementById('btnSpeak');
+            btnSpeak.classList.add('animate-pulse');
+            btnSpeak.textContent = '🎤 Mendengarkan...';
+
+            recognition.onresult = (event) => {
+                const result = event.results[0][0].transcript.toUpperCase().trim();
+                checkAnswer(result);
             };
 
-            recognition.onerror = function() {
-                btn.classList.remove('listening');
-                showFeedback(false, 'Tidak mendengar dengan jelas. Coba lagi! 🤔');
+            recognition.onend = () => {
+                btnSpeak.classList.remove('animate-pulse');
+                btnSpeak.innerHTML = '🎤 Ucapkan';
             };
-
-            recognition.onend = function() {
-                btn.classList.remove('listening');
-            };
-
-            try {
-                recognition.start();
-            } catch(e) {
-                btn.classList.remove('listening');
-            }
         }
 
-        // Show feedback message
-        function showFeedback(isCorrect, message) {
+        function checkAnswer(spoken) {
             const feedback = document.getElementById('feedback');
-            feedback.textContent = message;
-            feedback.className = 'feedback show ' + (isCorrect ? 'correct' : 'incorrect');
+            feedback.classList.remove('hidden');
+            feedback.classList.remove('bg-green-200', 'text-green-800', 'bg-red-200', 'text-red-800');
+            feedback.style.animation = 'slideUp 0.3s ease';
 
-            setTimeout(() => {
-                feedback.classList.remove('show');
-            }, 3000);
-        }
-
-        // Check speech recognition answer
-        function checkAnswer(transcript) {
-            if (transcript.includes(currentLetter)) {
-                showFeedback(true, `🎉 Benar! Huruf ${currentLetter} sangat bagus!`);
+            if (spoken === currentLetter) {
+                correctCount++;
+                document.getElementById('correctCount').textContent = correctCount;
+                feedback.classList.add('bg-green-200', 'text-green-800');
+                feedback.textContent = '🎉 Sangat bagus! Kamu mengucapkan huruf ' + currentLetter + ' dengan benar!';
             } else {
-                showFeedback(false, `😊 Coba lagi! Kamu mengucapkan: "${transcript}".`);
+                wrongCount++;
+                document.getElementById('wrongCount').textContent = wrongCount;
+                feedback.classList.add('bg-red-200', 'text-red-800');
+                feedback.textContent = '🤔 Hmm... coba lagi! Kamu mengucapkan "' + spoken + '", tapi yang benar adalah "' + currentLetter + '"';
             }
         }
 
-        // Navigate to previous letter
-        function prevLetter() {
-            const currentIndex = alphabet.indexOf(currentLetter);
-            if (currentIndex > 0) {
-                const prev = alphabet[currentIndex - 1];
-                selectLetter(prev);
-                speakLetter();
-            }
-        }
-
-        // Navigate to next letter
-        function nextLetter() {
-            const currentIndex = alphabet.indexOf(currentLetter);
-            if (currentIndex < alphabet.length - 1) {
-                const next = alphabet[currentIndex + 1];
-                selectLetter(next);
-                speakLetter();
-            }
-        }
-
-        // Update navigation buttons state
-        function updateNavButtons() {
-            const currentIndex = alphabet.indexOf(currentLetter);
-            document.getElementById('prev-btn').disabled = currentIndex === 0;
-            document.getElementById('next-btn').disabled = currentIndex === alphabet.length - 1;
-        }
-
-        // Keyboard support
-        document.addEventListener('keydown', (e) => {
-            const letter = e.key.toUpperCase();
-            if (alphabet.includes(letter)) {
-                selectLetter(letter);
-                updateNavButtons();
-            }
-            if (e.key === ' ' || e.key === 'Enter') {
-                e.preventDefault();
-                speakLetter();
-            }
-            if (e.key === 'ArrowLeft') {
-                prevLetter();
-            }
-            if (e.key === 'ArrowRight') {
-                nextLetter();
-            }
-        });
-
-        // Initialize
-        window.onload = function() {
-            selectLetter('A');
-            updateNavButtons();
-            initRecognition();
-        };
+        initLetterGrid();
+        selectLetter('A');
     </script>
 </body>
 </html>
