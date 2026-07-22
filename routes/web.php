@@ -1,5 +1,38 @@
 <?php
 
+use App\Http\Controllers\Halaman1;
+use App\Http\Controllers\Halaman10;
+use App\Http\Controllers\Halaman11;
+use App\Http\Controllers\Halaman12;
+use App\Http\Controllers\Halaman13;
+use App\Http\Controllers\Halaman14;
+use App\Http\Controllers\Halaman15;
+use App\Http\Controllers\Halaman16;
+use App\Http\Controllers\Halaman17;
+use App\Http\Controllers\Halaman18;
+use App\Http\Controllers\Halaman19;
+use App\Http\Controllers\Halaman2;
+use App\Http\Controllers\Halaman20;
+use App\Http\Controllers\Halaman21;
+use App\Http\Controllers\Halaman22;
+use App\Http\Controllers\Halaman23;
+use App\Http\Controllers\Halaman24;
+use App\Http\Controllers\Halaman25;
+use App\Http\Controllers\Halaman26;
+use App\Http\Controllers\Halaman27;
+use App\Http\Controllers\Halaman28;
+use App\Http\Controllers\Halaman29;
+use App\Http\Controllers\Halaman3;
+use App\Http\Controllers\Halaman30;
+use App\Http\Controllers\Halaman31;
+use App\Http\Controllers\Halaman32;
+use App\Http\Controllers\Halaman33;
+use App\Http\Controllers\Halaman4;
+use App\Http\Controllers\Halaman5;
+use App\Http\Controllers\Halaman6;
+use App\Http\Controllers\Halaman7;
+use App\Http\Controllers\Halaman8;
+use App\Http\Controllers\Halaman9;
 use Illuminate\Support\Facades\Route;
 
 // Home page
@@ -35,134 +68,37 @@ Route::get('/belajar', function () {
 })->name('belajar.index');
 
 // Belajar module
-Route::get('/belajar/halaman-1', function () {
-    return view('belajar.halaman-1.index');
-})->name('belajar.halaman-1');
-
-Route::get('/belajar/halaman-2', function () {
-    return view('belajar.halaman-2.index');
-})->name('belajar.halaman-2');
-
-Route::get('/belajar/halaman-3', function () {
-    return view('belajar.halaman-3.index');
-})->name('belajar.halaman-3');
-
-Route::get('/belajar/halaman-4', function () {
-    return view('belajar.halaman-4.index');
-})->name('belajar.halaman-4');
-
-Route::get('/belajar/halaman-5', function () {
-    return view('belajar.halaman-5.index');
-})->name('belajar.halaman-5');
-
-Route::get('/belajar/halaman-6', function () {
-    return view('belajar.halaman-6.index');
-})->name('belajar.halaman-6');
-
-Route::get('/belajar/halaman-7', function () {
-    return view('belajar.halaman-7.index');
-})->name('belajar.halaman-7');
-
-Route::get('/belajar/halaman-8', function () {
-    return view('belajar.halaman-8.index');
-})->name('belajar.halaman-8');
-
-Route::get('/belajar/halaman-9', function () {
-    return view('belajar.halaman-9.index');
-})->name('belajar.halaman-9');
-
-Route::get('/belajar/halaman-10', function () {
-    return view('belajar.halaman-10.index');
-})->name('belajar.halaman-10');
-
-Route::get('/belajar/halaman-11', function () {
-    return view('belajar.halaman-11.index');
-})->name('belajar.halaman-11');
-
-Route::get('/belajar/halaman-12', function () {
-    return view('belajar.halaman-12.index');
-})->name('belajar.halaman-12');
-
-Route::get('/belajar/halaman-13', function () {
-    return view('belajar.halaman-13.index');
-})->name('belajar.halaman-13');
-
-Route::get('/belajar/halaman-14', function () {
-    return view('belajar.halaman-14.index');
-})->name('belajar.halaman-14');
-
-Route::get('/belajar/halaman-15', function () {
-    return view('belajar.halaman-15.index');
-})->name('belajar.halaman-15');
-
-Route::get('/belajar/halaman-16', function () {
-    return view('belajar.halaman-16.index');
-})->name('belajar.halaman-16');
-
-Route::get('/belajar/halaman-17', function () {
-    return view('belajar.halaman-17.index');
-})->name('belajar.halaman-17');
-
-Route::get('/belajar/halaman-18', function () {
-    return view('belajar.halaman-18.index');
-})->name('belajar.halaman-18');
-
-Route::get('/belajar/halaman-19', function () {
-    return view('belajar.halaman-19.index');
-})->name('belajar.halaman-19');
-
-Route::get('/belajar/halaman-20', function () {
-    return view('belajar.halaman-20.index');
-})->name('belajar.halaman-20');
-
-Route::get('/belajar/halaman-21', function () {
-    return view('belajar.halaman-21.index');
-})->name('belajar.halaman-21');
-
-Route::get('/belajar/halaman-22', function () {
-    return view('belajar.halaman-22.index');
-})->name('belajar.halaman-22');
-
-Route::get('/belajar/halaman-23', function () {
-    return view('belajar.halaman-23.index');
-})->name('belajar.halaman-23');
-
-Route::get('/belajar/halaman-24', function () {
-    return view('belajar.halaman-24.index');
-})->name('belajar.halaman-24');
-
-Route::get('/belajar/halaman-25', function () {
-    return view('belajar.halaman-25.index');
-})->name('belajar.halaman-25');
-
-Route::get('/belajar/halaman-26', function () {
-    return view('belajar.halaman-26.index');
-})->name('belajar.halaman-26');
-
-Route::get('/belajar/halaman-27', function () {
-    return view('belajar.halaman-27.index');
-})->name('belajar.halaman-27');
-
-Route::get('/belajar/halaman-28', function () {
-    return view('belajar.halaman-28.index');
-})->name('belajar.halaman-28');
-
-Route::get('/belajar/halaman-29', function () {
-    return view('belajar.halaman-29.index');
-})->name('belajar.halaman-29');
-
-Route::get('/belajar/halaman-30', function () {
-    return view('belajar.halaman-30.index');
-})->name('belajar.halaman-30');
-
-Route::get('/belajar/halaman-31', function () {
-    return view('belajar.halaman-31.index');
-})->name('belajar.halaman-31');
-
-Route::get('/belajar/halaman-32', function () {
-    return view('belajar.halaman-32.index');
-})->name('belajar.halaman-32');
-
-Route::get('/belajar/halaman-33', function () {
-    return view('belajar.halaman-33.index');
-})->name('belajar.halaman-33');
+Route::get('/belajar/halaman-1', [Halaman1::class, 'index'])->name('belajar.halaman-1');
+Route::get('/belajar/halaman-2', [Halaman2::class, 'index'])->name('belajar.halaman-2');// sudah
+Route::get('/belajar/halaman-3', [Halaman3::class, 'index'])->name('belajar.halaman-3');// sudah
+Route::get('/belajar/halaman-4', [Halaman4::class, 'index'])->name('belajar.halaman-4');// sudah
+Route::get('/belajar/halaman-5', [Halaman5::class, 'index'])->name('belajar.halaman-5');// sudah
+Route::get('/belajar/halaman-6', [Halaman6::class, 'index'])->name('belajar.halaman-6');// sudah
+//Route::get('/belajar/halaman-7', [SusunHurufController::class, 'index'])->name('belajar.halaman-7');
+Route::get('/belajar/halaman-7', [Halaman7::class, 'index'])->name('belajar.halaman-7');// sudah
+Route::get('/belajar/halaman-8', [Halaman8::class, 'index'])->name('belajar.halaman-8');// sudah
+Route::get('/belajar/halaman-9', [Halaman9::class, 'index'])->name('belajar.halaman-9');// sudah
+Route::get('/belajar/halaman-10', [Halaman10::class, 'index'])->name('belajar.halaman-10');//sudah
+Route::get('/belajar/halaman-11', [Halaman11::class, 'index'])->name('belajar.halaman-11');// sudah
+Route::get('/belajar/halaman-12', [Halaman12::class, 'index'])->name('belajar.halaman-12');// sudah
+Route::get('/belajar/halaman-13', [Halaman13::class, 'index'])->name('belajar.halaman-13');// sudah
+Route::get('/belajar/halaman-14', [Halaman14::class, 'index'])->name('belajar.halaman-14');// ----------- eng sudah
+Route::get('/belajar/halaman-15', [Halaman15::class, 'index'])->name('belajar.halaman-15');//sudah
+Route::get('/belajar/halaman-16', [Halaman16::class, 'index'])->name('belajar.halaman-16');//sudah
+Route::get('/belajar/halaman-17', [Halaman17::class, 'index'])->name('belajar.halaman-17');//sudah
+Route::get('/belajar/halaman-18', [Halaman18::class, 'index'])->name('belajar.halaman-18');//sudah
+Route::get('/belajar/halaman-19', [Halaman19::class, 'index'])->name('belajar.halaman-19');//sudah
+Route::get('/belajar/halaman-20', [Halaman20::class, 'index'])->name('belajar.halaman-20');// sudah
+Route::get('/belajar/halaman-21', [Halaman21::class, 'index'])->name('belajar.halaman-21');// -----------  eng sudah
+Route::get('/belajar/halaman-22', [Halaman22::class, 'index'])->name('belajar.halaman-22');// sudah
+Route::get('/belajar/halaman-23', [Halaman23::class, 'index'])->name('belajar.halaman-23');// sudah
+Route::get('/belajar/halaman-24', [Halaman24::class, 'index'])->name('belajar.halaman-24');// -----------  eng belum
+Route::get('/belajar/halaman-25', [Halaman25::class, 'index'])->name('belajar.halaman-25'); // sudah
+Route::get('/belajar/halaman-26', [Halaman26::class, 'index'])->name('belajar.halaman-26'); // sudah
+Route::get('/belajar/halaman-27', [Halaman27::class, 'index'])->name('belajar.halaman-27'); // sudah
+Route::get('/belajar/halaman-28', [Halaman28::class, 'index'])->name('belajar.halaman-28');// sudah
+Route::get('/belajar/halaman-29', [Halaman29::class, 'index'])->name('belajar.halaman-29');//sudah
+Route::get('/belajar/halaman-30', [Halaman30::class, 'index'])->name('belajar.halaman-30');// sudah
+Route::get('/belajar/halaman-31', [Halaman31::class, 'index'])->name('belajar.halaman-31');//sudah
+Route::get('/belajar/halaman-32', [Halaman32::class, 'index'])->name('belajar.halaman-32');//-----------  eng belum
+Route::get('/belajar/halaman-33', [Halaman33::class, 'index'])->name('belajar.halaman-33');//sudah

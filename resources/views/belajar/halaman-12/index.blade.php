@@ -1,74 +1,55 @@
-@php
-$items = [
-    ['id' => 'meja', 'name' => 'Meja', 'emoji' => '🪑', 'hint' => 'Meja adalah furniture untuk meletakkan barang!', 'color' => 'hover:border-amber-200', 'bg' => 'bg-amber-100 text-amber-600'],
-    ['id' => 'kursi', 'name' => 'Kursi', 'emoji' => '🪑', 'hint' => 'Kursi adalah tempat duduk yang nyaman!', 'color' => 'hover:border-blue-200', 'bg' => 'bg-blue-100 text-blue-600'],
-    ['id' => 'buku', 'name' => 'Buku', 'emoji' => '📚', 'hint' => 'Buku adalah sumber ilmu pengetahuan!', 'color' => 'hover:border-green-200', 'bg' => 'bg-green-100 text-green-600'],
-    ['id' => 'lele', 'name' => 'Lele', 'emoji' => '🐟', 'hint' => 'Lele adalah ikan air tawar yang enak!', 'color' => 'hover:border-gray-200', 'bg' => 'bg-gray-100 text-gray-600'],
-    ['id' => 'ball', 'name' => 'Ball', 'emoji' => '⚽', 'hint' => 'Ball adalah mainan bulat untuk bermain!', 'color' => 'hover:border-red-200', 'bg' => 'bg-red-100 text-red-600'],
-    ['id' => 'sapi', 'name' => 'Sapi', 'emoji' => '🐄', 'hint' => 'Sapi adalah hewan penghasil susu!', 'color' => 'hover:border-orange-200', 'bg' => 'bg-orange-100 text-orange-600'],
-    ['id' => 'kue', 'name' => 'Kue', 'emoji' => '🎂', 'hint' => 'Kue adalah makanan manis yang enak!', 'color' => 'hover:border-pink-200', 'bg' => 'bg-pink-100 text-pink-600'],
-    ['id' => 'sate', 'name' => 'Sate', 'emoji' => '🍢', 'hint' => 'Sate adalah makanan grilling yang lezat!', 'color' => 'hover:border-yellow-200', 'bg' => 'bg-yellow-100 text-yellow-600'],
-    ['id' => 'foto', 'name' => 'Foto', 'emoji' => '📷', 'hint' => 'Foto adalah gambar dari kamera!', 'color' => 'hover:border-purple-200', 'bg' => 'bg-purple-100 text-purple-600'],
-];
-@endphp
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halaman 12 - Ebook Anak TK</title>
-    @fonts
-    @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @else
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
-    @endif
-    <style>
-        body { font-family: 'Comic Neue', cursive; background: linear-gradient(180deg, #FFF9E6 0%, #E8F5E9 50%, #F0FFF4 100%); min-height: 100vh; }
-        @keyframes twinkle { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(0.9); } }
-        @keyframes float-gentle { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(5deg); } }
-        @keyframes bounce-subtle { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.05); } }
-        @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-        @keyframes floatUp { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-        .animate-twinkle { animation: twinkle 3s ease-in-out infinite; }
-        .animate-float-gentle { animation: float-gentle 4s ease-in-out infinite; }
-        .animate-bounce-subtle { animation: bounce-subtle 2s ease-in-out infinite; }
-        .animate-pop { animation: pop 0.5s ease; }
-        .animate-float-up { animation: floatUp 3s ease-in-out infinite; }
-        @keyframes rainbow { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
-    </style>
-</head>
-<body class="min-h-screen overflow-x-hidden">
-    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden" style="background: linear-gradient(180deg, #FFF9E6 0%, #E8F5E9 50%, #F0FFF4 100%);"></div>
-    <div class="fixed z-10 pointer-events-none animate-twinkle" style="top:5%;left:3%"><svg width="35" height="35" viewBox="0 0 45 45" fill="none"><path d="M22.5 0L27.7 17.3H45L30.8 28L36 45L22.5 34.5L9 45L14.2 28L0 17.3H17.3L22.5 0Z" fill="#FBBF24"/></svg></div>
-    <div class="fixed z-10 pointer-events-none animate-twinkle" style="top:8%;right:5%;animation-delay:0.5s"><svg width="28" height="28" viewBox="0 0 45 45" fill="none"><path d="M22.5 0L27.7 17.3H45L30.8 28L36 45L22.5 34.5L9 45L14.2 28L0 17.3H17.3L22.5 0Z" fill="#F472B6"/></svg></div>
-    <div class="fixed z-10 pointer-events-none animate-float-gentle hidden md:block" style="bottom:18%;left:3%">🐰</div>
-    <div class="fixed z-10 pointer-events-none animate-float-gentle" style="bottom:22%;right:4%">🦊</div>
+<x-layout-game>
     <main class="relative z-10 p-6 max-w-4xl mx-auto">
         <div class="bg-white rounded-3xl p-6 mb-6 shadow-xl text-center relative overflow-hidden">
-            <div class="absolute top-0 left-0 right-0 h-2" style="background: linear-gradient(90deg, #FF6B6B, #FF9F43, #FFE66D, #4ECDC4, #6C5CE7, #FF6B6B); background-size: 200% 100%; animation: rainbow 3s linear infinite;"></div>
-            <a href="{{ route('belajar.index') }}" class="absolute left-4 top-1/2 -translate-y-1/2 bg-red-100 text-red-500 px-4 py-2 rounded-full font-bold hover:bg-red-200 transition-all text-sm">← Kembali</a>
+            <div class="absolute top-0 left-0 right-0 h-2"
+                 style="background: linear-gradient(90deg, #FF6B6B, #FF9F43, #FFE66D, #4ECDC4, #6C5CE7, #FF6B6B); background-size: 200% 100%; animation: rainbow 3s linear infinite;"></div>
+            <a href="{{ route('belajar.index') }}" class="absolute left-4 top-1/2 -translate-y-1/2 bg-red-100 text-red-500 px-4 py-2 rounded-full font-bold hover:bg-red-200 transition-all text-sm">←
+                Kembali</a>
             <span class="text-[3rem] mb-2 block animate-bounce-subtle">🏠</span>
-            <h1 class="text-[1.8rem] md:text-[2.2rem] text-gray-800 font-black mb-1">Halaman 12 - Benda Sekitar 🏠</h1>
-            <p class="text-gray-500 text-[1rem]">Mengenal benda-benda di sekitar kita!</p>
+            <h1 class="text-[1.8rem] md:text-[2.2rem] text-gray-800 font-black mb-1">{{ $judul }}</h1>
+            <p class="text-gray-500 text-[1rem]">{{ $deskripsi }}</p>
         </div>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-6">
+        <div class="flex overflow-x-auto gap-4 md:gap-6 mb-6 pb-2 snap-x snap-mandatory">
             @foreach($items as $index => $item)
-            <div class="bg-white rounded-3xl p-6 shadow-xl text-center cursor-pointer hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-4 border-transparent {{ $item['color'] }}" onclick="selectItem('{{ $item['id'] }}')">
-                <div class="text-[4rem] md:text-[5rem] mb-3 animate-float-up" style="animation-delay: {{ ($index % 5) * 0.3 }}s">{{ $item['emoji'] }}</div>
-                <h3 class="text-[1.2rem] md:text-[1.4rem] font-black text-gray-800 mb-1">{{ $item['name'] }}</h3>
-                <p class="text-gray-500 text-xs">{{ $item['name'] }}</p>
-                <div class="mt-3 {{ $item['bg'] }} px-3 py-1 rounded-full text-xs font-bold inline-block">Benda</div>
-            </div>
+                <div id="card-{{ $item['id'] }}"
+                     class="item-card shrink-0 w-40 md:w-48 snap-start bg-white rounded-3xl p-6 shadow-xl text-center cursor-pointer hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-4 border-transparent {{ $item['color'] }}"
+                     data-index="{{ $index }}"
+                     onclick="selectItem('{{ $item['id'] }}')">
+                    <div class="w-16 h-16 md:w-20 md:h-20 rounded-2xl {{ $item['bg'] }} flex items-center justify-center mx-auto mb-3 animate-float-up"
+                         style="animation-delay: {{ ($index % 5) * 0.3 }}s">
+                        @if(!empty($item['emoji']))
+                            <span class="text-[2.5rem] md:text-[3rem]">
+                                {{ $item['emoji'] }}
+                            </span>
+                        @elseif(!empty($item['icon']))
+                            <img
+                                src="{{ $item['icon'] }}"
+                                alt="{{ $item['name'] }}"
+                                class="w-12 h-12 md:w-14 md:h-14 object-contain"
+                            >
+                        @endif
+                    </div>
+                    <h3 class="text-[1.2rem] md:text-[1.4rem] font-black text-gray-800 mb-1">
+                        {{ $item['name'] }}
+                    </h3>
+                    <p class="text-gray-500 text-xs">
+                        {{ $item['name'] }}
+                    </p>
+                </div>
             @endforeach
         </div>
         <div id="itemDisplay" class="bg-white rounded-3xl p-8 shadow-2xl text-center mb-6 hidden">
-            <div class="text-[8rem] md:text-[10rem] mb-4 animate-pop" id="itemEmoji">📚</div>
-            <h2 class="text-[2.5rem] md:text-[3rem] font-black text-gray-800 mb-2" id="itemName">Buku</h2>
-            <p class="text-gray-500 text-[1.2rem] mb-6" id="itemHint">Buku adalah sumber ilmu pengetahuan!</p>
+            <div class="text-[8rem] md:text-[10rem] mb-4 animate-pop" id="itemEmoji">🪑</div>
+            <h2 class="text-[2.5rem] md:text-[3rem] font-black text-gray-800 mb-2 tracking-widest" id="itemName">Meja</h2>
+            <div id="syllableOptions" class="flex justify-center gap-3 flex-wrap mb-4"></div>
+            <p id="checkFeedback" class="h-6 mb-2 font-bold text-sm"></p>
+            <p class="text-gray-500 text-[1.2rem] mb-6" id="itemHint">Meja adalah furniture untuk meletakkan barang!</p>
             <div class="flex justify-center gap-4 flex-wrap">
-                <button onclick="playAudio()" class="bg-gradient-to-r from-blue-400 to-blue-500 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:scale-105 transition-all">🔊 Dengarkan</button>
-                <button onclick="nextItem()" class="bg-gradient-to-r from-green-400 to-green-500 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:scale-105 transition-all">➡️ Lanjut</button>
+                <button onclick="playAudio()" class="bg-gradient-to-r from-blue-400 to-blue-500 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:scale-105 transition-all">🔊 Dengarkan
+                </button>
+                <button onclick="checkAnswer()" id="checkBtn"
+                        class="bg-gradient-to-r from-purple-400 to-purple-500 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:scale-105 transition-all">✅ Cek
+                </button>
             </div>
         </div>
         <div class="bg-white rounded-2xl p-4 shadow-lg">
@@ -82,7 +63,9 @@ $items = [
         </div>
     </main>
     <svg class="fixed bottom-0 left-0 w-full h-24 z-0 pointer-events-none" viewBox="0 0 1440 120" fill="none" preserveAspectRatio="none">
-        <path d="M0 120L48 110C96 100 192 80 288 70C384 60 480 60 576 65C672 70 768 80 864 85C960 90 1056 90 1152 82.5C1248 75 1344 60 1392 52.5L1440 45V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0Z" fill="url(#wave-gradient)" fill-opacity="0.15"/>
+        <path
+            d="M0 120L48 110C96 100 192 80 288 70C384 60 480 60 576 65C672 70 768 80 864 85C960 90 1056 90 1152 82.5C1248 75 1344 60 1392 52.5L1440 45V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0Z"
+            fill="url(#wave-gradient)" fill-opacity="0.15"/>
         <defs>
             <linearGradient id="wave-gradient" x1="0" y1="0" x2="1440" y2="0" gradientUnits="userSpaceOnUse">
                 <stop stop-color="#10B981"/>
@@ -95,37 +78,128 @@ $items = [
         const items = @json($items);
         let currentIndex = 0;
         let viewed = new Set();
+        let blankIndex = 0;
+        let solved = false;
+        let selectedChoice = null;
+        let selectedBtn = null;
+        let cachedVoices = [];
+
+        function loadVoices() {
+            cachedVoices = speechSynthesis.getVoices();
+        }
+
+        loadVoices();
+        speechSynthesis.onvoiceschanged = loadVoices;
+
+        function updateLocks() {
+            items.forEach((item, i) => {
+                const card = document.getElementById('card-' + item.id);
+                const unlocked = i === 0 || viewed.has(items[i - 1].id);
+                if (unlocked) {
+                    card.classList.remove('opacity-40', 'grayscale', 'pointer-events-none');
+                } else {
+                    card.classList.add('opacity-40', 'grayscale', 'pointer-events-none');
+                }
+            });
+        }
+
         function selectItem(id) {
             currentIndex = items.findIndex(item => item.id === id);
             showItem();
-            viewed.add(id);
-            updateProgress();
-            document.getElementById('itemDisplay').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            document.getElementById('itemDisplay').scrollIntoView({behavior: 'smooth', block: 'center'});
         }
+
         function showItem() {
             const item = items[currentIndex];
+            solved = false;
+            selectedChoice = null;
+            selectedBtn = null;
+            blankIndex = item.syllables.length - 1;
+
             document.getElementById('itemDisplay').classList.remove('hidden');
             document.getElementById('itemEmoji').textContent = item.emoji;
-            document.getElementById('itemName').textContent = item.name;
             document.getElementById('itemHint').textContent = item.hint;
+            document.getElementById('checkFeedback').textContent = '';
+            document.getElementById('checkBtn').disabled = false;
+            renderSyllablePuzzle(item);
         }
+
+
+        function renderSyllablePuzzle(item) {
+            const display = item.syllables.map((s, i) => i === blankIndex ? '...' : s).join(' – ');
+            document.getElementById('itemName').textContent = display;
+
+            const distractorPool = items
+                .flatMap(i => i.syllables)
+                .filter(s => s.toLowerCase() !== item.syllables[blankIndex].toLowerCase());
+            const distractors = [...new Set(distractorPool)]
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 2);
+
+            const options = [item.syllables[blankIndex], ...distractors];
+
+            const container = document.getElementById('syllableOptions');
+            container.innerHTML = '';
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.textContent = opt;
+                btn.className = 'bg-gradient-to-r from-purple-400 to-purple-500 text-white px-5 py-2 rounded-full font-bold shadow-lg hover:scale-105 transition-all';
+                btn.onclick = () => selectChoice(opt, btn);
+                container.appendChild(btn);
+            });
+        }
+
+        function selectChoice(opt, btn) {
+            if (solved) return;
+            if (selectedBtn) selectedBtn.classList.remove('ring-4', 'ring-blue-300');
+            selectedChoice = opt;
+            selectedBtn = btn;
+            btn.classList.add('ring-4', 'ring-blue-300');
+        }
+
+        function checkAnswer() {
+            if (solved || !selectedChoice) return;
+            const item = items[currentIndex];
+            const feedback = document.getElementById('checkFeedback');
+
+            if (selectedChoice.toLowerCase() === item.syllables[blankIndex].toLowerCase()) {
+                solved = true;
+                document.getElementById('itemName').textContent = item.name;
+                document.getElementById('checkBtn').disabled = true;
+                feedback.textContent = '🎉 Benar sekali!';
+                feedback.className = 'h-6 mb-2 font-bold text-sm text-green-500';
+                selectedBtn.classList.add('ring-4', 'ring-green-400');
+                viewed.add(item.id);
+                updateProgress();
+                updateLocks();
+                playAudio();
+                setTimeout(nextItem, 2000);
+            } else {
+                feedback.textContent = 'Coba lagi ya!';
+                feedback.className = 'h-6 mb-2 font-bold text-sm text-red-400';
+                selectedBtn.classList.add('animate-shake');
+                document.getElementById('checkBtn').disabled = true;
+                setTimeout(() => showItem(), 2000);
+            }
+        }
+
         function updateProgress() {
             const count = viewed.size;
             document.getElementById('progressText').textContent = count + ' / ' + items.length;
             document.getElementById('progressBar').style.width = (count / items.length) * 100 + '%';
         }
+
         function playAudio() {
             const item = items[currentIndex];
-            const utterance = new SpeechSynthesisUtterance(item.name);
-            utterance.lang = 'id-ID';
-            utterance.rate = 0.8;
-            speechSynthesis.speak(utterance);
+            new Audio(item.audio).play();
         }
+
         function nextItem() {
             currentIndex = (currentIndex + 1) % items.length;
             showItem();
         }
-        showItem();
+
+        updateLocks();
+        selectItem(items[0].id);
     </script>
-</body>
-</html>
+</x-layout-game>

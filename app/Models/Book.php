@@ -66,7 +66,7 @@ class Book extends Model
     /**
      * Get the cover image URL.
      */
-    public function getCoverUrlAttribute(): string
+    public function getCoverUrlAttribute(): ?string
     {
         if ($this->cover_image) {
             return asset("storage/covers/{$this->cover_image}");
@@ -77,7 +77,7 @@ class Book extends Model
     /**
      * Get the thumbnail URL.
      */
-    public function getThumbnailUrlAttribute(): string
+    public function getThumbnailUrlAttribute(): ?string
     {
         if ($this->cover_image) {
             return asset("storage/covers/thumbnails/{$this->cover_image}");
@@ -99,7 +99,7 @@ class Book extends Model
     public function scopeForAge($query, int $age)
     {
         return $query->where('age_range_min', '<=', $age)
-                     ->where('age_range_max', '>=', $age);
+            ->where('age_range_max', '>=', $age);
     }
 
     /**

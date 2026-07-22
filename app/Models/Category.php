@@ -25,14 +25,6 @@ class Category extends Model
     ];
 
     /**
-     * Get the books for the category.
-     */
-    public function books(): HasMany
-    {
-        return $this->hasMany(Book::class);
-    }
-
-    /**
      * Get the book count.
      */
     public function getBookCountAttribute(): int
@@ -41,11 +33,19 @@ class Category extends Model
     }
 
     /**
+     * Get the books for the category.
+     */
+    public function books(): HasMany
+    {
+        return $this->hasMany(Book::class);
+    }
+
+    /**
      * Get the gradient color for placeholder covers.
      */
     public function getGradientColorAttribute(): string
     {
-        return match($this->slug) {
+        return match ($this->slug) {
             'hewan' => 'from-pink-400 to-rose-500',
             'petualangan' => 'from-green-400 to-emerald-500',
             'pengalaman' => 'from-blue-400 to-indigo-500',
@@ -61,7 +61,7 @@ class Category extends Model
      */
     public function getGradientStartAttribute(): string
     {
-        return match($this->slug) {
+        return match ($this->slug) {
             'hewan' => '#f472b6',
             'petualangan' => '#4ade80',
             'pengalaman' => '#60a5fa',
@@ -77,7 +77,7 @@ class Category extends Model
      */
     public function getGradientEndAttribute(): string
     {
-        return match($this->slug) {
+        return match ($this->slug) {
             'hewan' => '#f43f5e',
             'petualangan' => '#10b981',
             'pengalaman' => '#6366f1',

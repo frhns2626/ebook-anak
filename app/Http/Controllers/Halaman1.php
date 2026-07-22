@@ -1,64 +1,95 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Storage;
-
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\View\View;
+use Override;
 
 class Halaman1 extends Controller
 {
-    public function index()
+    /**
+     * @throws BindingResolutionException
+     */
+    #[Override]
+    public function index(): View
     {
+        $data = $this->getDataPublicHalaman1();
 
-
-        return view('halaman1', [
-            'data' => $this->getDataPublicHalaman1(),
-            'halaman'    => 1,
-            'judul'      => 'Pengenalan Huruf Abjad',
-            'deskripsi'  => 'Belajar huruf A sampai Z dengan suara dan pengucapan',
-
-        ]);
+        return $this->abcdHuruf(
+            data: $data,
+            halaman: 1,
+            judul: 'Pengenalan Huruf Abjad',
+            deskripsi: 'Belajar huruf A sampai Z dengan suara dan pengucapan');
     }
 
-    public function getDataPublicHalaman1()
+    /**
+     * @throws BindingResolutionException
+     */
+    public function getDataPublicHalaman1(): array
     {
-        $basePath = 'audio/Halaman 1/';
-
-        $data = [
+        return [
+            //
+            //            'items' => [
+            //                ['huruf' => 'A', 'spelling' => 'A', 'audio' => Storage::disk('public')->url('audio/Halaman 1/1.A.m4a'), 'color' => '#FF6B6B'],
+            //                ['huruf' => 'B', 'spelling' => 'Be', 'audio' => Storage::disk('public')->url('audio/Halaman 1/2.B.m4a'), 'color' => '#4ECDC4'],
+            //                ['huruf' => 'C', 'spelling' => 'Ce', 'audio' => Storage::disk('public')->url('audio/Halaman 1/3.C.m4a'), 'color' => '#FFB6C1'],
+            //                ['huruf' => 'D', 'spelling' => 'De', 'audio' => Storage::disk('public')->url('audio/Halaman 1/4.D.m4a'), 'color' => '#A29BFE'],
+            //                ['huruf' => 'E', 'spelling' => 'E', 'audio' => Storage::disk('public')->url('audio/Halaman 1/5.E.m4a'), 'color' => '#FD79A8'],
+            //                ['huruf' => 'F', 'spelling' => 'Ef', 'audio' => Storage::disk('public')->url('audio/Halaman 1/6.F.m4a'), 'color' => '#74B9FF'],
+            //                ['huruf' => 'G', 'spelling' => 'Ge', 'audio' => Storage::disk('public')->url('audio/Halaman 1/7.G.m4a'), 'color' => '#55EFC4'],
+            //                ['huruf' => 'H', 'spelling' => 'Ha', 'audio' => Storage::disk('public')->url('audio/Halaman 1/8.H.m4a'), 'color' => '#FDCB6E'],
+            //                ['huruf' => 'I', 'spelling' => 'I', 'audio' => Storage::disk('public')->url('audio/Halaman 1/9.I.m4a'), 'color' => '#E17055'],
+            //                ['huruf' => 'J', 'spelling' => 'Je', 'audio' => Storage::disk('public')->url('audio/Halaman 1/10.J.m4a'), 'color' => '#00CEC9'],
+            //                ['huruf' => 'K', 'spelling' => 'Ka', 'audio' => Storage::disk('public')->url('audio/Halaman 1/11.K.m4a'), 'color' => '#6C5CE7'],
+            //                ['huruf' => 'L', 'spelling' => 'El', 'audio' => Storage::disk('public')->url('audio/Halaman 1/12.L.m4a'), 'color' => '#FF7675'],
+            //                ['huruf' => 'M', 'spelling' => 'Em', 'audio' => Storage::disk('public')->url('audio/Halaman 1/13.M.m4a'), 'color' => '#FAB1A0'],
+            //                ['huruf' => 'N', 'spelling' => 'En', 'audio' => Storage::disk('public')->url('audio/Halaman 1/14.N.m4a'), 'color' => '#81ECEC'],
+            //                ['huruf' => 'O', 'spelling' => 'O', 'audio' => Storage::disk('public')->url('audio/Halaman 1/15.O.m4a'), 'color' => '#FECA57'],
+            //                ['huruf' => 'P', 'spelling' => 'Pe', 'audio' => Storage::disk('public')->url('audio/Halaman 1/16.P.m4a'), 'color' => '#A29BFE'],
+            //                ['huruf' => 'Q', 'spelling' => 'Ki', 'audio' => Storage::disk('public')->url('audio/Halaman 1/17.Q.m4a'), 'color' => '#FD79A8'],
+            //                ['huruf' => 'R', 'spelling' => 'Er', 'audio' => Storage::disk('public')->url('audio/Halaman 1/18.R.m4a'), 'color' => '#74B9FF'],
+            //                ['huruf' => 'S', 'spelling' => 'Es', 'audio' => Storage::disk('public')->url('audio/Halaman 1/19.S.m4a'), 'color' => '#55EFC4'],
+            //                ['huruf' => 'T', 'spelling' => 'Te', 'audio' => Storage::disk('public')->url('audio/Halaman 1/20.T.m4a'), 'color' => '#FDCB6E'],
+            //                ['huruf' => 'U', 'spelling' => 'U', 'audio' => Storage::disk('public')->url('audio/Halaman 1/21.U.m4a'), 'color' => '#E17055'],
+            //                ['huruf' => 'V', 'spelling' => 'Ve', 'audio' => Storage::disk('public')->url('audio/Halaman 1/22.V.m4a'), 'color' => '#00CEC9'],
+            //                ['huruf' => 'W', 'spelling' => 'We', 'audio' => Storage::disk('public')->url('audio/Halaman 1/23.W.m4a'), 'color' => '#6C5CE7'],
+            //                ['huruf' => 'X', 'spelling' => 'Eks', 'audio' => Storage::disk('public')->url('audio/Halaman 1/24.X.m4a'), 'color' => '#FF7675'],
+            //                ['huruf' => 'Y', 'spelling' => 'Ye', 'audio' => Storage::disk('public')->url('audio/Halaman 1/25.Y.m4a'), 'color' => '#FAB1A0'],
+            //                ['huruf' => 'Z', 'spelling' => 'Zet', 'audio' => Storage::disk('public')->url('audio/Halaman 1/26.Z.m4a'), 'color' => '#81ECEC'],
+            //            ],
 
             'items' => [
-                ['huruf' => 'A', 'spelling' => 'A',    'audio' => Storage::disk('public')->url($basePath . 'A.mp3'),    'color' => '#FF6B6B'],
-                ['huruf' => 'B', 'spelling' => 'Be',   'audio' => Storage::disk('public')->url($basePath . 'B.mp3'),    'color' => '#4ECDC4'],
-                ['huruf' => 'C', 'spelling' => 'Ce',   'audio' => Storage::disk('public')->url($basePath . 'C.mp3'),    'color' => '#FFE66D'],
-                ['huruf' => 'D', 'spelling' => 'De',   'audio' => Storage::disk('public')->url($basePath . 'D.mp3'),    'color' => '#A29BFE'],
-                ['huruf' => 'E', 'spelling' => 'E',    'audio' => Storage::disk('public')->url($basePath . 'E.mp3'),    'color' => '#FD79A8'],
-                ['huruf' => 'F', 'spelling' => 'Ef',   'audio' => Storage::disk('public')->url($basePath . 'F.mp3'),    'color' => '#74B9FF'],
-                ['huruf' => 'G', 'spelling' => 'Ge',   'audio' => Storage::disk('public')->url($basePath . 'G.mp3'),    'color' => '#55EFC4'],
-                ['huruf' => 'H', 'spelling' => 'Ha',   'audio' => Storage::disk('public')->url($basePath . 'H.mp3'),    'color' => '#FDCB6E'],
-                ['huruf' => 'I', 'spelling' => 'I',    'audio' => Storage::disk('public')->url($basePath . 'I.mp3'),    'color' => '#E17055'],
-                ['huruf' => 'J', 'spelling' => 'Je',   'audio' => Storage::disk('public')->url($basePath . 'J.mp3'),    'color' => '#00CEC9'],
-                ['huruf' => 'K', 'spelling' => 'Ka',   'audio' => Storage::disk('public')->url($basePath . 'K.mp3'),    'color' => '#6C5CE7'],
-                ['huruf' => 'L', 'spelling' => 'El',   'audio' => Storage::disk('public')->url($basePath . 'L.mp3'),    'color' => '#FF7675'],
-                ['huruf' => 'M', 'spelling' => 'Em',   'audio' => Storage::disk('public')->url($basePath . 'M.mp3'),    'color' => '#FAB1A0'],
-                ['huruf' => 'N', 'spelling' => 'En',   'audio' => Storage::disk('public')->url($basePath . 'N.mp3'),    'color' => '#81ECEC'],
-                ['huruf' => 'O', 'spelling' => 'O',    'audio' => Storage::disk('public')->url($basePath . 'O.mp3'),    'color' => '#FECA57'],
-                ['huruf' => 'P', 'spelling' => 'Pe',   'audio' => Storage::disk('public')->url($basePath . 'P.mp3'),    'color' => '#A29BFE'],
-                ['huruf' => 'Q', 'spelling' => 'Ki',   'audio' => Storage::disk('public')->url($basePath . 'Q.mp3'),    'color' => '#FD79A8'],
-                ['huruf' => 'R', 'spelling' => 'Er',   'audio' => Storage::disk('public')->url($basePath . 'R.mp3'),    'color' => '#74B9FF'],
-                ['huruf' => 'S', 'spelling' => 'Es',   'audio' => Storage::disk('public')->url($basePath . 'S.mp3'),    'color' => '#55EFC4'],
-                ['huruf' => 'T', 'spelling' => 'Te',   'audio' => Storage::disk('public')->url($basePath . 'T.mp3'),    'color' => '#FDCB6E'],
-                ['huruf' => 'U', 'spelling' => 'U',    'audio' => Storage::disk('public')->url($basePath . 'U.mp3'),    'color' => '#E17055'],
-                ['huruf' => 'V', 'spelling' => 'Ve',   'audio' => Storage::disk('public')->url($basePath . 'V.mp3'),    'color' => '#00CEC9'],
-                ['huruf' => 'W', 'spelling' => 'We',   'audio' => Storage::disk('public')->url($basePath . 'W.mp3'),    'color' => '#6C5CE7'],
-                ['huruf' => 'X', 'spelling' => 'Eks',  'audio' => Storage::disk('public')->url($basePath . 'X.mp3'),    'color' => '#FF7675'],
-                ['huruf' => 'Y', 'spelling' => 'Ye',   'audio' => Storage::disk('public')->url($basePath . 'Y.mp3'),    'color' => '#FAB1A0'],
-                ['huruf' => 'Z', 'spelling' => 'Zet',  'audio' => Storage::disk('public')->url($basePath . 'Z.mp3'),    'color' => '#81ECEC'],
+                ['huruf' => 'A', 'spelling' => 'A', 'audio' => asset('audio/Halaman 1/1.A.m4a'), 'color' => '#FF6B6B'],
+                ['huruf' => 'B', 'spelling' => 'Be', 'audio' => asset('audio/Halaman 1/2.B.m4a'), 'color' => '#4ECDC4'],
+                ['huruf' => 'C', 'spelling' => 'Ce', 'audio' => asset('audio/Halaman 1/3.C.m4a'), 'color' => '#FFB6C1'],
+                ['huruf' => 'D', 'spelling' => 'De', 'audio' => asset('audio/Halaman 1/4.D.m4a'), 'color' => '#A29BFE'],
+                ['huruf' => 'E', 'spelling' => 'E', 'audio' => asset('audio/Halaman 1/5.E.m4a'), 'color' => '#FD79A8'],
+                ['huruf' => 'F', 'spelling' => 'Ef', 'audio' => asset('audio/Halaman 1/6.F.m4a'), 'color' => '#74B9FF'],
+                ['huruf' => 'G', 'spelling' => 'Ge', 'audio' => asset('audio/Halaman 1/7.G.m4a'), 'color' => '#55EFC4'],
+                ['huruf' => 'H', 'spelling' => 'Ha', 'audio' => asset('audio/Halaman 1/8.H.m4a'), 'color' => '#FDCB6E'],
+                ['huruf' => 'I', 'spelling' => 'I', 'audio' => asset('audio/Halaman 1/9.I.m4a'), 'color' => '#E17055'],
+                ['huruf' => 'J', 'spelling' => 'Je', 'audio' => asset('audio/Halaman 1/10.J.m4a'), 'color' => '#00CEC9'],
+                ['huruf' => 'K', 'spelling' => 'Ka', 'audio' => asset('audio/Halaman 1/11.K.m4a'), 'color' => '#6C5CE7'],
+                ['huruf' => 'L', 'spelling' => 'El', 'audio' => asset('audio/Halaman 1/12.L.m4a'), 'color' => '#FF7675'],
+                ['huruf' => 'M', 'spelling' => 'Em', 'audio' => asset('audio/Halaman 1/13.M.m4a'), 'color' => '#FAB1A0'],
+                ['huruf' => 'N', 'spelling' => 'En', 'audio' => asset('audio/Halaman 1/14.N.m4a'), 'color' => '#81ECEC'],
+                ['huruf' => 'O', 'spelling' => 'O', 'audio' => asset('audio/Halaman 1/15.O.m4a'), 'color' => '#FECA57'],
+                ['huruf' => 'P', 'spelling' => 'Pe', 'audio' => asset('audio/Halaman 1/16.P.m4a'), 'color' => '#A29BFE'],
+                ['huruf' => 'Q', 'spelling' => 'Ki', 'audio' => asset('audio/Halaman 1/17.Q.m4a'), 'color' => '#FD79A8'],
+                ['huruf' => 'R', 'spelling' => 'Er', 'audio' => asset('audio/Halaman 1/18.R.m4a'), 'color' => '#74B9FF'],
+                ['huruf' => 'S', 'spelling' => 'Es', 'audio' => asset('audio/Halaman 1/19.S.m4a'), 'color' => '#55EFC4'],
+                ['huruf' => 'T', 'spelling' => 'Te', 'audio' => asset('audio/Halaman 1/20.T.m4a'), 'color' => '#FDCB6E'],
+                ['huruf' => 'U', 'spelling' => 'U', 'audio' => asset('audio/Halaman 1/21.U.m4a'), 'color' => '#E17055'],
+                ['huruf' => 'V', 'spelling' => 'Ve', 'audio' => asset('audio/Halaman 1/22.V.m4a'), 'color' => '#00CEC9'],
+                ['huruf' => 'W', 'spelling' => 'We', 'audio' => asset('audio/Halaman 1/23.W.m4a'), 'color' => '#6C5CE7'],
+                ['huruf' => 'X', 'spelling' => 'Eks', 'audio' => asset('audio/Halaman 1/24.X.m4a'), 'color' => '#FF7675'],
+                ['huruf' => 'Y', 'spelling' => 'Ye', 'audio' => asset('audio/Halaman 1/25.Y.m4a'), 'color' => '#FAB1A0'],
+                ['huruf' => 'Z', 'spelling' => 'Zet', 'audio' => asset('audio/Halaman 1/26.Z.m4a'), 'color' => '#81ECEC'],
             ],
-
             'total_item' => 26,
         ];
-
-        return $data;
     }
 }

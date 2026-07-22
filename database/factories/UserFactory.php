@@ -19,8 +19,13 @@ class UserFactory extends Factory
 
     /**
      * Define the model's default state.
-     *
      * @return array<string, mixed>
+     * @throws \Illuminate\Container\EntryNotFoundException
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \Illuminate\Contracts\Container\CircularDependencyException
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws \ReflectionException
      */
     public function definition(): array
     {
@@ -38,7 +43,7 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'email_verified_at' => null,
         ]);
     }

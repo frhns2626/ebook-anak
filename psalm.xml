@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<psalm
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    errorLevel="7"
+    resolveFromConfigFile="true"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    findUnusedBaselineEntry="true"
+    findUnusedCode="true"
+>
+    <projectFiles>
+        <directory name="app"/>
+        <directory name="database/factories"/>
+        <directory name="database/seeders"/>
+        <ignoreFiles>
+            <directory name="vendor"/>
+        </ignoreFiles>
+    </projectFiles>
+    <plugins>
+        <pluginClass class="Psalm\LaravelPlugin\Plugin"/>
+    </plugins>
+    <forbiddenFunctions>
+        <function name="eval"/>
+        <function name="exec"/>
+        <function name="shell_exec"/>
+        <function name="system"/>
+        <function name="passthru"/>
+        <function name="assert"/>
+    </forbiddenFunctions>
+</psalm>
