@@ -11,8 +11,7 @@ use Override;
 class Halaman4 extends Controller
 {
     /**
-     * @return \Illuminate\View\View
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws BindingResolutionException
      */
     #[Override]
     public function index(): View

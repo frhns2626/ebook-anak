@@ -11,6 +11,7 @@ use Illuminate\View\View;
 abstract class Controller
 {
     protected int $size = 8;
+
     /**
      * 8 arah pencarian kata dalam grid, format [dr, dc]
      * (delta baris, delta kolom) — dipakai untuk menempatkan
@@ -27,22 +28,14 @@ abstract class Controller
         [1, -1],  // diagonal kiri-bawah  (↙)
     ];
 
-    /**
-     * @return \Illuminate\View\View
-     */
     abstract public function index(): View;
 
     /**
-     * @param array $data
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
-     * @return \Illuminate\View\View
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws BindingResolutionException
      */
     public function abcdHuruf(array $data, int $halaman, string $judul, string $deskripsi): View
     {
-        return view('belajar.halaman-1.index', [
+        return view('games.abc-huruf', [
             'data' => $data,
             'halaman' => $halaman,
             'judul' => $judul,
@@ -50,14 +43,6 @@ abstract class Controller
         ]);
     }
 
-    /**
-     * @param array $data
-     * @param array $items
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
-     * @return \Illuminate\View\View
-     */
     public function tulisKata(array $data, array $items, int $halaman, string $judul, string $deskripsi): View
     {
         try {
@@ -69,18 +54,10 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (BindingResolutionException $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
-    /**
-     * @param array $data
-     * @param array $items
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
-     * @return \Illuminate\View\View
-     */
     public function melengkapiSukukata(array $data, array $items, int $halaman, string $judul, string $deskripsi): View
     {
         try {
@@ -92,18 +69,10 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (BindingResolutionException $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
-    /**
-     * @param array $data
-     * @param array $items
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
-     * @return \Illuminate\View\View
-     */
     public function sukuBerakhiran(array $data, array $items, int $halaman, string $judul, string $deskripsi): View
     {
         try {
@@ -115,22 +84,14 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (BindingResolutionException $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
-    /**
-     * @param array $data
-     * @param array $items
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
-     * @return \Illuminate\View\View
-     */
     public function hubungkanAudioDanGambar(
-        array  $data,
-        array  $items,
-        int    $halaman,
+        array $data,
+        array $items,
+        int $halaman,
         string $judul,
         string $deskripsi): View
     {
@@ -143,7 +104,7 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (BindingResolutionException $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
@@ -151,14 +112,14 @@ abstract class Controller
      * @return Factory|\Illuminate\Contracts\View\View|View|void
      */
     public function hubungkanSukukataTerakhir(
-        array  $data,
-        array  $items,
-        int    $halaman,
+        array $data,
+        array $items,
+        int $halaman,
         string $judul,
         string $deskripsi)
     {
         try {
-            return view('belajar.halaman-9.index', [
+            return view('games.hubungkan-sukukata-terakhir', [
                 'data' => $data,
                 'items' => $items,
                 'halaman' => $halaman,
@@ -166,29 +127,21 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (BindingResolutionException $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
     // ---------------------------
 
-    /**
-     * @param array $data
-     * @param array $items
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
-     * @return \Illuminate\View\View
-     */
     public function tebakAkhirHuruf(
-        array  $data,
-        array  $items,
-        int    $halaman,
+        array $data,
+        array $items,
+        int $halaman,
         string $judul,
         string $deskripsi): View
     {
         try {
-            return view('belajar.halaman-12.index', [
+            return view('games.tebak-akhir-huruf', [
                 'data' => $data,
                 'items' => $items,
                 'halaman' => $halaman,
@@ -196,7 +149,7 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (BindingResolutionException $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
@@ -204,13 +157,12 @@ abstract class Controller
      * @return Factory|\Illuminate\Contracts\View\View|View|void
      */
     public function belajarHurufVokalKonsonan(
-        array  $data,
-        array  $items,
-        int    $halaman,
+        array $data,
+        array $items,
+        int $halaman,
         string $judul,
         string $deskripsi
-    )
-    {
+    ) {
         try {
             return view('games.belajar-huruf-vokal-konsonan', [
                 'data' => $data,
@@ -220,24 +172,10 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (BindingResolutionException $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
-    /**
-     * @param $items
-     * @param $halaman
-     * @param $judul
-     * @param $deskripsi
-     * @return \Illuminate\View\View
-     */
-    /**
-     * @param $items
-     * @param $halaman
-     * @param $judul
-     * @param $deskripsi
-     * @return \Illuminate\View\View
-     */
     public function cariKataGame($items, $halaman, $judul, $deskripsi): View
     {
         try {
@@ -250,27 +188,23 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (BindingResolutionException $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
-    /**
-     * @param array $items
-     * @return array
-     */
     protected function generateGrid(array $items): array
     {
         $size = $this->size;
         $grid = array_fill(0, $size, array_fill(0, $size, null));
 
-        $words = array_map(fn($item) => strtoupper($item['name']), $items);
-        usort($words, fn($a, $b) => strlen($b) - strlen($a));
+        $words = array_map(fn ($item) => strtoupper($item['name']), $items);
+        usort($words, fn ($a, $b) => strlen($b) - strlen($a));
 
         foreach ($words as $word) {
             $placed = false;
             $attempts = 0;
 
-            while (!$placed && $attempts < 200) {
+            while (! $placed && $attempts < 200) {
                 $attempts++;
                 [$dr, $dc] = $this->directions[array_rand($this->directions)];
                 $len = strlen($word);
@@ -320,14 +254,6 @@ abstract class Controller
 
     // ---------------------------
 
-    /**
-     * @param array $data
-     * @param array $items
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
-     * @return \Illuminate\View\View
-     */
     public function aiueoPilih(array $data, array $items, int $halaman, string $judul, string $deskripsi): View
     {
         try {
@@ -339,22 +265,14 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (BindingResolutionException $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
-    /**
-     * @param array $data
-     * @param array $items
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
-     * @return \Illuminate\View\View
-     */
     public function cariHurufPertama(
-        array  $data,
-        array  $items,
-        int    $halaman,
+        array $data,
+        array $items,
+        int $halaman,
         string $judul,
         string $deskripsi): View
     {
@@ -367,24 +285,14 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (BindingResolutionException $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
-    /**
-     * @param array $data
-     * @param array $items
-     * @param int $halaman
-     * @param string $object
-     * @param string $iconText
-     * @param string $judul
-     * @param string $deskripsi
-     * @return \Illuminate\View\View
-     */
     public function deskripsiObject(
-        array  $data,
-        array  $items,
-        int    $halaman,
+        array $data,
+        array $items,
+        int $halaman,
         string $object,
         string $iconText,
         string $judul,
@@ -401,22 +309,14 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (BindingResolutionException $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
-    /**
-     * @param array $data
-     * @param array $items
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
-     * @return \Illuminate\View\View
-     */
     public function hubungkanGame(
-        array  $data,
-        array  $items,
-        int    $halaman,
+        array $data,
+        array $items,
+        int $halaman,
         string $judul,
         string $deskripsi): View
     {
@@ -429,22 +329,14 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (BindingResolutionException $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
-    /**
-     * @param array $data
-     * @param array $items
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
-     * @return \Illuminate\View\View
-     */
     public function hubungkanTulisGame(
-        array  $data,
-        array  $items,
-        int    $halaman,
+        array $data,
+        array $items,
+        int $halaman,
         string $judul,
         string $deskripsi): View
     {
@@ -457,7 +349,7 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (BindingResolutionException $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
@@ -475,7 +367,7 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (BindingResolutionException $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
@@ -483,9 +375,9 @@ abstract class Controller
      * @return Factory|\Illuminate\Contracts\View\View|View|void
      */
     public function susunKataKata(
-        array  $items,
-        array  $data,
-        int    $halaman,
+        array $items,
+        array $data,
+        int $halaman,
         string $judul,
         string $deskripsi)
     {
@@ -498,7 +390,7 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (BindingResolutionException $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
@@ -506,13 +398,12 @@ abstract class Controller
      * @return Factory|\Illuminate\Contracts\View\View|View|void
      */
     public function pengenalanAudio(
-        array  $data,
-        array  $items,
-        int    $halaman,
+        array $data,
+        array $items,
+        int $halaman,
         string $judul,
         string $deskripsi
-    )
-    {
+    ) {
         try {
             return view('games.pengenalan-nama', [
                 'data' => $data,
@@ -522,7 +413,7 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (BindingResolutionException $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
@@ -530,9 +421,9 @@ abstract class Controller
      * @throws BindingResolutionException
      */
     public function melengkapiHuruf(
-        array  $hurufs,
-        array  $hurufHilang,
-        int    $halaman,
+        array $hurufs,
+        array $hurufHilang,
+        int $halaman,
         string $judul,
         string $deskripsi): Factory|\Illuminate\Contracts\View\View|View
     {

@@ -41,7 +41,6 @@ class Halaman14 extends Controller
      *
      * @throws BindingResolutionException
      */
-
     public function getDataPublicHalaman14(): array
     {
         $items = [

@@ -1,51 +1,75 @@
-<x-layout-game>
-    <main class="relative z-10 p-6 max-w-3xl mx-auto">
-        <div class="bg-white rounded-3xl p-6 mb-6 shadow-xl text-center relative overflow-hidden">
-            <div class="absolute top-0 left-0 right-0 h-2"
-                 style="background: linear-gradient(90deg, #FF6B6B, #FF9F43, #FFE66D, #4ECDC4, #6C5CE7, #FF6B6B); background-size: 200% 100%; animation: rainbow 3s linear infinite;"></div>
-            <a href="{{ route('belajar.index') }}" class="absolute left-4 top-1/2 -translate-y-1/2 bg-red-100 text-red-500 px-4 py-2 rounded-full font-bold hover:bg-red-200 transition-all text-sm">←
-                Kembali</a>
-            <span class="text-[3rem] mb-2 block animate-bounce-subtle">🔍</span>
-            <h1 class="text-[1.8rem] md:text-[2.2rem] text-gray-800 font-black mb-1">{{ $judul }}</h1>
-            <p class="text-gray-500 text-[1rem]">{{ $deskripsi }}</p>
+<x-layout-game title="{{ $judul }}">
+    <main class="relative z-10 mx-auto max-w-3xl p-6">
+        <div class="relative mb-6 overflow-hidden rounded-3xl bg-white p-6 text-center shadow-xl">
+            <div
+                class="absolute top-0 right-0 left-0 h-2"
+                style="
+                    background: linear-gradient(90deg, #ff6b6b, #ff9f43, #ffe66d, #4ecdc4, #6c5ce7, #ff6b6b);
+                    background-size: 200% 100%;
+                    animation: rainbow 3s linear infinite;
+                "
+            ></div>
+            <a
+                href="{{ route('belajar.index') }}"
+                class="absolute top-1/2 left-4 -translate-y-1/2 rounded-full bg-red-100 px-4 py-2 text-sm font-bold text-red-500 transition-all hover:bg-red-200"
+            >← Kembali</a>
+            <span class="animate-bounce-subtle mb-2 block text-[3rem]">🔍</span>
+            <h1 class="mb-1 text-[1.8rem] font-black text-gray-800 md:text-[2.2rem]">{{ $judul }}</h1>
+            <p class="text-[1rem] text-gray-500">{{ $deskripsi }}</p>
         </div>
-        <div class="bg-white rounded-3xl p-4 md:p-6 shadow-xl mb-6">
-            <div id="grid" class="grid mx-auto select-none" style="grid-template-columns: repeat({{ $size }}, minmax(0, 1fr)); max-width: {{ $size * 48 }}px; gap: 4px;">
-                @foreach($grid as $r => $row)
-                    @foreach($row as $c => $letter)
+        <div class="mb-6 rounded-3xl bg-white p-4 shadow-xl md:p-6">
+            <div
+                id="grid"
+                class="mx-auto grid select-none"
+                style="grid-template-columns: repeat({{ $size }}, minmax(0, 1fr)); max-width: {{ $size * 48 }}px; gap: 4px;"
+            >
+                @foreach ($grid as $r => $row)
+                    @foreach ($row as $c => $letter)
                         <div
                             id="cell-{{ $r }}-{{ $c }}"
                             data-letter="{{ $letter }}"
                             onclick="handleCellClick({{ $r }}, {{ $c }})"
-                            class="wordcell aspect-square flex items-center justify-center rounded-lg bg-gray-100 text-gray-700 font-black text-sm md:text-lg cursor-pointer hover:bg-blue-100 transition-colors"
-                        >{{ $letter }}</div>
+                            class="wordcell flex aspect-square cursor-pointer items-center justify-center rounded-lg bg-gray-100 text-sm font-black text-gray-700 transition-colors hover:bg-blue-100 md:text-lg"
+                        >
+                            {{ $letter }}
+                        </div>
                     @endforeach
                 @endforeach
             </div>
         </div>
-        <div class="bg-white rounded-2xl p-4 shadow-lg mb-6">
-            <span class="text-gray-600 font-bold text-sm block mb-3">Cari Kata:</span>
-            <div class="flex flex-wrap gap-2 justify-around">
-                @foreach($items as $item)
-                    <span id="word-{{ strtoupper($item['name']) }}" class="px-4 py-2 rounded-full bg-gray-100 text-gray-700 font-bold text-sm transition-all">{{ strtoupper($item['name']) }}</span>
+        <div class="mb-6 rounded-2xl bg-white p-4 shadow-lg">
+            <span class="mb-3 block text-sm font-bold text-gray-600">Cari Kata:</span>
+            <div class="flex flex-wrap justify-around gap-2">
+                @foreach ($items as $item)
+                    <span
+                        id="word-{{ strtoupper($item['name']) }}"
+                        class="rounded-full bg-gray-100 px-4 py-2 text-sm font-bold text-gray-700 transition-all"
+                    >{{ strtoupper($item['name']) }}</span>
                 @endforeach
             </div>
         </div>
-        <div class="bg-white rounded-2xl p-4 shadow-lg mb-6">
-            <span class="text-gray-600 font-bold text-sm block mb-3">Ditemukan:</span>
-            <div id="foundIcons" class="flex flex-wrap gap-3 min-h-[3rem] justify-around ">
-                @foreach($items as $item)
-                    <span id="icon-{{ strtoupper($item['name']) }}" class="text-[2.5rem] opacity-20 grayscale transition-all duration-300">{{ $item['emoji'] }}</span>
+        <div class="mb-6 rounded-2xl bg-white p-4 shadow-lg">
+            <span class="mb-3 block text-sm font-bold text-gray-600">Ditemukan:</span>
+            <div id="foundIcons" class="flex min-h-[3rem] flex-wrap justify-around gap-3">
+                @foreach ($items as $item)
+                    <span
+                        id="icon-{{ strtoupper($item['name']) }}"
+                        class="text-[2.5rem] opacity-20 grayscale transition-all duration-300"
+                    >{{ $item['emoji'] }}</span>
                 @endforeach
             </div>
         </div>
-        <div class="bg-white rounded-2xl p-4 shadow-lg">
-            <div class="flex justify-between items-center mb-2">
-                <span class="text-gray-600 font-bold text-sm">Progress</span>
-                <span id="progressText" class="text-green-500 font-bold text-sm">0 / {{ count($items) }}</span>
+        <div class="rounded-2xl bg-white p-4 shadow-lg">
+            <div class="mb-2 flex items-center justify-between">
+                <span class="text-sm font-bold text-gray-600">Progress</span>
+                <span id="progressText" class="text-sm font-bold text-green-500">0 / {{ count($items) }}</span>
             </div>
-            <div class="bg-gray-200 rounded-full h-4 overflow-hidden">
-                <div id="progressBar" class="h-full bg-gradient-to-r from-green-400 to-emerald-500 rounded-full transition-all duration-500" style="width: 0%"></div>
+            <div class="h-4 overflow-hidden rounded-full bg-gray-200">
+                <div
+                    id="progressBar"
+                    class="h-full rounded-full bg-gradient-to-r from-green-400 to-emerald-500 transition-all duration-500"
+                    style="width: 0%"
+                ></div>
             </div>
         </div>
     </main>
@@ -53,8 +77,8 @@
         console.log('%c[WordSearch] script dimuat', 'color: #10B981; font-weight: bold;');
 
         const items = @json($items);
-        const words = items.map(item => item.name.toUpperCase());
-        const audioMap = Object.fromEntries(items.map(item => [item.name.toUpperCase(), item.audio]));
+        const words = items.map((item) => item.name.toUpperCase());
+        const audioMap = Object.fromEntries(items.map((item) => [item.name.toUpperCase(), item.audio]));
         const foundWords = new Set();
         let startCell = null;
 
@@ -75,7 +99,7 @@
                 }
 
                 if (!startCell) {
-                    startCell = {r, c};
+                    startCell = { r, c };
                     const el = cellEl(r, c);
                     if (!el) {
                         console.error(`[WordSearch] ERROR: elemen cell-${r}-${c} tidak ditemukan`);
@@ -87,7 +111,7 @@
                     return;
                 }
 
-                const endCell = {r, c};
+                const endCell = { r, c };
                 const path = getPath(startCell, endCell);
                 console.log('[WordSearch] path:', path);
 
@@ -109,8 +133,8 @@
         }
 
         function getPath(start, end) {
-            const isStraight = (end.r === start.r) || (end.c === start.c) ||
-                (Math.abs(end.r - start.r) === Math.abs(end.c - start.c));
+            const isStraight =
+                end.r === start.r || end.c === start.c || Math.abs(end.r - start.r) === Math.abs(end.c - start.c);
             if (!isStraight) return null;
 
             const dr = Math.sign(end.r - start.r);
@@ -119,7 +143,7 @@
 
             const cells = [];
             for (let i = 0; i < len; i++) {
-                cells.push({r: start.r + dr * i, c: start.c + dc * i});
+                cells.push({ r: start.r + dr * i, c: start.c + dc * i });
             }
             return cells;
         }
@@ -128,12 +152,12 @@
             console.log('%c[WordSearch] SALAH — flash merah', 'color: #EF4444; font-weight: bold;');
             showFlashMessage('error', 'salah', 2); // ← tambahkan ini
 
-            path.forEach(({r, c}) => {
+            path.forEach(({ r, c }) => {
                 cellEl(r, c).classList.add('bg-red-400', 'text-white');
             });
 
             setTimeout(() => {
-                path.forEach(({r, c}) => {
+                path.forEach(({ r, c }) => {
                     cellEl(r, c).classList.remove('bg-red-400', 'text-white');
                 });
                 console.log('[WordSearch] kotak kembali normal');
@@ -142,19 +166,21 @@
 
         function checkWord(path) {
             try {
-                const letters = path.map(({r, c}) => {
-                    const el = cellEl(r, c);
-                    if (!el) {
-                        console.error(`[WordSearch] ERROR: cell-${r}-${c} tidak ada saat checkWord`);
-                        return '';
-                    }
-                    return el.dataset.letter;
-                }).join('');
+                const letters = path
+                    .map(({ r, c }) => {
+                        const el = cellEl(r, c);
+                        if (!el) {
+                            console.error(`[WordSearch] ERROR: cell-${r}-${c} tidak ada saat checkWord`);
+                            return '';
+                        }
+                        return el.dataset.letter;
+                    })
+                    .join('');
 
                 const reversed = letters.split('').reverse().join('');
                 console.log(`[WordSearch] huruf terbentuk: "${letters}" (reversed: "${reversed}")`);
 
-                const match = words.find(w => (w === letters || w === reversed) && !foundWords.has(w));
+                const match = words.find((w) => (w === letters || w === reversed) && !foundWords.has(w));
 
                 if (!match) {
                     console.log('[WordSearch] tidak cocok — trigger flash merah');
@@ -166,7 +192,7 @@
                 showFlashMessage('success', 'Cerdas', 2); // ← tambahkan ini
 
                 foundWords.add(match);
-                path.forEach(({r, c}) => {
+                path.forEach(({ r, c }) => {
                     cellEl(r, c).classList.add('bg-green-300', 'text-white');
                 });
 
@@ -185,9 +211,10 @@
                 const audioSrc = audioMap[match];
                 if (audioSrc) {
                     console.log(`[WordSearch] memutar audio: ${audioSrc}`);
-                    new Audio(audioSrc).play()
+                    new Audio(audioSrc)
+                        .play()
                         .then(() => console.log('[WordSearch] audio SUKSES diputar'))
-                        .catch(err => console.error('[WordSearch] audio ERROR:', err));
+                        .catch((err) => console.error('[WordSearch] audio ERROR:', err));
                 }
 
                 document.getElementById('progressText').textContent = foundWords.size + ' / ' + words.length;

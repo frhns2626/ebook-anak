@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Http\Controllers;
@@ -26,8 +27,6 @@ class Halaman30 extends Controller
     }
 
     /**
-     * @return array
-     *
      * @throws BindingResolutionException
      */
     public function getDataPublicHalaman30(): array

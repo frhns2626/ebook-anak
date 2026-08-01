@@ -1,4 +1,4 @@
-<x-layout-game title="{{ $judul }}">
+<x-layout-game>
     <main class="relative z-10 mx-auto max-w-4xl p-6">
         <div class="relative mb-6 overflow-hidden rounded-3xl bg-white p-6 text-center shadow-xl">
             <div
@@ -13,7 +13,7 @@
                 href="{{ route('belajar.index') }}"
                 class="absolute top-1/2 left-4 -translate-y-1/2 rounded-full bg-red-100 px-4 py-2 text-sm font-bold text-red-500 transition-all hover:bg-red-200"
             >← Kembali</a>
-            <span class="animate-bounce-subtle mb-2 block text-[3rem]">🐊</span>
+            <span class="animate-bounce-subtle mb-2 block text-[3rem]">🏠</span>
             <h1 class="mb-1 text-[1.8rem] font-black text-gray-800 md:text-[2.2rem]">{{ $judul }}</h1>
             <p class="text-[1rem] text-gray-500">{{ $deskripsi }}</p>
         </div>
@@ -21,15 +21,23 @@
             @foreach ($items as $index => $item)
                 <div
                     id="card-{{ $item['id'] }}"
-                    class="item-card group w-40 shrink-0 cursor-pointer snap-start rounded-3xl border-4 border-transparent bg-white p-6 text-center shadow-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl md:w-48"
+                    class="item-card shrink-0 w-40 md:w-48 snap-start bg-white rounded-3xl p-6 shadow-xl text-center cursor-pointer hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border-4 border-transparent {{ $item['color'] }}"
                     data-index="{{ $index }}"
                     onclick="selectItem('{{ $item['id'] }}')"
                 >
                     <div
-                        class="animate-float-up mb-3 text-[4rem] md:text-[5rem]"
+                        class="w-16 h-16 md:w-20 md:h-20 rounded-2xl {{ $item['bg'] }} flex items-center justify-center mx-auto mb-3 animate-float-up"
                         style="animation-delay: {{ ($index % 5) * 0.3 }}s"
                     >
-                        {{ $item['emoji'] }}
+                        @if (! empty($item['emoji']))
+                            <span class="text-[2.5rem] md:text-[3rem]"> {{ $item['emoji'] }} </span>
+                        @elseif (! empty($item['icon']))
+                            <img
+                                src="{{ $item['icon'] }}"
+                                alt="{{ $item['name'] }}"
+                                class="h-12 w-12 object-contain md:h-14 md:w-14"
+                            />
+                        @endif
                     </div>
                     <h3 class="mb-1 text-[1.2rem] font-black text-gray-800 md:text-[1.4rem]">{{ $item['name'] }}</h3>
                     <p class="text-xs text-gray-500">{{ $item['name'] }}</p>
@@ -37,18 +45,13 @@
             @endforeach
         </div>
         <div id="itemDisplay" class="mb-6 hidden rounded-3xl bg-white p-8 text-center shadow-2xl">
-            <div class="animate-pop mb-4 text-[8rem] md:text-[10rem]" id="itemEmoji">⚽</div>
-            <div class="mb-2 flex flex-wrap justify-center gap-3" id="syllableChips"></div>
-            <p class="mb-6 text-xs text-gray-400">Baca suku katanya dengan nyaring, lalu ketik kata utuhnya di bawah</p>
-            <input
-                type="text"
-                id="writeInput"
-                autocomplete="off"
-                class="mx-auto mb-2 w-full max-w-xs border-b-4 border-gray-300 pb-1 text-center text-[1.8rem] font-black text-gray-800 outline-none focus:border-purple-400"
-                placeholder="Tulis kembali..."
-            />
-            <p id="writeFeedback" class="mb-4 h-6 text-sm font-bold"></p>
-            <p class="mb-6 text-[1.1rem] text-gray-500" id="itemHint">Bola adalah alat main bulat!</p>
+            <div class="animate-pop mb-4 text-[8rem] md:text-[10rem]" id="itemEmoji">🪑</div>
+            <h2 class="mb-2 text-[2.5rem] font-black tracking-widest text-gray-800 md:text-[3rem]" id="itemName">
+                Meja
+            </h2>
+            <div id="syllableOptions" class="mb-4 flex flex-wrap justify-center gap-3"></div>
+            <p id="checkFeedback" class="mb-2 h-6 text-sm font-bold"></p>
+            <p class="mb-6 text-[1.2rem] text-gray-500" id="itemHint">Meja adalah furniture untuk meletakkan barang!</p>
             <div class="flex flex-wrap justify-center gap-4">
                 <button
                     onclick="playAudio()"
@@ -57,11 +60,11 @@
                     🔊 Dengarkan
                 </button>
                 <button
-                    onclick="checkWrite()"
+                    onclick="checkAnswer()"
                     id="checkBtn"
                     class="rounded-full bg-gradient-to-r from-purple-400 to-purple-500 px-6 py-3 font-bold text-white shadow-lg transition-all hover:scale-105"
                 >
-                    ✅ Periksa
+                    ✅ Cek
                 </button>
             </div>
         </div>
@@ -97,7 +100,18 @@
         const items = @json($items);
         let currentIndex = 0;
         let viewed = new Set();
+        let blankIndex = 0;
         let solved = false;
+        let selectedChoice = null;
+        let selectedBtn = null;
+        let cachedVoices = [];
+
+        function loadVoices() {
+            cachedVoices = speechSynthesis.getVoices();
+        }
+
+        loadVoices();
+        speechSynthesis.onvoiceschanged = loadVoices;
 
         function updateLocks() {
             items.forEach((item, i) => {
@@ -120,42 +134,61 @@
         function showItem() {
             const item = items[currentIndex];
             solved = false;
+            selectedChoice = null;
+            selectedBtn = null;
+            blankIndex = item.syllables.length - 1;
 
             document.getElementById('itemDisplay').classList.remove('hidden');
             document.getElementById('itemEmoji').textContent = item.emoji;
             document.getElementById('itemHint').textContent = item.hint;
-            document.getElementById('writeInput').value = '';
-            document.getElementById('writeInput').disabled = false;
+            document.getElementById('checkFeedback').textContent = '';
             document.getElementById('checkBtn').disabled = false;
-            document.getElementById('writeFeedback').textContent = '';
-
-            renderSyllableChips(item);
+            renderSyllablePuzzle(item);
         }
 
-        function renderSyllableChips(item) {
-            const container = document.getElementById('syllableChips');
+        function renderSyllablePuzzle(item) {
+            const display = item.syllables.map((s, i) => (i === blankIndex ? '...' : s)).join(' – ');
+            document.getElementById('itemName').textContent = display;
+
+            const distractorPool = items
+                .flatMap((i) => i.syllables)
+                .filter((s) => s.toLowerCase() !== item.syllables[blankIndex].toLowerCase());
+            const distractors = [...new Set(distractorPool)].sort(() => Math.random() - 0.5).slice(0, 2);
+
+            const options = [item.syllables[blankIndex], ...distractors];
+
+            const container = document.getElementById('syllableOptions');
             container.innerHTML = '';
-            item.syllables.forEach((s) => {
-                const chip = document.createElement('span');
-                chip.textContent = s;
-                chip.className =
-                    'bg-gradient-to-r from-orange-400 to-orange-500 text-white px-4 py-2 rounded-full font-black text-xl shadow-md';
-                container.appendChild(chip);
+            options.forEach((opt) => {
+                const btn = document.createElement('button');
+                btn.textContent = opt;
+                btn.className =
+                    'bg-gradient-to-r from-purple-400 to-purple-500 text-white px-5 py-2 rounded-full font-bold shadow-lg hover:scale-105 transition-all';
+                btn.onclick = () => selectChoice(opt, btn);
+                container.appendChild(btn);
             });
         }
 
-        function checkWrite() {
+        function selectChoice(opt, btn) {
             if (solved) return;
-            const item = items[currentIndex];
-            const input = document.getElementById('writeInput');
-            const feedback = document.getElementById('writeFeedback');
+            if (selectedBtn) selectedBtn.classList.remove('ring-4', 'ring-blue-300');
+            selectedChoice = opt;
+            selectedBtn = btn;
+            btn.classList.add('ring-4', 'ring-blue-300');
+        }
 
-            if (input.value.trim().toLowerCase() === item.name.toLowerCase()) {
+        function checkAnswer() {
+            if (solved || !selectedChoice) return;
+            const item = items[currentIndex];
+            const feedback = document.getElementById('checkFeedback');
+
+            if (selectedChoice.toLowerCase() === item.syllables[blankIndex].toLowerCase()) {
                 solved = true;
-                input.disabled = true;
+                document.getElementById('itemName').textContent = item.name;
                 document.getElementById('checkBtn').disabled = true;
                 feedback.textContent = '🎉 Benar sekali!';
-                feedback.classList.add('text-green-500');
+                feedback.className = 'h-6 mb-2 font-bold text-sm text-green-500';
+                selectedBtn.classList.add('ring-4', 'ring-green-400');
                 viewed.add(item.id);
                 updateProgress();
                 updateLocks();
@@ -163,9 +196,10 @@
                 setTimeout(nextItem, 2000);
             } else {
                 feedback.textContent = 'Coba lagi ya!';
-                feedback.classList.add('text-red-400');
-                input.classList.add('animate-shake');
-                setTimeout(() => input.classList.remove('animate-shake'), 400);
+                feedback.className = 'h-6 mb-2 font-bold text-sm text-red-400';
+                selectedBtn.classList.add('animate-shake');
+                document.getElementById('checkBtn').disabled = true;
+                setTimeout(() => showItem(), 2000);
             }
         }
 
@@ -184,10 +218,6 @@
             currentIndex = (currentIndex + 1) % items.length;
             showItem();
         }
-
-        document.getElementById('writeInput').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') checkWrite();
-        });
 
         updateLocks();
         selectItem(items[0].id);

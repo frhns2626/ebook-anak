@@ -71,6 +71,7 @@ class Book extends Model
         if ($this->cover_image) {
             return asset("storage/covers/{$this->cover_image}");
         }
+
         return null;
     }
 
@@ -82,6 +83,7 @@ class Book extends Model
         if ($this->cover_image) {
             return asset("storage/covers/thumbnails/{$this->cover_image}");
         }
+
         return null;
     }
 

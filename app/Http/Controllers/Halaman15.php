@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Http\Controllers;
@@ -28,8 +29,6 @@ class Halaman15 extends Controller
     }
 
     /**
-     * @return array
-     *
      * @throws BindingResolutionException
      */
     public function getDataPublicHalaman15(): array
@@ -49,7 +48,6 @@ class Halaman15 extends Controller
          * - Ketuk gambar yang benar.
          * - Jika benar, kamu akan mendapat skor.
          */
-
         $items = [
             ['id' => 'kacamata',
                 'name' => 'Kacamata',

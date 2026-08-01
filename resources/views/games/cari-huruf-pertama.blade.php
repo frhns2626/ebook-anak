@@ -1,41 +1,53 @@
-<x-layout-game>
-    <main class="relative z-10 p-6 max-w-4xl mx-auto">
-        <div class="bg-white rounded-3xl p-6 mb-6 shadow-xl text-center relative overflow-hidden">
-            <div class="absolute top-0 left-0 right-0 h-2"
-                 style="background: linear-gradient(90deg, #FF6B6B, #FF9F43, #FFE66D, #4ECDC4, #6C5CE7, #FF6B6B); background-size: 200% 100%; animation: rainbow 3s linear infinite;"></div>
-            <a href="{{ route('belajar.index') }}" class="absolute left-4 top-1/2 -translate-y-1/2 bg-red-100 text-red-500 px-4 py-2 rounded-full font-bold hover:bg-red-200 transition-all text-sm">←
-                Kembali</a>
-            <span class="text-[3rem] mb-2 block animate-bounce-subtle">🐰</span>
-            <h1 class="text-[1.8rem] md:text-[2.2rem] text-gray-800 font-black mb-1">Tebak Huruf Depan 🔤</h1>
-            <p class="text-gray-500 text-[1rem]">Lihat gambarnya, tebak huruf depannya!</p>
+<x-layout-game title="{{ $judul }}">
+    <main class="relative z-10 mx-auto max-w-4xl p-6">
+        <div class="relative mb-6 overflow-hidden rounded-3xl bg-white p-6 text-center shadow-xl">
+            <div
+                class="absolute top-0 right-0 left-0 h-2"
+                style="
+                    background: linear-gradient(90deg, #ff6b6b, #ff9f43, #ffe66d, #4ecdc4, #6c5ce7, #ff6b6b);
+                    background-size: 200% 100%;
+                    animation: rainbow 3s linear infinite;
+                "
+            ></div>
+            <a
+                href="{{ route('belajar.index') }}"
+                class="absolute top-1/2 left-4 -translate-y-1/2 rounded-full bg-red-100 px-4 py-2 text-sm font-bold text-red-500 transition-all hover:bg-red-200"
+            >← Kembali</a>
+            <span class="animate-bounce-subtle mb-2 block text-[3rem]">🐰</span>
+            <h1 class="mb-1 text-[1.8rem] font-black text-gray-800 md:text-[2.2rem]">Tebak Huruf Depan 🔤</h1>
+            <p class="text-[1rem] text-gray-500">Lihat gambarnya, tebak huruf depannya!</p>
         </div>
         {{-- GAME CARD --}}
-        <div class="bg-white rounded-3xl p-8 shadow-2xl text-center mb-6">
-            <div class="text-[8rem] md:text-[10rem] mb-2 animate-pop" id="gameEmoji">🐰</div>
-            <div class="text-[2.2rem] font-black text-gray-400 tracking-widest mb-6" id="gameBlank">_ _ _ _ _ _</div>
-            <div id="letterOptions" class="flex justify-center gap-3 flex-wrap"></div>
+        <div class="mb-6 rounded-3xl bg-white p-8 text-center shadow-2xl">
+            <div class="animate-pop mb-2 text-[8rem] md:text-[10rem]" id="gameEmoji">🐰</div>
+            <div class="mb-6 text-[2.2rem] font-black tracking-widest text-gray-400" id="gameBlank">_ _ _ _ _ _</div>
+            <div id="letterOptions" class="flex flex-wrap justify-center gap-3"></div>
         </div>
         {{-- RESULTS TABLE --}}
-        <div class="bg-white rounded-2xl p-4 shadow-lg mb-6">
-            <h2 class="font-black text-gray-700 mb-3">Hasil Pencarian Huruf Depan</h2>
+        <div class="mb-6 rounded-2xl bg-white p-4 shadow-lg">
+            <h2 class="mb-3 font-black text-gray-700">Hasil Pencarian Huruf Depan</h2>
             <table class="w-full text-left text-sm">
                 <thead>
-                <tr class="text-gray-500 border-b">
-                    <th class="py-2">Nama Objek</th>
-                    <th class="py-2">Huruf Depan</th>
-                    <th class="py-2">Status</th>
-                </tr>
+                    <tr class="border-b text-gray-500">
+                        <th class="py-2">Nama Objek</th>
+                        <th class="py-2">Huruf Depan</th>
+                        <th class="py-2">Status</th>
+                    </tr>
                 </thead>
                 <tbody id="resultsBody"></tbody>
             </table>
         </div>
-        <div class="bg-white rounded-2xl p-4 shadow-lg">
-            <div class="flex justify-between items-center mb-2">
-                <span class="text-gray-600 font-bold text-sm">Progress</span>
-                <span id="progressText" class="text-green-500 font-bold text-sm">0 / {{ count($items) }}</span>
+        <div class="rounded-2xl bg-white p-4 shadow-lg">
+            <div class="mb-2 flex items-center justify-between">
+                <span class="text-sm font-bold text-gray-600">Progress</span>
+                <span id="progressText" class="text-sm font-bold text-green-500">0 / {{ count($items) }}</span>
             </div>
-            <div class="bg-gray-200 rounded-full h-4 overflow-hidden">
-                <div id="progressBar" class="h-full bg-gradient-to-r from-green-400 to-emerald-500 rounded-full transition-all duration-500" style="width: 0%;"></div>
+            <div class="h-4 overflow-hidden rounded-full bg-gray-200">
+                <div
+                    id="progressBar"
+                    class="h-full rounded-full bg-gradient-to-r from-green-400 to-emerald-500 transition-all duration-500"
+                    style="width: 0%"
+                ></div>
             </div>
         </div>
     </main>
@@ -52,7 +64,7 @@
         }
 
         const gameOrder = shuffle(items);
-        const allFirstLetters = [...new Set(items.map(i => i.name.charAt(0).toUpperCase()))];
+        const allFirstLetters = [...new Set(items.map((i) => i.name.charAt(0).toUpperCase()))];
         let currentIndex = 0;
         const results = {}; // id -> { name, letter, correct }
 
@@ -73,10 +85,11 @@
 
             const wrap = document.getElementById('letterOptions');
             wrap.innerHTML = '';
-            options.forEach(letter => {
+            options.forEach((letter) => {
                 const btn = document.createElement('button');
                 btn.textContent = letter;
-                btn.className = 'letter-btn bg-blue-50 text-blue-600 border-2 border-blue-200 w-16 h-16 rounded-2xl text-2xl font-black shadow hover:scale-105 transition-all';
+                btn.className =
+                    'letter-btn bg-blue-50 text-blue-600 border-2 border-blue-200 w-16 h-16 rounded-2xl text-2xl font-black shadow hover:scale-105 transition-all';
                 btn.onclick = () => checkAnswer(letter, correctLetter, item, btn);
                 wrap.appendChild(btn);
             });
@@ -89,26 +102,30 @@
                 btn.classList.add('animate-shake');
             }
 
-            document.querySelectorAll('#letterOptions button').forEach(b => b.disabled = true);
+            document.querySelectorAll('#letterOptions button').forEach((b) => (b.disabled = true));
 
-            results[item.id] = {name: item.name, letter: correctLetter, correct: isCorrect};
+            results[item.id] = { name: item.name, letter: correctLetter, correct: isCorrect };
             renderResultsTable();
             updateProgress();
 
-            setTimeout(() => {
-                currentIndex++;
-                if (currentIndex < gameOrder.length) {
-                    renderItem();
-                } else {
-                    document.getElementById('letterOptions').innerHTML = '<p class="text-green-500 font-black text-lg">🎉 Selesai! Semua tertebak.</p>';
-                }
-            }, isCorrect ? 700 : 1000);
+            setTimeout(
+                () => {
+                    currentIndex++;
+                    if (currentIndex < gameOrder.length) {
+                        renderItem();
+                    } else {
+                        document.getElementById('letterOptions').innerHTML =
+                            '<p class="text-green-500 font-black text-lg">🎉 Selesai! Semua tertebak.</p>';
+                    }
+                },
+                isCorrect ? 700 : 1000,
+            );
         }
 
         function renderResultsTable() {
             const body = document.getElementById('resultsBody');
             body.innerHTML = '';
-            gameOrder.forEach(item => {
+            gameOrder.forEach((item) => {
                 const r = results[item.id];
                 const tr = document.createElement('tr');
                 tr.className = 'border-b last:border-0 result-row' + (r?.correct ? ' correct' : '');

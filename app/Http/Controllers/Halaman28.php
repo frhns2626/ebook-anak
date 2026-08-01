@@ -11,11 +11,10 @@ use Override;
 class Halaman28 extends Controller
 {
     /**
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws BindingResolutionException
      */
     /**
-     * @return \Illuminate\View\View
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws BindingResolutionException
      */
     #[Override]
     public function index(): View
@@ -72,7 +71,7 @@ class Halaman28 extends Controller
 
         return [
             'items' => $groups,
-            'total_item' => array_sum(array_map(fn($g) => count($g['items']), $groups)),
+            'total_item' => array_sum(array_map(fn ($g) => count($g['items']), $groups)),
         ];
     }
 }
