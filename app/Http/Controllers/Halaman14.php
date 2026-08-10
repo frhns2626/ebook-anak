@@ -16,11 +16,9 @@ class Halaman14 extends Controller
     #[Override]
     public function index(): View
     {
-        $data = $this->getDataPublicHalaman14();
 
         return $this->deskripsiObject(
-            data: $data,
-            items: $data['items'],
+            data: $this->getDataPublicHalaman14(),
             halaman: 14,
             object: 'Ball',
             iconText: '⚽',
@@ -29,50 +27,44 @@ class Halaman14 extends Controller
         );
     }
 
+
     /**
-     * @return array{
-     *     items: list<array{
-     *         id: int,
-     *         text: string,
-     *         audio: string
-     *     }>,
-     *     total_item: positive-int
-     * }
-     *
-     * @throws BindingResolutionException
+     * @return array
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function getDataPublicHalaman14(): array
     {
         $items = [
             [
-                'id' => 1,
-                'text' => 'Ball',
-                'audio' => asset('audio/Halaman 14/bola.m4a'),
-            ],
-            [
-                'id' => 2,
-                'text' => 'A small ball slides across the table.',
-                'audio' => asset('audio/Halaman 14/definisi bola.m4a'),
-            ],
-            [
-                'id' => 3,
-                'text' => 'The soccer ball is guarded by the goalkeeper in the goal.',
-                'audio' => asset('audio/Halaman 14/definisi bola.m4a'),
-            ],
-            [
-                'id' => 4,
-                'text' => 'The basketball is thrown into the high hoop.',
-                'audio' => asset('audio/Halaman 14/definisi bola.m4a'),
-            ],
-            [
-                'id' => 5,
-                'text' => 'Little brother likes playing with a plastic ball.',
-                'audio' => asset('audio/Halaman 14/definisi bola.m4a'),
-            ],
-            [
-                'id' => 6,
-                'text' => 'The tennis ball is hit with the racket.',
-                'audio' => asset('audio/Halaman 14/definisi bola.m4a'),
+                'id' => 'Ball',
+                'emoji' => asset('gambar/halaman_13-14/bola.webp'),
+                'audio' => asset('audio/en/Halaman 14/bola.m4a'),
+                'texts' => [
+                    [
+                        'text' => 'A small ball slides across the table.',
+                        'audio' => asset('audio/id/Halaman 14/text1.wav'),
+                    ],
+                    [
+                        'text' => 'The soccer ball is guarded by the goalkeeper in the goal.',
+                        'audio' => asset('audio/id/Halaman 14/text2.wav'),
+
+                    ],
+                    [
+                        'text' => 'The basketball is thrown into the high hoop.',
+                        'audio' => asset('audio/id/Halaman 14/text3.wav'),
+
+                    ],
+                    [
+                        'text' => 'Little brother likes playing with a plastic ball.',
+                        'audio' => asset('audio/id/Halaman 14/text4.wav'),
+
+                    ],
+                    [
+                        'text' => 'The tennis ball is hit with the racket.',
+                        'audio' => asset('audio/id/Halaman 14/text5.wav'),
+
+                    ],
+                ],
             ],
         ];
 

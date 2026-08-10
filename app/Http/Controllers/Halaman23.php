@@ -16,11 +16,9 @@ class Halaman23 extends Controller
     #[Override]
     public function index(): View
     {
-        $data = $this->getDataPublicHalaman23();
 
         return $this->deskripsiObject(
-            data: $data,
-            items: $data['items'],
+            data: $this->getDataPublicHalaman23(),
             halaman: 23,
             object: 'Wortel',
             iconText: '🥕',
@@ -35,40 +33,20 @@ class Halaman23 extends Controller
      * @throws BindingResolutionException
      */
     public function getDataPublicHalaman23(): array
-    {
-        $items = [
-            [
-                'id' => 1,
-                'text' => 'Wortel',
-                'audio' => asset('audio/Halaman 23/Halaman 23.m4a'),
+    {$items = [
+        [
+            'id' => 'wortel',
+            'emoji' => asset('gambar/halaman_23-24/wortel.webp'),
+            'audio' => asset('audio/id/Halaman 23/pembukaan.wav'),
+            'texts' => [
+                ['text' => 'Wortel berwarna oranye.', 'audio' => asset('audio/id/Halaman 23/text1.wav')],
+                ['text' => 'Paman menanam wortel di kebun.', 'audio' => asset('audio/id/Halaman 23/text2.wav')],
+                ['text' => 'Mama membuat jus wortel di dapur.', 'audio' => asset('audio/id/Halaman 23/text3.wav')],
+                ['text' => 'Wortel mengandung vitamin A.', 'audio' => asset('audio/id/Halaman 23/text4.wav')],
+                ['text' => 'Wortel membantu mata kita tetap sehat.', 'audio' => asset('audio/id/Halaman 23/text5.wav')],
             ],
-            [
-                'id' => 2,
-                'text' => 'Wortel berwarna oranye.',
-                'audio' => asset('audio/Halaman 23/Halaman 23.m4a'),
-            ],
-            [
-                'id' => 3,
-                'text' => 'Paman menanam wortel di kebun.',
-                'audio' => asset('audio/Halaman 23/Halaman 23.m4a'),
-            ],
-            [
-                'id' => 4,
-                'text' => 'Mama membuat jus wortel di dapur.',
-                'audio' => asset('audio/Halaman 23/Halaman 23.m4a'),
-            ],
-            [
-                'id' => 5,
-                'text' => 'Wortel mengandung vitamin A.',
-                'audio' => asset('audio/Halaman 23/Halaman 23.m4a'),
-            ],
-            [
-                'id' => 6,
-                'text' => 'Wortel membantu mata kita tetap sehat.',
-                'audio' => asset('audio/Halaman 23/Halaman 23.m4a'),
-            ],
-        ];
-
+        ],
+    ];
         return [
             'items' => $items,
             'total_item' => count($items),

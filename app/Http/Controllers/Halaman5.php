@@ -4,27 +4,32 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\View\View;
 use Override;
 
 class Halaman5 extends Controller
 {
+
+
     /**
-     * @throws BindingResolutionException
+     * @return \Illuminate\View\View
+     * @throws Exception
      */
     #[Override]
     public function index(): View
     {
-        $data = $this->getDataPublicHalaman5();
-
-        return $this->pengenalanAudio(
-            data: $data,
-            items: $data['items'],
-            halaman: 5,
-            judul: 'Halaman 5 - Mengenal Dunia Hewan 🦁',
-            deskripsi: 'Mengenal macam-macam teman hewan yang lucu!',
-        );
+        try {
+            return $this->pengenalanAudio(
+                data: $this->getDataPublicHalaman5(),
+                halaman: 5,
+                judul: 'Halaman 5 - Mengenal Dunia Hewan 🦁',
+                deskripsi: 'Mengenal macam-macam teman hewan yang lucu!',
+            );
+        } catch (Exception $e) {
+            abort(404, $e->getMessage());
+        }
     }
 
     /**
@@ -32,20 +37,31 @@ class Halaman5 extends Controller
      */
     public function getDataPublicHalaman5(): array
     {
-        $items = [
-            ['id' => 'singa', 'name' => 'Singa', 'emoji' => '🦁', 'hint' => 'Singa adalah raja hutan yang gagah dan perkasa!', 'color' => 'hover:border-amber-200', 'bg' => 'bg-amber-100 text-amber-600', 'category' => 'Hewan', 'audio' => asset('audio/Halaman 5/1. singa_.m4a')],
-            ['id' => 'tomat', 'name' => 'Tomat', 'emoji' => '🍅', 'hint' => 'Tomat adalah buah merah yang segar dan sehat!', 'color' => 'hover:border-red-200', 'bg' => 'bg-red-100 text-red-600', 'category' => 'Buah', 'audio' => asset('audio/Halaman 5/2. tomat.m4a')],
-            ['id' => 'ubi', 'name' => 'Ubi', 'emoji' => '🍠', 'hint' => 'Ubi adalah makanan tradisional yang manis dan enak!', 'color' => 'hover:border-purple-200', 'bg' => 'bg-purple-100 text-purple-600', 'category' => 'Makanan', 'audio' => asset('audio/Halaman 5/3. ubi.m4a')],
-            ['id' => 'vespa', 'name' => 'Vespa', 'emoji' => '🛵', 'hint' => 'Vespa adalah sepeda motor antik yang keren!', 'color' => 'hover:border-orange-200', 'bg' => 'bg-orange-100 text-orange-600', 'category' => 'Benda', 'audio' => asset('audio/Halaman 5/4. vespa.m4a')],
-            ['id' => 'wortel', 'name' => 'Wortel', 'emoji' => '🥕', 'hint' => 'Wortel adalah sayur oranye yang sehat untuk mata!', 'color' => 'hover:border-yellow-200', 'bg' => 'bg-yellow-100 text-yellow-600', 'category' => 'Sayur', 'audio' => asset('audio/Halaman 5/5. wortel_.m4a')],
-            ['id' => 'xilofon', 'name' => 'Xilofon', 'emoji' => '🎵', 'hint' => 'Xilofon adalah alat musik yang menghasilkan bunyi indah!', 'color' => 'hover:border-pink-200', 'bg' => 'bg-pink-100 text-pink-600', 'category' => 'Benda', 'audio' => asset('audio/Halaman 5/6. xilofon.m4a')],
-            ['id' => 'yoyo', 'name' => 'Yoyo', 'emoji' => '🪀', 'hint' => 'Yoyo adalah mainan yang bisa naik turun!', 'color' => 'hover:border-blue-200', 'bg' => 'bg-blue-100 text-blue-600', 'category' => 'Mainan', 'audio' => asset('audio/Halaman 5/7. yoyo.m4a')],
-            ['id' => 'zebra', 'name' => 'Zebra', 'emoji' => '🦓', 'hint' => 'Zebra adalah kuda loreng dengan garis hitam putih!', 'color' => 'hover:border-gray-200', 'bg' => 'bg-gray-100 text-gray-600', 'category' => 'Hewan', 'audio' => asset('audio/Halaman 5/8. zebra_.m4a')],
+        $id = [
+            ['id' => 'singa', 'emoji' => asset('gambar/halaman_5/singa.webp'), 'audio' => asset('audio/id/Halaman 5/singa.wav')],
+            ['id' => 'tomat', 'emoji' => asset('gambar/halaman_5/tomat.webp'), 'audio' => asset('audio/id/Halaman 5/tomat.wav')],
+            ['id' => 'ubi', 'emoji' => asset('gambar/halaman_5/ubi.webp'), 'audio' => asset('audio/id/Halaman 5/ubi.wav')],
+            ['id' => 'vespa', 'emoji' => asset('gambar/halaman_5/vespa.webp'), 'audio' => asset('audio/id/Halaman 5/vespa.wav')],
+            ['id' => 'wortel', 'emoji' => asset('gambar/halaman_5/wortel.webp'), 'audio' => asset('audio/id/Halaman 5/wortel.wav')],
+            ['id' => 'xilofon', 'emoji' => asset('gambar/halaman_5/xilofon.webp'), 'audio' => asset('audio/id/Halaman 5/xilofon.wav')],
+            ['id' => 'yoyo', 'emoji' => asset('gambar/halaman_5/yoyo.webp'), 'audio' => asset('audio/id/Halaman 5/yoyo.wav')],
+            ['id' => 'zebra', 'emoji' => asset('gambar/halaman_5/zebra.webp'), 'audio' => asset('audio/id/Halaman 5/zebra.wav')],
+        ];
+
+        $en = [
+            ['id' => 'singa', 'emoji' => asset('gambar/halaman_5/singa.webp'), 'audio' => asset('audio/en/Halaman 5/1. singa.m4a')],
+            ['id' => 'tomat', 'emoji' => asset('gambar/halaman_5/tomat.webp'), 'audio' => asset('audio/en/Halaman 5/2. tomat.m4a')],
+            ['id' => 'ubi', 'emoji' => asset('gambar/halaman_5/ubi.webp'), 'audio' => asset('audio/en/Halaman 5/3. ubi.m4a')],
+            ['id' => 'vespa', 'emoji' => asset('gambar/halaman_5/vespa.webp'), 'audio' => asset('audio/en/Halaman 5/4. vespa.m4a')],
+            ['id' => 'wortel', 'emoji' => asset('gambar/halaman_5/wortel.webp'), 'audio' => asset('audio/en/Halaman 5/5. wortel.m4a')],
+            ['id' => 'xilofon', 'emoji' => asset('gambar/halaman_5/xilofon.webp'), 'audio' => asset('audio/en/Halaman 5/6. xilofon.m4a')],
+            ['id' => 'yoyo', 'emoji' => asset('gambar/halaman_5/yoyo.webp'), 'audio' => asset('audio/en/Halaman 5/7. yoyo.m4a')],
+            ['id' => 'zebra', 'emoji' => asset('gambar/halaman_5/zebra.webp'), 'audio' => asset('audio/en/Halaman 5/8. zebra.m4a')],
         ];
 
         return [
-            'items' => $items,
-            'total_item' => count($items),
+            'items' => $id,
+            'total_item' => count($id),
         ];
     }
 }

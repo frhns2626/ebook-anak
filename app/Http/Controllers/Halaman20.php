@@ -16,11 +16,9 @@ class Halaman20 extends Controller
     #[Override]
     public function index(): View
     {
-        $data = $this->getDataPublicHalaman20();
 
         return $this->deskripsiObject(
-            data: $data,
-            items: $data['items'],
+            data: $this->getDataPublicHalaman20(),
             halaman: 20,
             object: 'Badak',
             iconText: '🦏',
@@ -36,34 +34,16 @@ class Halaman20 extends Controller
     {
         $items = [
             [
-                'id' => 1,
-                'text' => 'Badak',
-                'audio' => asset('audio/Halaman 20/Halaman 20.m4a'),
-            ],
-            [
-                'id' => 2,
-                'text' => 'Badak adalah hewan besar dan kuat.',
-                'audio' => asset('audio/Halaman 20/Halaman 20.m4a'),
-            ],
-            [
-                'id' => 3,
-                'text' => 'Badak memiliki kulit yang tebal dan keras.',
-                'audio' => asset('audio/Halaman 20/Halaman 20.m4a'),
-            ],
-            [
-                'id' => 4,
-                'text' => 'Badak memiliki tanduk di hidung.',
-                'audio' => asset('audio/Halaman 20/Halaman 20.m4a'),
-            ],
-            [
-                'id' => 5,
-                'text' => 'Badak suka makan rumput.',
-                'audio' => asset('audio/Halaman 20/Halaman 20.m4a'),
-            ],
-            [
-                'id' => 6,
-                'text' => 'Badak suka berendam di lumpur.',
-                'audio' => asset('audio/Halaman 20/Halaman 20.m4a'),
+                'id' => 'badak',
+                'emoji' => asset('gambar/halaman_20-21/badak.webp'),
+                'audio' => asset('audio/id/Halaman 20/pembuka.wav'),
+                'texts' => [
+                    ['text' => 'Badak adalah hewan besar dan kuat.', 'audio' => asset('audio/id/Halaman 20/text1.wav')],
+                    ['text' => 'Badak memiliki kulit yang tebal dan keras.', 'audio' => asset('audio/id/Halaman 20/text2.wav')],
+                    ['text' => 'Badak memiliki tanduk di hidung.', 'audio' => asset('audio/id/Halaman 20/text3.wav')],
+                    ['text' => 'Badak suka makan rumput.', 'audio' => asset('audio/id/Halaman 20/text4.wav')],
+                    ['text' => 'Badak suka berendam di lumpur.', 'audio' => asset('audio/id/Halaman 20/text5.wav')],
+                ],
             ],
         ];
 

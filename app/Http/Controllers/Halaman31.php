@@ -16,11 +16,9 @@ class Halaman31 extends Controller
     #[Override]
     public function index(): View
     {
-        $data = $this->getDataPublicHalaman31();
 
         return $this->deskripsiObject(
-            data: $data,
-            items: $data['items'],
+            data: $this->getDataPublicHalaman31(),
             halaman: 31,
             object: 'Gunung',
             iconText: '🏔️',
@@ -45,34 +43,16 @@ class Halaman31 extends Controller
     {
         $items = [
             [
-                'id' => 1,
-                'text' => 'Gunung',
-                'audio' => asset('audio/Halaman 31/Halaman 31.m4a'),
-            ],
-            [
-                'id' => 2,
-                'text' => 'Gunung tinggi menjulang ke atas.',
-                'audio' => asset('audio/Halaman 31/Halaman 31.m4a'),
-            ],
-            [
-                'id' => 3,
-                'text' => 'Seekor burung elang terbang di atas gunung.',
-                'audio' => asset('audio/Halaman 31/Halaman 31.m4a'),
-            ],
-            [
-                'id' => 4,
-                'text' => 'Di malam hari, bulan terbit di atas puncak gunung.',
-                'audio' => asset('audio/Halaman 31/Halaman 31.m4a'),
-            ],
-            [
-                'id' => 5,
-                'text' => 'Gunung memiliki batu besar.',
-                'audio' => asset('audio/Halaman 31/Halaman 31.m4a'),
-            ],
-            [
-                'id' => 6,
-                'text' => 'Mendaki gunung untuk menikmati pemandangan.',
-                'audio' => asset('audio/Halaman 31/Halaman 31.m4a'),
+                'id' => 'gunung',
+                'emoji' => asset('gambar/halaman_31-32/gunung.webp'),
+                'audio' => asset('audio/id/Halaman 31/objek.wav'),
+                'texts' => [
+                    ['text' => 'Gunung tinggi menjulang ke atas.', 'audio' => asset('audio/id/Halaman 31/text1.wav')],
+                    ['text' => 'Seekor burung elang terbang di atas gunung.', 'audio' => asset('audio/id/Halaman 31/text2.wav')],
+                    ['text' => 'Di malam hari, bulan terbit di atas puncak gunung.', 'audio' => asset('audio/id/Halaman 31/text3.wav')],
+                    ['text' => 'Gunung memiliki batu besar.', 'audio' => asset('audio/id/Halaman 31/text4.wav')],
+                    ['text' => 'Mendaki gunung untuk menikmati pemandangan.', 'audio' => asset('audio/id/Halaman 31/text5.wav')],
+                ],
             ],
         ];
 

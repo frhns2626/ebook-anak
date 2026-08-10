@@ -16,11 +16,9 @@ class Halaman13 extends Controller
     #[Override]
     public function index(): View
     {
-        $data = $this->getDataPublicHalaman13();
 
         return $this->deskripsiObject(
-            data: $data,
-            items: $data['items'],
+            data: $this->getDataPublicHalaman13(),
             halaman: 13,
             object: 'Bola',
             iconText: '⚽',
@@ -34,13 +32,29 @@ class Halaman13 extends Controller
      */
     public function getDataPublicHalaman13(): array
     {
+        /**
+         * Halaman 13/
+         * ├── objek.wav
+         * ├── pembuka.wav
+         * ├── text1.wav
+         * ├── text2.wav
+         * ├── text3.wav
+         * ├── text4.wav
+         * └── text5.wav
+         */
         $items = [
-            ['id' => 1, 'text' => 'Bola', 'audio' => asset('audio/halaman 13/halaman 13 bola.m4a')],
-            ['id' => 2, 'text' => 'Bola kecil meluncur di atas meja.', 'audio' => asset('audio/halaman 13/halaman 13 kalimat-1.m4a')],
-            ['id' => 3, 'text' => 'Bola sepak dijaga oleh kiper di gawang.', 'audio' => asset('audio/halaman 13/halaman 13 kalimat-2.m4a')],
-            ['id' => 4, 'text' => 'Bola basket dilempar ke keranjang tinggi.', 'audio' => asset('audio/halaman 13/halaman 13 kalimat-3.m4a')],
-            ['id' => 5, 'text' => 'Adik suka memainkan bola plastik.', 'audio' => asset('audio/halaman 13/halaman 13 kalimat-4.m4a')],
-            ['id' => 6, 'text' => 'Bola tenis dipukul dengan raket.', 'audio' => asset('audio/halaman 13/halaman 13 kalimat-5.m4a')],
+            [
+                'id' => 'bola',
+                'emoji' => asset('gambar/halaman_13-14/bola.webp'),
+                'audio' => asset('audio/id/Halaman 13/pembuka.wav'),
+                'texts' => [
+                    ['text' => 'Bola kecil meluncur di atas meja.', 'audio' => asset('audio/id/Halaman 13/text1.wav')],
+                    ['text' => 'Bola sepak dijaga oleh kiper di gawang.', 'audio' => asset('audio/id/Halaman 13/text2.wav')],
+                    ['text' => 'Bola basket dilempar ke keranjang tinggi.', 'audio' => asset('audio/id/Halaman 13/text3.wav')],
+                    ['text' => 'Adik suka memainkan bola plastik.', 'audio' => asset('audio/id/Halaman 13/text4.wav')],
+                    ['text' => 'Bola tenis dipukul dengan raket.', 'audio' => asset('audio/id/Halaman 13/text5.wav')],
+                ],
+            ],
         ];
 
         return [

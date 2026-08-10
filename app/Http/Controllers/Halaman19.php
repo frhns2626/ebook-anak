@@ -16,10 +16,9 @@ class Halaman19 extends Controller
     #[Override]
     public function index(): View
     {
-        $data = $this->getDataPublicHalaman19();
 
-        return $this->sukuBerakhiran(data: $data,
-            items: $data['items'],
+        return $this->sukuBerakhiran(
+            data: $this->getDataPublicHalaman19(),
             halaman: 19,
             judul: 'Halaman 19 - Suku Kata Berakhiran -L 🦎',
             deskripsi: 'Cocokkan kata dengan akhiran konsonan matinya!'
@@ -36,18 +35,16 @@ class Halaman19 extends Controller
          * Pola: al, il, ul, el, ol
          *   al → Ka-dal 🦎 | il → Mo-bil 🚗 | ul → Cang-kul 🌾 | el → A-pel 🍎 | ol → Bo-tol 🍾
          */
-        $base = 'audio/halaman 16-19/';
-
         $items = [
             [
-                'masterPola' => 'al il ul el ol',
-                'audio' => asset($base.'halaman 19.m4a'),
+                'masterPola' => 'al el il ol ul',
+                'audio' => asset('audio/en/halaman 16-19/halaman 19.m4a'),
                 'items' => [
-                    ['id' => 'kadal', 'name' => 'Kadal', 'emoji' => '🦎', 'ending' => 'al', 'hint' => 'Kadal adalah reptil kecil yang bisa memanjat!', 'audio' => asset($base.'halaman 19 kadal.m4a')],
-                    ['id' => 'mobil', 'name' => 'Mobil', 'emoji' => '🚗', 'ending' => 'il', 'hint' => 'Mobil adalah kendaraan beroda empat!', 'audio' => null],
-                    ['id' => 'cangkul', 'name' => 'Cangkul', 'emoji' => '🌾', 'ending' => 'ul', 'hint' => 'Cangkul adalah alat untuk menggali tanah!', 'audio' => null],
-                    ['id' => 'apel', 'name' => 'Apel', 'emoji' => '🍎', 'ending' => 'el', 'hint' => 'Apel adalah buah yang manis dan renyah!', 'audio' => null],
-                    ['id' => 'botol', 'name' => 'Botol', 'emoji' => '🍾', 'ending' => 'ol', 'hint' => 'Botol adalah wadah untuk menyimpan cairan!', 'audio' => asset($base.'halaman 18 botol.m4a')],
+                    ['id' => 'Kadal', 'emoji' => asset('gambar/halaman_19/kadal.webp'), 'ending' => 'al', 'audio' => asset('audio/en/halaman 16-19/halaman 19 kadal.m4a')],
+                    ['id' => 'Apel', 'emoji' => asset('gambar/halaman_19/apel.webp'), 'ending' => 'el', 'audio' => asset('audio/en/halaman 16-19/halaman 19. apel.m4a')],
+                    ['id' => 'Mobil', 'emoji' => asset('gambar/halaman_19/mobil.webp'), 'ending' => 'il', 'audio' => asset('audio/en/halaman 16-19/halaman 19. mobil.m4a')],
+                    ['id' => 'Botol', 'emoji' => asset('gambar/halaman_19/botol.webp'), 'ending' => 'ol', 'audio' => asset('audio/en/halaman 16-19/halaman 19. botol.m4a')],
+                    ['id' => 'Cangkul', 'emoji' => asset('gambar/halaman_19/cangkul.webp'), 'ending' => 'ul', 'audio' => asset('audio/en/halaman 16-19/halaman 19. cangkul.m4a')],
                 ],
             ],
         ];

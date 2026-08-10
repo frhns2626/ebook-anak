@@ -6,19 +6,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\View\View;
+use Override;
 
 class Halaman3 extends Controller
 {
     /**
      * @throws BindingResolutionException
      */
+    #[Override]
     public function index(): View
     {
-        $data = $this->getDataPublicHalaman3();
-
         return $this->pengenalanAudio(
-            data: $data,
-            items: $data['items'],
+            data: $this->getDataPublicHalaman3(),
             halaman: 3,
             judul: 'Halaman 3 - Mengenal Benda & Hewan 🦒',
             deskripsi: 'Mengenal macam-macam benda dan hewan yang seru!',
@@ -30,18 +29,27 @@ class Halaman3 extends Controller
      */
     public function getDataPublicHalaman3(): array
     {
-        $items = [
-            ['id' => 'gajah', 'name' => 'Gajah', 'emoji' => '🐘', 'hint' => 'Gajah adalah hewan darat terbesar dengan belalai!', 'color' => 'hover:border-gray-200', 'bg' => 'bg-gray-100 text-gray-600', 'audio' => asset('audio/Halaman 3/1. gajah.m4a')],
-            ['id' => 'helicopter', 'name' => 'Helicopter', 'emoji' => '🚁', 'hint' => 'Helicopter adalah pesawat yang bisa terbang tinggi!', 'color' => 'hover:border-blue-200', 'bg' => 'bg-blue-100 text-blue-600', 'audio' => asset('audio/Halaman 3/2. helikopter.m4a')],
-            ['id' => 'ikan', 'name' => 'Ikan', 'emoji' => '🐟', 'hint' => 'Ikan adalah hewan yang hidup di air!', 'color' => 'hover:border-cyan-200', 'bg' => 'bg-cyan-100 text-cyan-600', 'audio' => asset('audio/Halaman 3/3. ikan.m4a')],
-            ['id' => 'jerapah', 'name' => 'Jerapah', 'emoji' => '🦒', 'hint' => 'Jerapah adalah hewan dengan leher paling panjang!', 'color' => 'hover:border-yellow-200', 'bg' => 'bg-yellow-100 text-yellow-600', 'audio' => asset('audio/Halaman 3/4. jerapah.m4a')],
-            ['id' => 'kelelawar', 'name' => 'Kelelawar', 'emoji' => '🦇', 'hint' => 'Kelelawar adalah satu-satunya mamalia yang bisa terbang!', 'color' => 'hover:border-purple-200', 'bg' => 'bg-purple-100 text-purple-600', 'audio' => asset('audio/Halaman 3/5. kelelawar.m4a')],
-            ['id' => 'lampu', 'name' => 'Lampu', 'emoji' => '💡', 'hint' => 'Lampu menerangi ruangan agar terang!', 'color' => 'hover:border-amber-200', 'bg' => 'bg-amber-100 text-amber-600', 'audio' => asset('audio/Halaman 3/6. lampu.m4a')],
+        $id = [
+            ['id' => 'gajah', 'emoji' => asset('gambar/halaman_3/gajah.webp'), 'audio' => asset('audio/id/Halaman 3/gajah.wav')],
+            ['id' => 'helicopter', 'emoji' => asset('gambar/halaman_3/helikopter.webp'), 'audio' => asset('audio/id/Halaman 3/helipoter.wav')],
+            ['id' => 'ikan', 'emoji' => asset('gambar/halaman_3/ikan.webp'), 'audio' => asset('audio/id/Halaman 3/ikan.wav')],
+            ['id' => 'jerapah', 'emoji' => asset('gambar/halaman_3/jerapah.webp'), 'audio' => asset('audio/id/Halaman 3/jerapah.wav')],
+            ['id' => 'kelelawar', 'emoji' => asset('gambar/halaman_3/kelelawar.webp'), 'audio' => asset('audio/id/Halaman 3/kelelawar.wav')],
+            ['id' => 'lampu', 'emoji' => asset('gambar/halaman_3/lampu.webp'), 'audio' => asset('audio/id/Halaman 3/lampu.wav')],
+        ];
+
+        $en = [
+            ['id' => 'gajah', 'emoji' => asset('gambar/halaman_3/gajah.webp'), 'audio' => asset('audio/en/Halaman 3/1. gajah.m4a')],
+            ['id' => 'helicopter', 'emoji' => asset('gambar/halaman_3/helicopter.webp'), 'audio' => asset('audio/en/Halaman 3/2. helicopter.m4a')],
+            ['id' => 'ikan', 'emoji' => asset('gambar/halaman_3/ikan.webp'), 'audio' => asset('audio/en/Halaman 3/3. ikan.m4a')],
+            ['id' => 'jerapah', 'emoji' => asset('gambar/halaman_3/jerapah.webp'), 'audio' => asset('audio/en/Halaman 3/4. jerapah.m4a')],
+            ['id' => 'kelelawar', 'emoji' => asset('gambar/halaman_3/kelelawar.webp'), 'audio' => asset('audio/en/Halaman 3/5. kelelawar.m4a')],
+            ['id' => 'lampu', 'emoji' => asset('gambar/halaman_3/lampu.webp'), 'audio' => asset('audio/en/Halaman 3/6. lampu.m4a')],
         ];
 
         return [
-            'items' => $items,
-            'total_item' => count($items),
+            'items' => $id,
+            'total_item' => count($id),
         ];
     }
 }

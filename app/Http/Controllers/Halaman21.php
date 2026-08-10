@@ -16,11 +16,9 @@ class Halaman21 extends Controller
     #[Override]
     public function index(): View
     {
-        $data = $this->getDataPublicHalaman21();
 
         return $this->deskripsiObject(
-            data: $data,
-            items: $data['items'],
+            data:  $this->getDataPublicHalaman21(),
             halaman: 21,
             object: 'Rhino',
             iconText: '🦏',
@@ -33,8 +31,12 @@ class Halaman21 extends Controller
      * @return array{
      *     items: list<array{
      *         id: int,
-     *         text: string,
-     *         audio: string
+     *         emoji: string,
+     *         audio: string,
+     *         texts: list<array{
+     *              text:string,
+     *              audio: string,
+     *          }>
      *     }>,
      *     total_item: int
      * }
@@ -45,34 +47,16 @@ class Halaman21 extends Controller
     {
         $items = [
             [
-                'id' => 1,
-                'text' => 'Badak',
-                'audio' => asset('audio/Halaman 21/badak.m4a'),
-            ],
-            [
-                'id' => 2,
-                'text' => 'A rhinoceros is a large and strong animal.',
-                'audio' => asset('audio/Halaman 21/definisi badak.m4a'),
-            ],
-            [
-                'id' => 3,
-                'text' => 'A rhinoceros has thick and tough skin.',
-                'audio' => asset('audio/Halaman 21/definisi badak.m4a'),
-            ],
-            [
-                'id' => 4,
-                'text' => 'A rhinoceros has a horn on its nose.',
-                'audio' => asset('audio/Halaman 21/definisi badak.m4a'),
-            ],
-            [
-                'id' => 5,
-                'text' => 'A rhinoceros likes to eat grass.',
-                'audio' => asset('audio/Halaman 21/definisi badak.m4a'),
-            ],
-            [
-                'id' => 6,
-                'text' => 'A rhinoceros likes to wallow in the mud.',
-                'audio' => asset('audio/Halaman 21/definisi badak.m4a'),
+                'id' => 'badak',
+                'emoji' => asset('gambar/halaman_20-21/badak.webp'),
+                'audio' => asset('audio/id/Halaman 21/badak.m4a'),
+                'texts' => [
+                    ['text' => 'A rhinoceros is a large and strong animal.', 'audio' => asset('audio/id/Halaman 21/text1.wav')],
+                    ['text' => 'A rhinoceros has thick and tough skin.', 'audio' => asset('audio/id/Halaman 21/text2.wav')],
+                    ['text' => 'A rhinoceros has a horn on its nose.', 'audio' => asset('audio/id/Halaman 21/text3.wav')],
+                    ['text' => 'A rhinoceros likes to eat grass.', 'audio' => asset('audio/id/Halaman 21/text4.wav')],
+                    ['text' => 'A rhinoceros likes to wallow in the mud.', 'audio' => asset('audio/id/Halaman 21/text5.wav')],
+                ],
             ],
         ];
 

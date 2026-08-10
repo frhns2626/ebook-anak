@@ -1,195 +1,174 @@
-<x-layout-game title="{{ $judul }}">
-    <main class="relative z-10 mx-auto max-w-4xl p-6">
-        <div class="relative mb-6 overflow-hidden rounded-3xl bg-white p-6 text-center shadow-xl">
-            <div
-                class="absolute top-0 right-0 left-0 h-2"
-                style="
-                    background: linear-gradient(90deg, #ff6b6b, #ff9f43, #ffe66d, #4ecdc4, #6c5ce7, #ff6b6b);
-                    background-size: 200% 100%;
-                    animation: rainbow 3s linear infinite;
-                "
-            ></div>
-            <a
-                href="{{ route('belajar.index') }}"
-                class="absolute top-1/2 left-4 -translate-y-1/2 rounded-full bg-red-100 px-4 py-2 text-sm font-bold text-red-500 transition-all hover:bg-red-200"
-            >← Kembali</a>
-            <span class="animate-bounce-subtle mb-2 block text-[3rem]">🐊</span>
-            <h1 class="mb-1 text-[1.8rem] font-black text-gray-800 md:text-[2.2rem]">{{ $judul }}</h1>
-            <p class="text-[1rem] text-gray-500">{{ $deskripsi }}</p>
+<x-layout-game
+    title="{{$judul}}"
+    halaman="{{$halaman}}"
+>
+    <style>
+        /* Typography Judul Pop-out */
+        .title-text {
+            font-family: 'Fredoka', cursive, sans-serif;
+            color: #fbbf24;
+            -webkit-text-stroke: 1.5px #000000;
+            paint-order: stroke fill;
+            filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.8));
+        }
+
+        .item-card {
+            background-color: #ffffff;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            width: 100%;
+            border: 2px solid #e2e8f0;
+        }
+
+        .word-display {
+            font-family: 'Fredoka', cursive, sans-serif;
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #1a100c;
+            line-height: 1.1;
+        }
+
+        .rewrite-input {
+            width: 100%;
+            max-width: 12rem;
+            border-radius: 1rem;
+            border: 3px solid #cbd5e1;
+            background-color: #ffffff;
+            font-family: 'Fredoka', cursive, sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1a100c;
+            text-align: center;
+            outline: none;
+            transition: all 0.2s ease;
+            margin-top: -0.5rem;
+        }
+
+        .rewrite-input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+
+        .rewrite-input.correct {
+            border-color: #22c55e !important;
+            background-color: #f0fdf4 !important;
+            color: #166534 !important;
+            box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.3);
+            pointer-events: none;
+        }
+
+        .rewrite-input.wrong {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+            color: #991b1b !important;
+            animation: shake 0.3s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-4px); }
+            40%, 80% { transform: translateX(4px); }
+        }
+    </style>
+
+    @php $byWord = collect($items)->keyBy(fn ($i) => strtolower($i['id'])); @endphp
+
+    <div class="flex flex-col items-center justify-between h-full w-full my-auto select-none px-2 z-10">
+
+        <div class="text-center mt-1 mb-2">
+            <h1 class="title-text text-xl sm:text-2xl md:text-3xl font-extrabold tracking-wide px-2 leading-tight">
+                Baca dan tulis kembali !
+            </h1>
         </div>
-        <div class="mb-6 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 md:gap-6">
-            @foreach ($items as $index => $item)
-                <div
-                    id="card-{{ $item['id'] }}"
-                    class="item-card group w-40 shrink-0 cursor-pointer snap-start rounded-3xl border-4 border-transparent bg-white p-6 text-center shadow-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl md:w-48"
-                    data-index="{{ $index }}"
-                    onclick="selectItem('{{ $item['id'] }}')"
-                >
-                    <div
-                        class="animate-float-up mb-3 text-[4rem] md:text-[5rem]"
-                        style="animation-delay: {{ ($index % 5) * 0.3 }}s"
-                    >
-                        {{ $item['emoji'] }}
-                    </div>
-                    <h3 class="mb-1 text-[1.2rem] font-black text-gray-800 md:text-[1.4rem]">{{ $item['name'] }}</h3>
-                    <p class="text-xs text-gray-500">{{ $item['name'] }}</p>
+
+        <div class="grid grid-cols-2 gap-4 sm:gap-6 w-full max-w-2xl px-1 sm:px-2 my-auto z-10">
+
+            <!-- 1. Bola -->
+            <div class="flex flex-col items-center space-y-2">
+                <div class="item-card">
+                    <img src="{{ $byWord['bola']['emoji'] }}" alt="bola" class="h-40 object-contain pointer-events-none" />
                 </div>
-            @endforeach
-        </div>
-        <div id="itemDisplay" class="mb-6 hidden rounded-3xl bg-white p-8 text-center shadow-2xl">
-            <div class="animate-pop mb-4 text-[8rem] md:text-[10rem]" id="itemEmoji">⚽</div>
-            <div class="mb-2 flex flex-wrap justify-center gap-3" id="syllableChips"></div>
-            <p class="mb-6 text-xs text-gray-400">Baca suku katanya dengan nyaring, lalu ketik kata utuhnya di bawah</p>
-            <input
-                type="text"
-                id="writeInput"
-                autocomplete="off"
-                class="mx-auto mb-2 w-full max-w-xs border-b-4 border-gray-300 pb-1 text-center text-[1.8rem] font-black text-gray-800 outline-none focus:border-purple-400"
-                placeholder="Tulis kembali..."
-            />
-            <p id="writeFeedback" class="mb-4 h-6 text-sm font-bold"></p>
-            <p class="mb-6 text-[1.1rem] text-gray-500" id="itemHint">Bola adalah alat main bulat!</p>
-            <div class="flex flex-wrap justify-center gap-4">
-                <button
-                    onclick="playAudio()"
-                    class="rounded-full bg-gradient-to-r from-blue-400 to-blue-500 px-6 py-3 font-bold text-white shadow-lg transition-all hover:scale-105"
-                >
-                    🔊 Dengarkan
-                </button>
-                <button
-                    onclick="checkWrite()"
-                    id="checkBtn"
-                    class="rounded-full bg-gradient-to-r from-purple-400 to-purple-500 px-6 py-3 font-bold text-white shadow-lg transition-all hover:scale-105"
-                >
-                    ✅ Periksa
-                </button>
+                <input type="text" data-answer="bola" data-audio="{{ $byWord['bola']['audio'] }}" class="rewrite-input text-black" placeholder=". . ." />
             </div>
-        </div>
-        <div class="rounded-2xl bg-white p-4 shadow-lg">
-            <div class="mb-2 flex items-center justify-between">
-                <span class="text-sm font-bold text-gray-600">Progress</span>
-                <span id="progressText" class="text-sm font-bold text-green-500">0 / {{ count($items) }}</span>
-            </div>
-            <div class="h-4 overflow-hidden rounded-full bg-gray-200">
-                <div
-                    id="progressBar"
-                    class="h-full rounded-full bg-gradient-to-r from-green-400 to-emerald-500 transition-all duration-500"
-                    style="width: 0%"
-                ></div>
-            </div>
-        </div>
-    </main>
-    <svg class="pointer-events-none fixed bottom-0 left-0 z-0 h-24 w-full" viewBox="0 0 1440 120" fill="none" preserveAspectRatio="none">
-        <path
-            d="M0 120L48 110C96 100 192 80 288 70C384 60 480 60 576 65C672 70 768 80 864 85C960 90 1056 90 1152 82.5C1248 75 1344 60 1392 52.5L1440 45V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0Z"
-            fill="url(#wave-gradient)"
-            fill-opacity="0.15"
-        />
-        <defs>
-            <linearGradient id="wave-gradient" x1="0" y1="0" x2="1440" y2="0" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#10B981" />
-                <stop offset="0.5" stop-color="#8B5CF6" />
-                <stop offset="1" stop-color="#F97316" />
-            </linearGradient>
-        </defs>
-    </svg>
-    <script>
-        const items = @json($items);
-        let currentIndex = 0;
-        let viewed = new Set();
-        let solved = false;
 
-        function updateLocks() {
-            items.forEach((item, i) => {
-                const card = document.getElementById('card-' + item.id);
-                const unlocked = i === 0 || viewed.has(items[i - 1].id);
-                if (unlocked) {
-                    card.classList.remove('opacity-40', 'grayscale', 'pointer-events-none');
-                } else {
-                    card.classList.add('opacity-40', 'grayscale', 'pointer-events-none');
-                }
+            <!-- 2. Buaya -->
+            <div class="flex flex-col items-center space-y-2">
+                <div class="item-card">
+                    <img src="{{ $byWord['buaya']['emoji'] }}" alt="buaya" class="h-40 object-contain pointer-events-none" />
+                </div>
+                <input type="text" data-answer="buaya" data-audio="{{ $byWord['buaya']['audio'] }}" class="rewrite-input text-black" placeholder=". . ." />
+            </div>
+
+            <!-- 3. Donat -->
+            <div class="flex flex-col items-center space-y-2">
+                <div class="item-card">
+                    <img src="{{ $byWord['donat']['emoji'] }}" alt="donat" class="h-40 object-contain pointer-events-none" />
+                </div>
+                <input type="text" data-answer="donat" data-audio="{{ $byWord['donat']['audio'] }}" class="rewrite-input text-black" placeholder=". . ." />
+            </div>
+
+            <!-- 4. Jerapah -->
+            <div class="flex flex-col items-center space-y-2">
+                <div class="item-card">
+                    <img src="{{ $byWord['jerapah']['emoji'] }}" alt="jerapah" class="h-40 object-contain pointer-events-none" />
+                </div>
+                <input type="text" data-answer="jerapah" data-audio="{{ $byWord['jerapah']['audio'] }}" class="rewrite-input text-black" placeholder=". . ." />
+            </div>
+
+        </div>
+
+        <div class="flex-1 min-h-[40px] z-10"></div>
+    </div>
+
+    @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const inputs = document.querySelectorAll('.rewrite-input');
+
+{{--                const wrongAudio = new Audio('{{ asset("audio/wrong.mp3") }}');--}}
+
+                inputs.forEach(input => {
+                    input.addEventListener('input', (e) => {
+                        const val = e.target.value.toLowerCase().trim();
+                        const correctAnswer = input.dataset.answer.toLowerCase();
+
+                        input.classList.remove('wrong', 'correct');
+
+                        if (val === '') return;
+
+                        if (val === correctAnswer) {
+                            input.classList.add('correct');
+
+                            if (input.dataset.audio) {
+                                const wordAudio = new Audio(input.dataset.audio);
+                                wordAudio.play().catch(() => {});
+                            }
+
+                            if (typeof showFlashMessage === 'function') {
+                                showFlashMessage('success', 'Hebat! Penulisan tepat!');
+                            }
+                        } else if (val.length >= correctAnswer.length) {
+                            input.classList.add('wrong');
+                            // wrongAudio.currentTime = 0;
+                            // wrongAudio.play().catch(() => {});
+
+                            if (typeof showFlashMessage === 'function') {
+                                showFlashMessage('error', 'Salah, coba tulis ulang dengan benar!');
+                            }
+
+                            setTimeout(() => {
+                                input.classList.remove('wrong');
+                                input.value = '';
+                            }, 500);
+                        }
+                    });
+                });
             });
-        }
-
-        function selectItem(id) {
-            currentIndex = items.findIndex((item) => item.id === id);
-            showItem();
-            document.getElementById('itemDisplay').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-
-        function showItem() {
-            const item = items[currentIndex];
-            solved = false;
-
-            document.getElementById('itemDisplay').classList.remove('hidden');
-            document.getElementById('itemEmoji').textContent = item.emoji;
-            document.getElementById('itemHint').textContent = item.hint;
-            document.getElementById('writeInput').value = '';
-            document.getElementById('writeInput').disabled = false;
-            document.getElementById('checkBtn').disabled = false;
-            document.getElementById('writeFeedback').textContent = '';
-
-            renderSyllableChips(item);
-        }
-
-        function renderSyllableChips(item) {
-            const container = document.getElementById('syllableChips');
-            container.innerHTML = '';
-            item.syllables.forEach((s) => {
-                const chip = document.createElement('span');
-                chip.textContent = s;
-                chip.className =
-                    'bg-gradient-to-r from-orange-400 to-orange-500 text-white px-4 py-2 rounded-full font-black text-xl shadow-md';
-                container.appendChild(chip);
-            });
-        }
-
-        function checkWrite() {
-            if (solved) return;
-            const item = items[currentIndex];
-            const input = document.getElementById('writeInput');
-            const feedback = document.getElementById('writeFeedback');
-
-            if (input.value.trim().toLowerCase() === item.name.toLowerCase()) {
-                solved = true;
-                input.disabled = true;
-                document.getElementById('checkBtn').disabled = true;
-                feedback.textContent = '🎉 Benar sekali!';
-                feedback.classList.add('text-green-500');
-                viewed.add(item.id);
-                updateProgress();
-                updateLocks();
-                playAudio();
-                setTimeout(nextItem, 2000);
-            } else {
-                feedback.textContent = 'Coba lagi ya!';
-                feedback.classList.add('text-red-400');
-                input.classList.add('animate-shake');
-                setTimeout(() => input.classList.remove('animate-shake'), 400);
-            }
-        }
-
-        function updateProgress() {
-            const count = viewed.size;
-            document.getElementById('progressText').textContent = count + ' / ' + items.length;
-            document.getElementById('progressBar').style.width = (count / items.length) * 100 + '%';
-        }
-
-        function playAudio() {
-            const item = items[currentIndex];
-            new Audio(item.audio).play();
-        }
-
-        function nextItem() {
-            currentIndex = (currentIndex + 1) % items.length;
-            showItem();
-        }
-
-        document.getElementById('writeInput').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') checkWrite();
-        });
-
-        updateLocks();
-        selectItem(items[0].id);
-    </script>
+        </script>
+    @endpush
 </x-layout-game>

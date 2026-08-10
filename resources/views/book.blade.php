@@ -4,9 +4,7 @@
         flex-direction: column;
         align-items: center;
         gap: 16px;
-        padding: 24px;
-        background: radial-gradient(circle at center, #fff7e6 0%, #ffe9c7 100%);
-        border-radius: 24px;
+        padding: 2px;
         width: 100%;
         box-sizing: border-box;
     }
@@ -56,23 +54,33 @@
         box-shadow: none;
     }
 </style>
-
 <div class="book-wrap">
     <div id="book">
+        <div class="page" style="padding: 10px;">
+            <iframe data-src="{{ route('pertama.cover') }}" data-loaded="0"></iframe>
+        </div>
+        <div class="page" style="padding: 10px;">
+            <iframe data-src="{{ route('pertama.kata-pengantar') }}" data-loaded="0"></iframe>
+        </div>
+        <div class="page" style="padding: 10px;">
+            <iframe data-src="{{ route('pertama.petujuk-penggunaan') }}" data-loaded="0"></iframe>
+        </div>
         @for ($i = 1; $i <= 33; $i++)
-            <div class="page" style="padding: 20px">
+            <div class="page" style="padding: 10px;">
                 <iframe data-src="{{ route('belajar.halaman-' . $i) }}" data-loaded="0"></iframe>
             </div>
         @endfor
+        <div class="page" style="padding: 10px;">
+            <iframe data-src="{{ route('belajar.penutupan') }}" data-loaded="0"></iframe>
+        </div>
     </div>
     <div class="book-nav">
         <button id="prevBtn">‹</button>
         <button id="nextBtn">›</button>
     </div>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/src/Style/stPageFlip.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/src/Style/stPageFlip.min.css" rel="stylesheet"/>
 <script>
     // --- size presets ---
     // Desktop (original): width 400, height 550
@@ -82,7 +90,7 @@
 
     const pageFlip = new St.PageFlip(document.getElementById('book'), {
         width: 400,
-        height: 420, // <-- reduced from 550; adjust this single value to resize
+        height: 600, // <-- reduced from 550; adjust this single value to resize
         size: 'stretch',
         minWidth: 300,
         maxWidth: 1000,
@@ -94,6 +102,9 @@
     });
     pageFlip.loadFromHTML(document.querySelectorAll('.page'));
 
+    // window.addEventListener('resize', () => {
+    //     pageFlip.update();
+    // });
     function loadPage(index) {
         const pages = document.querySelectorAll('#book .page iframe');
         const iframe = pages[index];

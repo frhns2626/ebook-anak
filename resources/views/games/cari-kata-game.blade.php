@@ -1,232 +1,281 @@
-<x-layout-game title="{{ $judul }}">
-    <main class="relative z-10 mx-auto max-w-3xl p-6">
-        <div class="relative mb-6 overflow-hidden rounded-3xl bg-white p-6 text-center shadow-xl">
-            <div
-                class="absolute top-0 right-0 left-0 h-2"
-                style="
-                    background: linear-gradient(90deg, #ff6b6b, #ff9f43, #ffe66d, #4ecdc4, #6c5ce7, #ff6b6b);
-                    background-size: 200% 100%;
-                    animation: rainbow 3s linear infinite;
-                "
-            ></div>
-            <a
-                href="{{ route('belajar.index') }}"
-                class="absolute top-1/2 left-4 -translate-y-1/2 rounded-full bg-red-100 px-4 py-2 text-sm font-bold text-red-500 transition-all hover:bg-red-200"
-            >← Kembali</a>
-            <span class="animate-bounce-subtle mb-2 block text-[3rem]">🔍</span>
-            <h1 class="mb-1 text-[1.8rem] font-black text-gray-800 md:text-[2.2rem]">{{ $judul }}</h1>
-            <p class="text-[1rem] text-gray-500">{{ $deskripsi }}</p>
+<x-layout-game
+    title="{{$judul}}"
+    halaman="{{$halaman}}"
+>
+    <style>
+        /* Typography Judul Pop-out */
+        .title-text {
+            font-family: 'Fredoka', cursive, sans-serif;
+            color: #fbbf24;
+            -webkit-text-stroke: 1.5px #000000;
+            paint-order: stroke fill;
+            filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.8));
+        }
+
+        .puzzle-card {
+            background-color: #dbeafe;
+            border-radius: 1.5rem;
+            border: 2px solid #bfdbfe;
+            padding: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .grid-board {
+            display: grid;
+            grid-template-columns: repeat(8, minmax(0, 1fr));
+            gap: 2px;
+            background-color: #000000;
+            border: 3px solid #000000;
+            border-radius: 0.25rem;
+            overflow: hidden;
+        }
+
+        .grid-cell {
+            background-color: #ffffff;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Fredoka', cursive, sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #1a100c;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.15s ease;
+        }
+
+        .grid-cell.selecting {
+            background-color: #93c5fd !important;
+            color: #1e3a8a;
+        }
+
+        .grid-cell.correct {
+            background-color: #22c55e !important;
+            color: #ffffff !important;
+        }
+
+        .target-card {
+            background-color: #ffffff;
+            border-radius: 1.25rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .target-card.found {
+            background-color: #f0fdf4;
+            border-color: #22c55e;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.3);
+        }
+
+        .target-card.found::after {
+            content: '✔';
+            position: absolute;
+            top: -0.5rem;
+            right: -0.5rem;
+            background-color: #22c55e;
+            color: #ffffff;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: 900;
+        }
+    </style>
+
+    @php $byWord = collect($items)->keyBy(fn ($i) => strtolower($i['id'])); @endphp
+
+    <div class="flex flex-col items-center justify-between h-full w-full my-auto select-none px-2 z-10">
+
+        <div class="text-center mt-1 mb-2">
+            <h1 class="title-text text-xl sm:text-2xl md:text-3xl font-extrabold tracking-wide px-2 leading-tight">
+                Puzzle mencari kata
+            </h1>
         </div>
-        <div class="mb-6 rounded-3xl bg-white p-4 shadow-xl md:p-6">
-            <div
-                id="grid"
-                class="mx-auto grid select-none"
-                style="grid-template-columns: repeat({{ $size }}, minmax(0, 1fr)); max-width: {{ $size * 48 }}px; gap: 4px;"
-            >
-                @foreach ($grid as $r => $row)
-                    @foreach ($row as $c => $letter)
-                        <div
-                            id="cell-{{ $r }}-{{ $c }}"
-                            data-letter="{{ $letter }}"
-                            onclick="handleCellClick({{ $r }}, {{ $c }})"
-                            class="wordcell flex aspect-square cursor-pointer items-center justify-center rounded-lg bg-gray-100 text-sm font-black text-gray-700 transition-colors hover:bg-blue-100 md:text-lg"
-                        >
-                            {{ $letter }}
+
+        <div class="puzzle-card w-full max-w-lg my-auto">
+            <div id="gridBoard" class="grid-board">
+                @php
+                    $grid = [
+                        ['m', 'e', 'j', 'a', 'k', 'o', 'e', 'd'], // row 0: meja (0,0 -> 0,3)
+                        ['q', 'd', 'b', 'k', 'u', 'e', 'p', 'a'], // row 1: kue  (1,3 -> 1,5)
+                        ['r', 'b', 'u', 'k', 'u', 't', 'l', 'h'], // row 2: buku (2,1 -> 2,4)
+                        ['u', 'd', 'a', 'n', 'g', 'k', 'l', 'c'], // row 3: udang(3,0 -> 3,4)
+                        ['y', 'f', 'j', 'h', 's', 'a', 'p', 'i']  // row 4: sapi (4,4 -> 4,7)
+                    ];
+                @endphp
+
+                @foreach($grid as $r => $row)
+                    @foreach($row as $c => $char)
+                        <div class="grid-cell"
+                             data-row="{{ $r }}"
+                             data-col="{{ $c }}"
+                             data-char="{{ $char }}">
+                            {{ $char }}
                         </div>
                     @endforeach
                 @endforeach
             </div>
         </div>
-        <div class="mb-6 rounded-2xl bg-white p-4 shadow-lg">
-            <span class="mb-3 block text-sm font-bold text-gray-600">Cari Kata:</span>
-            <div class="flex flex-wrap justify-around gap-2">
-                @foreach ($items as $item)
-                    <span
-                        id="word-{{ strtoupper($item['name']) }}"
-                        class="rounded-full bg-gray-100 px-4 py-2 text-sm font-bold text-gray-700 transition-all"
-                    >{{ strtoupper($item['name']) }}</span>
-                @endforeach
+
+        <div class="w-full max-w-lg space-y-2 mt-3 mb-1">
+            <div class="grid grid-cols-3 gap-2 sm:gap-4">
+                <!-- Meja -->
+                <div class="target-card" data-word="meja" data-audio="{{ $byWord['meja']['audio'] }}">
+                    <img src="{{ $byWord['meja']['emoji'] }}" alt="meja" class="size-32 object-contain pointer-events-none" />
+                </div>
+                <!-- Kue -->
+                <div class="target-card" data-word="kue" data-audio="{{ $byWord['kue']['audio'] }}">
+                    <img src="{{ $byWord['kue']['emoji'] }}" alt="kue" class="size-32 object-contain pointer-events-none" />
+                </div>
+                <!-- Buku -->
+                <div class="target-card" data-word="buku" data-audio="{{ $byWord['buku']['audio'] }}">
+                    <img src="{{ $byWord['buku']['emoji'] }}" alt="buku" class="size-32 object-contain pointer-events-none" />
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 sm:gap-4 max-w-xs mx-auto">
+                <!-- Udang -->
+                <div class="target-card" data-word="udang" data-audio="{{ $byWord['udang']['audio'] }}">
+                    <img src="{{ $byWord['udang']['emoji'] }}" alt="udang" class="size-32 object-contain pointer-events-none" />
+                </div>
+                <!-- Sapi -->
+                <div class="target-card" data-word="sapi" data-audio="{{ $byWord['sapi']['audio'] }}">
+                    <img src="{{ $byWord['sapi']['emoji'] }}" alt="sapi" class="size-32 object-contain pointer-events-none" />
+                </div>
             </div>
         </div>
-        <div class="mb-6 rounded-2xl bg-white p-4 shadow-lg">
-            <span class="mb-3 block text-sm font-bold text-gray-600">Ditemukan:</span>
-            <div id="foundIcons" class="flex min-h-[3rem] flex-wrap justify-around gap-3">
-                @foreach ($items as $item)
-                    <span
-                        id="icon-{{ strtoupper($item['name']) }}"
-                        class="text-[2.5rem] opacity-20 grayscale transition-all duration-300"
-                    >{{ $item['emoji'] }}</span>
-                @endforeach
-            </div>
-        </div>
-        <div class="rounded-2xl bg-white p-4 shadow-lg">
-            <div class="mb-2 flex items-center justify-between">
-                <span class="text-sm font-bold text-gray-600">Progress</span>
-                <span id="progressText" class="text-sm font-bold text-green-500">0 / {{ count($items) }}</span>
-            </div>
-            <div class="h-4 overflow-hidden rounded-full bg-gray-200">
-                <div
-                    id="progressBar"
-                    class="h-full rounded-full bg-gradient-to-r from-green-400 to-emerald-500 transition-all duration-500"
-                    style="width: 0%"
-                ></div>
-            </div>
-        </div>
-    </main>
-    <script>
-        console.log('%c[WordSearch] script dimuat', 'color: #10B981; font-weight: bold;');
 
-        const items = @json($items);
-        const words = items.map((item) => item.name.toUpperCase());
-        const audioMap = Object.fromEntries(items.map((item) => [item.name.toUpperCase(), item.audio]));
-        const foundWords = new Set();
-        let startCell = null;
+    </div>
 
-        function cellEl(r, c) {
-            return document.getElementById(`cell-${r}-${c}`);
-        }
+    @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const cells = document.querySelectorAll('.grid-cell');
 
-        function handleCellClick(r, c) {
-            console.log(`[WordSearch] cell diklik: (${r}, ${c})`);
+                const targetWords = {
+                    'meja': [[0,0], [0,1], [0,2], [0,3]],
+                    'kue':  [[1,3], [1,4], [1,5]],
+                    'buku': [[2,1], [2,2], [2,3], [2,4]],
+                    'udang':[[3,0], [3,1], [3,2], [3,3], [3,4]],
+                    'sapi': [[4,4], [4,5], [4,6], [4,7]]
+                };
 
-            try {
-                // Klik cell yang sama dengan startCell → batalkan (toggle nonaktif)
-                if (startCell && startCell.r === r && startCell.c === c) {
-                    cellEl(r, c).classList.remove('bg-yellow-300');
-                    console.log('[WordSearch] startCell dibatalkan (klik ulang)');
-                    startCell = null;
-                    return;
+                let isSelecting = false;
+                let selectedCells = [];
+                let foundWords = [];
+
+{{--                const wrongAudio = new Audio('{{ asset("audio/wrong.mp3") }}');--}}
+
+                function getCell(r, c) {
+                    return document.querySelector(`.grid-cell[data-row="${r}"][data-col="${c}"]`);
                 }
 
-                if (!startCell) {
-                    startCell = { r, c };
-                    const el = cellEl(r, c);
-                    if (!el) {
-                        console.error(`[WordSearch] ERROR: elemen cell-${r}-${c} tidak ditemukan`);
-                        startCell = null;
-                        return;
+                function startSelection(cell) {
+                    isSelecting = true;
+                    selectedCells = [cell];
+                    cell.classList.add('selecting');
+                }
+
+                function extendSelection(cell) {
+                    if (!isSelecting || selectedCells.includes(cell)) return;
+
+                    const firstCell = selectedCells[0];
+                    const r1 = parseInt(firstCell.dataset.row);
+                    const r2 = parseInt(cell.dataset.row);
+
+                    if (r1 === r2) {
+                        selectedCells.push(cell);
+                        cell.classList.add('selecting');
                     }
-                    el.classList.add('bg-yellow-300');
-                    console.log('[WordSearch] startCell diset:', startCell);
-                    return;
                 }
 
-                const endCell = { r, c };
-                const path = getPath(startCell, endCell);
-                console.log('[WordSearch] path:', path);
+                function endSelection() {
+                    if (!isSelecting) return;
+                    isSelecting = false;
 
-                const startEl = cellEl(startCell.r, startCell.c);
-                if (startEl) startEl.classList.remove('bg-yellow-300');
+                    const selectedWord = selectedCells.map(c => c.dataset.char).join('');
+                    let matchedWordKey = null;
 
-                if (path) {
-                    checkWord(path);
-                } else {
-                    // Bukan garis lurus (horizontal/vertikal/diagonal) → dianggap salah
-                    console.warn('[WordSearch] path null — bukan garis lurus, dianggap SALAH');
-                    flashWrong([startCell, endCell]);
-                }
+                    for (const [word, coords] of Object.entries(targetWords)) {
+                        if (foundWords.includes(word)) continue;
 
-                startCell = null;
-            } catch (err) {
-                console.error('[WordSearch] ERROR di handleCellClick:', err);
-            }
-        }
+                        const isMatch = coords.length === selectedCells.length && coords.every(([r, c]) => {
+                            return selectedCells.some(sc => parseInt(sc.dataset.row) === r && parseInt(sc.dataset.col) === c);
+                        });
 
-        function getPath(start, end) {
-            const isStraight =
-                end.r === start.r || end.c === start.c || Math.abs(end.r - start.r) === Math.abs(end.c - start.c);
-            if (!isStraight) return null;
-
-            const dr = Math.sign(end.r - start.r);
-            const dc = Math.sign(end.c - start.c);
-            const len = Math.max(Math.abs(end.r - start.r), Math.abs(end.c - start.c)) + 1;
-
-            const cells = [];
-            for (let i = 0; i < len; i++) {
-                cells.push({ r: start.r + dr * i, c: start.c + dc * i });
-            }
-            return cells;
-        }
-
-        function flashWrong(path) {
-            console.log('%c[WordSearch] SALAH — flash merah', 'color: #EF4444; font-weight: bold;');
-            showFlashMessage('error', 'salah', 2); // ← tambahkan ini
-
-            path.forEach(({ r, c }) => {
-                cellEl(r, c).classList.add('bg-red-400', 'text-white');
-            });
-
-            setTimeout(() => {
-                path.forEach(({ r, c }) => {
-                    cellEl(r, c).classList.remove('bg-red-400', 'text-white');
-                });
-                console.log('[WordSearch] kotak kembali normal');
-            }, 800);
-        }
-
-        function checkWord(path) {
-            try {
-                const letters = path
-                    .map(({ r, c }) => {
-                        const el = cellEl(r, c);
-                        if (!el) {
-                            console.error(`[WordSearch] ERROR: cell-${r}-${c} tidak ada saat checkWord`);
-                            return '';
+                        if (isMatch) {
+                            matchedWordKey = word;
+                            break;
                         }
-                        return el.dataset.letter;
-                    })
-                    .join('');
+                    }
 
-                const reversed = letters.split('').reverse().join('');
-                console.log(`[WordSearch] huruf terbentuk: "${letters}" (reversed: "${reversed}")`);
+                    if (matchedWordKey) {
+                        foundWords.push(matchedWordKey);
 
-                const match = words.find((w) => (w === letters || w === reversed) && !foundWords.has(w));
+                        selectedCells.forEach(c => {
+                            c.classList.remove('selecting');
+                            c.classList.add('correct');
+                        });
 
-                if (!match) {
-                    console.log('[WordSearch] tidak cocok — trigger flash merah');
-                    flashWrong(path);
-                    return;
+                        const card = document.querySelector(`.target-card[data-word="${matchedWordKey}"]`);
+                        if (card) {
+                            card.classList.add('found');
+
+                            const src = card.dataset.audio;
+                            if (src) {
+                                const wordAudio = new Audio(src);
+                                wordAudio.play().catch(() => {});
+                            }
+                        }
+
+                        if (typeof showFlashMessage === 'function') {
+                            showFlashMessage('success', `Hebat! Kamu menemukan kata '${matchedWordKey}'!`);
+                        }
+                    } else {
+                        selectedCells.forEach(c => c.classList.remove('selecting'));
+                        if (selectedCells.length > 1) {
+                            // wrongAudio.currentTime = 0;
+                            // wrongAudio.play().catch(() => {});
+                        }
+                    }
+
+                    selectedCells = [];
                 }
 
-                console.log(`%c[WordSearch] SUKSES! Kata ditemukan: ${match}`, 'color: #10B981; font-weight: bold;');
-                showFlashMessage('success', 'Cerdas', 2); // ← tambahkan ini
+                cells.forEach(cell => {
+                    cell.addEventListener('mousedown', () => startSelection(cell));
+                    cell.addEventListener('mouseenter', () => extendSelection(cell));
 
-                foundWords.add(match);
-                path.forEach(({ r, c }) => {
-                    cellEl(r, c).classList.add('bg-green-300', 'text-white');
+                    cell.addEventListener('touchstart', (e) => {
+                        e.preventDefault();
+                        startSelection(cell);
+                    });
                 });
 
-                const wordEl = document.getElementById(`word-${match}`);
-                if (wordEl) {
-                    wordEl.classList.remove('bg-gray-100', 'text-gray-700');
-                    wordEl.classList.add('bg-green-400', 'text-white', 'line-through');
-                }
+                document.addEventListener('mouseup', endSelection);
 
-                const iconEl = document.getElementById(`icon-${match}`);
-                if (iconEl) {
-                    iconEl.classList.remove('opacity-20', 'grayscale');
-                    iconEl.classList.add('animate-pop');
-                }
+                document.addEventListener('touchmove', (e) => {
+                    if (!isSelecting) return;
+                    const touch = e.touches[0];
+                    const targetEl = document.elementFromPoint(touch.clientX, touch.clientY);
+                    if (targetEl && targetEl.classList.contains('grid-cell')) {
+                        extendSelection(targetEl);
+                    }
+                }, { passive: false });
 
-                const audioSrc = audioMap[match];
-                if (audioSrc) {
-                    console.log(`[WordSearch] memutar audio: ${audioSrc}`);
-                    new Audio(audioSrc)
-                        .play()
-                        .then(() => console.log('[WordSearch] audio SUKSES diputar'))
-                        .catch((err) => console.error('[WordSearch] audio ERROR:', err));
-                }
-
-                document.getElementById('progressText').textContent = foundWords.size + ' / ' + words.length;
-                document.getElementById('progressBar').style.width = (foundWords.size / words.length) * 100 + '%';
-
-                if (foundWords.size === words.length) {
-                    console.log('%c[WordSearch] SEMUA KATA DITEMUKAN 🎉', 'color: #8B5CF6; font-weight: bold;');
-                    setTimeout(() => alert('🎉 Selamat! Kamu menemukan semua kata!'), 200);
-                }
-            } catch (err) {
-                console.error('[WordSearch] ERROR di checkWord:', err);
-            }
-        }
-    </script>
+                document.addEventListener('touchend', endSelection);
+            });
+        </script>
+    @endpush
 </x-layout-game>

@@ -16,11 +16,9 @@ class Halaman27 extends Controller
     #[Override]
     public function index(): View
     {
-        $data = $this->getDataPublicHalaman27();
 
-        return $this->aiueoPilih(
-            data: $data,
-            items: $data['items'],
+        return $this->sukuBerakhiran(
+            data: $this->getDataPublicHalaman27(),
             halaman: 27,
             judul: 'Halaman 27 - Bakso & Panci 🍜',
             deskripsi: 'Mengenal macam-macam!'
@@ -36,83 +34,25 @@ class Halaman27 extends Controller
     {
         $items = [
             [
-                'master' => 'mb mp nd nt ks',
+                'masterPola' => 'mb mp nd nt ks',
+                'audio' => asset('audio/id/Halaman 27/mb.wav'),
                 'items' => [
-                    [
-                        'id' => 'bambu',
-                        'name' => 'Bambu',
-                        'emoji' => '🎋',
-                        'hint' => 'Bambu adalah tanaman yang tinggi dan kuat!',
-                        'audio' => asset('audio/halaman 27/halaman 27 bambu.m4a'),
-                    ],
-                    [
-                        'id' => 'pompa',
-                        'name' => 'Pompa',
-                        'emoji' => '🚰',
-                        'hint' => 'Pompa digunakan untuk mengalirkan air!',
-                        'audio' => asset('audio/halaman 27/halaman 27 pompa.m4a'),
-                    ],
-                    [
-                        'id' => 'landak',
-                        'name' => 'Landak',
-                        'emoji' => '🦔',
-                        'hint' => 'Landak memiliki banyak duri di tubuhnya!',
-                        'audio' => asset('audio/halaman 27/halaman 27 landak.m4a'),
-                    ],
-                    [
-                        'id' => 'bantal',
-                        'name' => 'Bantal',
-                        'emoji' => '🛏️',
-                        'hint' => 'Bantal membuat tidur menjadi nyaman!',
-                        'audio' => asset('audio/halaman 27/halaman 27 bantal.m4a'),
-                    ],
-                    [
-                        'id' => 'bakso',
-                        'name' => 'Bakso',
-                        'emoji' => '🍜',
-                        'hint' => 'Bakso adalah makanan favorit banyak orang!',
-                        'audio' => asset('audio/halaman 27/halaman 27 bakso.m4a'),
-                    ],
+                    ['id' => 'Bambu', 'emoji' => asset('gambar/halaman_27/bambu.webp'), 'audio' => asset('audio/id/Halaman 27/bambu.wav')],
+                    ['id' => 'Pompa', 'emoji' => asset('gambar/halaman_27/pompa.webp'), 'audio' => asset('audio/id/Halaman 27/pompa.wav')],
+                    ['id' => 'Landak', 'emoji' => asset('gambar/halaman_27/landak.webp'), 'audio' => asset('audio/id/Halaman 27/landak.wav')],
+                    ['id' => 'Bantal', 'emoji' => asset('gambar/halaman_27/bantal.webp'), 'audio' => asset('audio/id/Halaman 27/bantal.wav')],
+                    ['id' => 'Bakso', 'emoji' => asset('gambar/halaman_27/bakso.webp'), 'audio' => asset('audio/id/Halaman 27/bakso.wav')],
                 ],
             ],
             [
-                'master' => 'nc nj rb rt kt',
+                'masterPola' => 'nc nj rb rt kt',
+                'audio' => asset('audio/id/Halaman 27/nc.wav'),
                 'items' => [
-                    [
-                        'id' => 'panci',
-                        'name' => 'Panci',
-                        'emoji' => '🍲',
-                        'hint' => 'Panci digunakan untuk memasak makanan!',
-                        'audio' => asset('audio/halaman 27/halaman 27 panci.m4a'),
-                    ],
-                    [
-                        'id' => 'banjir',
-                        'name' => 'Banjir',
-                        'emoji' => '🌊',
-                        'hint' => 'Banjir terjadi saat air meluap!',
-                        'audio' => asset('audio/halaman 27/halaman 27 banjir.m4a'),
-                    ],
-                    [
-                        'id' => 'barbel',
-                        'name' => 'Barbel',
-                        'emoji' => '🏋️',
-                        'hint' => 'Barbel digunakan untuk latihan kekuatan!',
-                        'audio' => asset('audio/halaman 27/halaman 27 barbel.m4a'),
-                    ],
-                    [
-                        'id' => 'kertas',
-                        'name' => 'Kertas',
-                        'emoji' => '📄',
-                        'hint' => 'Kertas digunakan untuk menulis dan menggambar!',
-                        'audio' => asset('audio/halaman 27/halaman 27 kertas.m4a'),
-                    ],
-                    [
-                        'id' => 'dokter',
-                        'name' => 'Dokter',
-                        'emoji' => '👨‍⚕️',
-                        'hint' => 'Dokter membantu menjaga kesehatan kita!',
-                        'audio' => asset('audio/halaman 27/halaman 27 dokter.m4a'),
-                    ],
+                    ['id' => 'Panci', 'emoji' => asset('gambar/halaman_27/panci.webp'), 'audio' => asset('audio/id/Halaman 27/panci.wav')],
+                    ['id' => 'Banjir', 'emoji' => asset('gambar/halaman_27/banjir.webp'), 'audio' => asset('audio/id/Halaman 27/banjir.wav')],
+                    ['id' => 'Barbel', 'emoji' => asset('gambar/halaman_27/bakso.webp'), 'audio' => asset('audio/id/Halaman 27/bakso.wav')],
+                    ['id' => 'Kertas', 'emoji' => asset('gambar/halaman_27/kertas.webp'), 'audio' => asset('audio/id/Halaman 27/kertas.wav')],
+                    ['id' => 'Dokter', 'emoji' => asset('gambar/halaman_27/dokter.webp'), 'audio' => asset('audio/id/Halaman 27/dokter.wav')],
                 ],
             ],
         ];

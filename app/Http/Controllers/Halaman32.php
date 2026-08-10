@@ -16,11 +16,9 @@ class Halaman32 extends Controller
     #[Override]
     public function index(): View
     {
-        $data = $this->getDataPublicHalaman32();
 
         return $this->deskripsiObject(
-            data: $data,
-            items: $data['items'],
+            data:  $this->getDataPublicHalaman32(),
             halaman: 32,
             object: 'Mountain',
             iconText: '🏔️',
@@ -45,34 +43,16 @@ class Halaman32 extends Controller
     {
         $items = [
             [
-                'id' => 1,
-                'text' => 'Mountain',
-                'audio' => asset('audio/Halaman 32/gunung.m4a'),
-            ],
-            [
-                'id' => 2,
-                'text' => 'A tall mountain rises upward.',
-                'audio' => asset('audio/Halaman 32/definisi gunung.m4a'),
-            ],
-            [
-                'id' => 3,
-                'text' => 'An eagle flies above the mountain.',
-                'audio' => asset('audio/Halaman 32/definisi gunung.m4a'),
-            ],
-            [
-                'id' => 4,
-                'text' => 'At night, the moon rises above the mountain peak.',
-                'audio' => asset('audio/Halaman 32/definisi gunung.m4a'),
-            ],
-            [
-                'id' => 5,
-                'text' => 'Mountains have large rocks.',
-                'audio' => asset('audio/Halaman 32/definisi gunung.m4a'),
-            ],
-            [
-                'id' => 6,
-                'text' => 'People climb mountains to enjoy the view.',
-                'audio' => asset('audio/Halaman 32/definisi gunung.m4a'),
+                'id' => 'mountain',
+                'emoji' => asset('gambar/halaman_31-32/gunung.webp'),
+                'audio' => asset('audio/en/Halaman 32/gunung.m4a'),
+                'texts' => [
+                    ['text' => 'A tall mountain rises upward.', 'audio' => asset('audio/id/Halaman 32/text1.wav')],
+                    ['text' => 'An eagle flies above the mountain.', 'audio' => asset('audio/id/Halaman 32/text2.wav')],
+                    ['text' => 'At night, the moon rises above the mountain peak.', 'audio' => asset('audio/id/Halaman 32/text3.wav')],
+                    ['text' => 'Mountains have large rocks.', 'audio' => asset('audio/id/Halaman 32/text4.wav')],
+                    ['text' => 'People climb mountains to enjoy the view.', 'audio' => asset('audio/id/Halaman 32/text5.wav')],
+                ],
             ],
         ];
 

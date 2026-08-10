@@ -1,183 +1,305 @@
-<x-layout-game title="{{ $judul }}">
-    <main class="relative z-10 mx-auto max-w-4xl p-6">
-        <div class="relative mb-6 overflow-hidden rounded-3xl bg-white p-6 text-center shadow-xl">
-            <div
-                class="absolute top-0 right-0 left-0 h-2"
-                style="
-                    background: linear-gradient(90deg, #ff6b6b, #ff9f43, #ffe66d, #4ecdc4, #6c5ce7, #ff6b6b);
-                    background-size: 200% 100%;
-                    animation: rainbow 3s linear infinite;
-                "
-            ></div>
-            <a
-                href="{{ route('belajar.index') }}"
-                class="absolute top-1/2 left-4 -translate-y-1/2 rounded-full bg-red-100 px-4 py-2 text-sm font-bold text-red-500 transition-all hover:bg-red-200"
-            >← Kembali</a>
-            <span class="animate-bounce-subtle mb-2 block text-[3rem]">🍅</span>
-            <h1 class="mb-1 text-[1.8rem] font-black text-gray-800 md:text-[2.2rem]">{{ $judul }}</h1>
-            <p class="text-[1rem] text-gray-500">{{ $deskripsi }}</p>
-        </div>
-        <div class="mb-6 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 md:gap-6">
-            @foreach ($items as $index => $item)
-                <div
-                    id="card-{{ $item['id'] }}"
-                    class="item-card group w-40 shrink-0 cursor-pointer snap-start rounded-3xl border-4 border-transparent bg-white p-6 text-center shadow-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl md:w-48"
-                    data-index="{{ $index }}"
-                    onclick="selectItem('{{ $item['id'] }}')"
-                >
-                    <div
-                        class="animate-float-up mb-3 text-[4rem] md:text-[5rem]"
-                        style="animation-delay: {{ ($index % 5) * 0.3 }}s"
-                    >
-                        {{ $item['emoji'] }}
-                    </div>
-                    <h3 class="mb-1 text-[1.2rem] font-black text-gray-800 md:text-[1.4rem]">{{ $item['name'] }}</h3>
-                    <p class="text-xs text-gray-500">{{ $item['name'] }}</p>
-                </div>
-            @endforeach
-        </div>
-        <div id="itemDisplay" class="mb-6 hidden rounded-3xl bg-white p-8 text-center shadow-2xl">
-            <div class="animate-pop mb-4 text-[8rem] md:text-[10rem]" id="itemEmoji">🍅</div>
-            <h2 class="mb-2 text-[2.5rem] font-black tracking-widest text-gray-800 md:text-[3rem]" id="itemName">
-                Tomat
-            </h2>
-            <div id="syllableOptions" class="mb-4 flex flex-wrap justify-center gap-3"></div>
-            <p class="mb-6 text-[1.2rem] text-gray-500" id="itemHint">Tomat adalah buah merah untuk sauce!</p>
-            <div class="flex flex-wrap justify-center gap-4">
-                <button
-                    onclick="playAudio()"
-                    class="rounded-full bg-gradient-to-r from-blue-400 to-blue-500 px-6 py-3 font-bold text-white shadow-lg transition-all hover:scale-105"
-                >
-                    🔊 Dengarkan
-                </button>
-                <button
-                    onclick="nextItem()"
-                    class="rounded-full bg-gradient-to-r from-green-400 to-green-500 px-6 py-3 font-bold text-white shadow-lg transition-all hover:scale-105"
-                >
-                    ➡️ Lanjut
-                </button>
-            </div>
-        </div>
-        <div class="rounded-2xl bg-white p-4 shadow-lg">
-            <div class="mb-2 flex items-center justify-between">
-                <span class="text-sm font-bold text-gray-600">Progress</span>
-                <span id="progressText" class="text-sm font-bold text-green-500">0 / {{ count($items) }}</span>
-            </div>
-            <div class="h-4 overflow-hidden rounded-full bg-gray-200">
-                <div
-                    id="progressBar"
-                    class="h-full rounded-full bg-gradient-to-r from-green-400 to-emerald-500 transition-all duration-500"
-                    style="width: 0%"
-                ></div>
-            </div>
-        </div>
-    </main>
-    <svg class="pointer-events-none fixed bottom-0 left-0 z-0 h-24 w-full" viewBox="0 0 1440 120" fill="none" preserveAspectRatio="none">
-        <path
-            d="M0 120L48 110C96 100 192 80 288 70C384 60 480 60 576 65C672 70 768 80 864 85C960 90 1056 90 1152 82.5C1248 75 1344 60 1392 52.5L1440 45V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0Z"
-            fill="url(#wave-gradient)"
-            fill-opacity="0.15"
-        />
-        <defs>
-            <linearGradient id="wave-gradient" x1="0" y1="0" x2="1440" y2="0" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#10B981" />
-                <stop offset="0.5" stop-color="#8B5CF6" />
-                <stop offset="1" stop-color="#F97316" />
-            </linearGradient>
-        </defs>
-    </svg>
-    <script>
-        const items = @json($items);
-        let currentIndex = 0;
-        let viewed = new Set();
-        let blankIndex = 0;
-        let solved = false;
+<x-layout-game
+    title="{{$judul}}"
+    halaman="{{$halaman}}"
+>
+    <style>
+        /* Typography Judul Pop-out */
+        .title-text {
+            font-family: 'Fredoka', cursive, sans-serif;
+            color: #fbbf24;
+            -webkit-text-stroke: 1.5px #000000;
+            paint-order: stroke fill;
+            filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.8));
+        }
 
-        function updateLocks() {
-            items.forEach((item, i) => {
-                const card = document.getElementById('card-' + item.id);
-                const unlocked = i === 0 || viewed.has(items[i - 1].id);
-                if (unlocked) {
-                    card.classList.remove('opacity-40', 'grayscale', 'pointer-events-none');
-                } else {
-                    card.classList.add('opacity-40', 'grayscale', 'pointer-events-none');
+        .item-card {
+            background-color: #ffffff;
+            border-radius: 1.25rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+            width: 7rem;
+        }
+
+        .word-box {
+            background-color: #ffffff;
+            border-radius: 1rem;
+            padding: 0.5rem 1.25rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-family: 'Fredoka', cursive, sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1a100c;
+        }
+
+        .drop-target {
+            width: 2.75rem;
+            height: 3rem;
+            border-radius: 0.5rem;
+            background-color: #f8fafc;
+            border: 2px dashed #94a3b8;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 0.15rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .drop-target.drag-over {
+            background-color: #dbeafe;
+            border-color: #3b82f6;
+            transform: scale(1.08);
+        }
+
+        .drop-target.correct {
+            background-color: #22c55e !important;
+            border: 2px solid #16a34a !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.3);
+            transform: scale(1.05);
+        }
+
+        .drop-target.wrong {
+            background-color: #fef2f2 !important;
+            border: 2px solid #ef4444 !important;
+            color: #ef4444 !important;
+            animation: shake 0.3s ease-in-out;
+        }
+
+        .letter-tile {
+            width: 3.25rem;
+            height: 3.5rem;
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            border: 2px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Fredoka', cursive, sans-serif;
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: #1a100c;
+            cursor: grab;
+            transition: all 0.2s ease;
+            user-select: none;
+            touch-action: none;
+        }
+
+        .letter-tile:active {
+            cursor: grabbing;
+        }
+
+        .letter-tile.dragging {
+            opacity: 0.4;
+            transform: scale(0.95);
+        }
+
+        .letter-tile.selected {
+            background-color: #3b82f6;
+            color: #ffffff;
+            border-color: #2563eb;
+            transform: scale(1.1);
+        }
+
+        .letter-tile.used {
+            opacity: 0.2;
+            pointer-events: none;
+            background-color: #cbd5e1;
+            border-color: #94a3b8;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-4px); }
+            40%, 80% { transform: translateX(4px); }
+        }
+    </style>
+
+    @php $byWord = collect($items)->keyBy(fn ($i) => strtolower($i['id'])); @endphp
+
+    <div class="flex flex-col items-center justify-between h-full w-full my-auto select-none px-2">
+
+        <div class="text-center mt-1 mb-2">
+            <h1 class="title-text text-lg sm:text-xl md:text-2xl font-extrabold tracking-wide leading-tight">
+                Lengkapi nama objek berikut<br>dengan suku kata yang tepat !
+            </h1>
+        </div>
+
+        <div class="flex flex-col space-y-4 w-full max-w-lg my-auto">
+
+            <!-- 1. Tomat -->
+            <div class="flex items-center justify-between px-4">
+                <div class="item-card">
+                    <img src="{{ $byWord['tomat']['emoji'] }}" alt="tomat" class="size-32 object-contain pointer-events-none" />
+                </div>
+                <div class="word-box" data-audio="{{ $byWord['tomat']['audio'] }}">
+                    <span>to</span>
+                    <div class="drop-target" data-word="tomat" data-correct="m"></div>
+                    <span>at</span>
+                </div>
+            </div>
+
+            <!-- 2. Payung -->
+            <div class="flex items-center justify-between px-4">
+                <div class="item-card">
+                    <img src="{{ $byWord['payung']['emoji'] }}" alt="payung" class="size-32 object-contain pointer-events-none" />
+                </div>
+                <div class="word-box" data-audio="{{ $byWord['payung']['audio'] }}">
+                    <span>pay</span>
+                    <div class="drop-target" data-word="payung" data-correct="u"></div>
+                    <div class="drop-target" data-word="payung" data-correct="n"></div>
+                    <div class="drop-target" data-word="payung" data-correct="g"></div>
+                </div>
+            </div>
+
+            <!-- 3. Kelinci -->
+            <div class="flex items-center justify-between px-4">
+                <div class="item-card">
+                    <img src="{{ $byWord['kelinci']['emoji'] }}" alt="kelinci" class="size-32  object-contain pointer-events-none" />
+                </div>
+                <div class="word-box" data-audio="{{ $byWord['kelinci']['audio'] }}">
+                    <span>k</span>
+                    <div class="drop-target" data-word="kelinci" data-correct="e"></div>
+                    <span>inci</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex justify-center items-center gap-2 sm:gap-3 w-full max-w-lg my-3">
+            <div class="letter-tile" draggable="true" data-letter="l">l</div>
+            <div class="letter-tile" draggable="true" data-letter="m">m</div>
+            <div class="letter-tile" draggable="true" data-letter="g">g</div>
+            <div class="letter-tile" draggable="true" data-letter="u">u</div>
+            <div class="letter-tile" draggable="true" data-letter="e">e</div>
+            <div class="letter-tile" draggable="true" data-letter="n">n</div>
+        </div>
+
+    </div>
+
+    @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const tiles = document.querySelectorAll('.letter-tile');
+                const dropTargets = document.querySelectorAll('.drop-target');
+
+                let activeTile = null;
+
+{{--                const wrongAudio = new Audio('{{ asset("audio/wrong.mp3") }}');--}}
+
+                tiles.forEach(tile => {
+                    tile.addEventListener('dragstart', (e) => {
+                        if (tile.classList.contains('used')) return;
+                        activeTile = tile;
+                        tile.classList.add('dragging');
+                        e.dataTransfer.setData('text/plain', tile.dataset.letter);
+                    });
+
+                    tile.addEventListener('dragend', () => {
+                        tile.classList.remove('dragging');
+                    });
+
+                    tile.addEventListener('click', () => {
+                        if (tile.classList.contains('used')) return;
+
+                        if (activeTile === tile) {
+                            tile.classList.remove('selected');
+                            activeTile = null;
+                        } else {
+                            tiles.forEach(t => t.classList.remove('selected'));
+                            tile.classList.add('selected');
+                            activeTile = tile;
+                        }
+                    });
+                });
+
+                dropTargets.forEach(target => {
+                    target.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                        if (!target.classList.contains('correct')) {
+                            target.classList.add('drag-over');
+                        }
+                    });
+
+                    target.addEventListener('dragleave', () => {
+                        target.classList.remove('drag-over');
+                    });
+
+                    target.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        target.classList.remove('drag-over');
+
+                        if (target.classList.contains('correct')) return;
+
+                        const droppedLetter = e.dataTransfer.getData('text/plain') || (activeTile ? activeTile.dataset.letter : null);
+
+                        if (droppedLetter && activeTile) {
+                            processAnswer(target, activeTile, droppedLetter);
+                        }
+                    });
+
+                    target.addEventListener('click', () => {
+                        if (target.classList.contains('correct')) return;
+
+                        if (!activeTile) {
+                            if (typeof showFlashMessage === 'function') {
+                                showFlashMessage('error', 'Tarik atau pilih huruf di bawah terlebih dahulu!');
+                            }
+                            return;
+                        }
+
+                        processAnswer(target, activeTile, activeTile.dataset.letter);
+                    });
+                });
+
+                function processAnswer(target, tileElement, selectedLetter) {
+                    const correctLetter = target.dataset.correct;
+
+                    if (selectedLetter === correctLetter) {
+                        target.classList.remove('wrong');
+                        target.classList.add('correct');
+                        target.innerText = selectedLetter;
+
+                        tileElement.classList.remove('selected', 'dragging');
+                        tileElement.classList.add('used');
+                        tileElement.setAttribute('draggable', 'false');
+                        activeTile = null;
+
+                        const wordBox = target.closest('.word-box');
+                        const src = wordBox?.dataset.audio;
+                        if (src) {
+                            const wordAudio = new Audio(src);
+                            wordAudio.play().catch(() => {});
+                        }
+
+                        if (typeof showFlashMessage === 'function') {
+                            showFlashMessage('success', 'Hebat! Suku kata tepat!');
+                        }
+                    } else {
+                        target.classList.add('wrong');
+                        target.innerText = selectedLetter;
+
+                        // wrongAudio.currentTime = 0;
+                        // wrongAudio.play().catch(() => {});
+
+                        if (typeof showFlashMessage === 'function') {
+                            showFlashMessage('error', 'Coba lagi, pilih/tarik huruf yang sesuai!');
+                        }
+
+                        setTimeout(() => {
+                            target.classList.remove('wrong');
+                            target.innerText = '';
+                        }, 500);
+                    }
                 }
             });
-        }
-
-        function selectItem(id) {
-            currentIndex = items.findIndex((item) => item.id === id);
-            showItem();
-            document.getElementById('itemDisplay').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-
-        function showItem() {
-            const item = items[currentIndex];
-            solved = false;
-            blankIndex = Math.floor(Math.random() * item.syllables.length);
-
-            document.getElementById('itemDisplay').classList.remove('hidden');
-            document.getElementById('itemEmoji').textContent = item.emoji;
-            document.getElementById('itemHint').textContent = item.hint;
-            renderSyllablePuzzle(item);
-        }
-
-        function renderSyllablePuzzle(item) {
-            const display = item.syllables.map((s, i) => (i === blankIndex ? '...' : s)).join(' – ');
-            document.getElementById('itemName').textContent = display;
-
-            const distractorPool = items
-                .flatMap((i) => i.syllables)
-                .filter((s) => s.toLowerCase() !== item.syllables[blankIndex].toLowerCase());
-            const distractors = [...new Set(distractorPool)].sort(() => Math.random() - 0.5).slice(0, 2);
-
-            const options = [item.syllables[blankIndex], ...distractors].sort(() => Math.random() - 0.5);
-
-            const container = document.getElementById('syllableOptions');
-            container.innerHTML = '';
-            options.forEach((opt) => {
-                const btn = document.createElement('button');
-                btn.textContent = opt;
-                btn.className =
-                    'bg-gradient-to-r from-purple-400 to-purple-500 text-white px-5 py-2 rounded-full font-bold shadow-lg hover:scale-105 transition-all';
-                btn.onclick = () => checkAnswer(opt, item, btn);
-                container.appendChild(btn);
-            });
-        }
-
-        function checkAnswer(choice, item, btn) {
-            if (solved) return;
-            if (choice.toLowerCase() === item.syllables[blankIndex].toLowerCase()) {
-                solved = true;
-                document.getElementById('itemName').textContent = item.name;
-                btn.classList.add('ring-4', 'ring-green-400');
-                viewed.add(item.id);
-                updateProgress();
-                updateLocks();
-                playAudio();
-            } else {
-                btn.classList.add('animate-shake');
-                setTimeout(() => btn.classList.remove('animate-shake'), 400);
-            }
-        }
-
-        function updateProgress() {
-            const count = viewed.size;
-            document.getElementById('progressText').textContent = count + ' / ' + items.length;
-            document.getElementById('progressBar').style.width = (count / items.length) * 100 + '%';
-        }
-
-        function playAudio() {
-            const item = items[currentIndex];
-            new Audio(item.audio).play();
-        }
-
-        function nextItem() {
-            currentIndex = (currentIndex + 1) % items.length;
-            showItem();
-        }
-
-        updateLocks();
-        selectItem(items[0].id);
-    </script>
+        </script>
+    @endpush
 </x-layout-game>

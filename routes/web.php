@@ -75,11 +75,14 @@ Route::get('/book', function () {
 Route::get('/belajar/cover', fn () => view('pertama.cover'))->name('pertama.cover');
 Route::get('/belajar/kata-pengantar', fn () => view('pertama.kata-pengantar'))->name('pertama.kata-pengantar');
 Route::get('/belajar/petujuk-penggunaan', fn () => view('pertama.petunjuk-penggunaan'))->name('pertama.petujuk-penggunaan');
+Route::get('/belajar/penutupan', fn () => view('pertama.penutupan'))->name('belajar.penutupan');
+
 Route::get('/belajar/abc', fn () => view('abc'))->name('belajar.abc');
 Route::get('/belajar/temukan-suku-kata', fn () => view('temukan-suku-kata'))->name('belajar.temukan-suku-kata');
 Route::get('/belajar/aiueo', fn () => view('aiueo'))->name('belajar.aiueo');
 Route::get('/belajar/ayo-coba-baca', fn () => view('ayo-coba-baca'))->name('belajar.ayo-coba-baca');
-Route::get('/belajar/penutupan', fn () => view('pertama.penutupan'))->name('belajar.penutupan');
+Route::get('/belajar/huruf-objek', fn () => view('pertama.huruf-objek'))->name('belajar.huruf-objek');
+
 Route::get('/belajar/halaman-1', [Halaman1::class, 'index'])->name('belajar.halaman-1');
 Route::get('/belajar/halaman-2', [Halaman2::class, 'index'])->name('belajar.halaman-2'); // sudah
 Route::get('/belajar/halaman-3', [Halaman3::class, 'index'])->name('belajar.halaman-3'); // sudah

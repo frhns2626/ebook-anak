@@ -1,324 +1,373 @@
-<x-layout-game title="{{ $judul }}">
-    <main class="relative z-10 mx-auto max-w-4xl p-6">
-        <div class="relative mb-6 overflow-hidden rounded-3xl bg-white p-6 text-center shadow-xl">
-            <div
-                class="absolute top-0 right-0 left-0 h-2"
-                style="
-                    background: linear-gradient(90deg, #ff6b6b, #ff9f43, #ffe66d, #4ecdc4, #6c5ce7, #ff6b6b);
-                    background-size: 200% 100%;
-                    animation: rainbow 3s linear infinite;
-                "
-            ></div>
-            <a
-                href="{{ route('belajar.index') }}"
-                class="absolute top-1/2 left-4 -translate-y-1/2 rounded-full bg-red-100 px-4 py-2 text-sm font-bold text-red-500 transition-all hover:bg-red-200"
-            >← Kembali</a>
-            <span class="animate-bounce-subtle mb-2 block text-[3rem]">🦁</span>
-            <h1 class="mb-1 text-[1.8rem] font-black text-gray-800 md:text-[2.2rem]">{{ $judul }}</h1>
-            <p class="text-[1.1rem] text-gray-500">{{ $deskripsi }}</p>
-        </div>
-        <div class="mb-6 rounded-2xl border border-yellow-300 bg-yellow-100 p-4 text-center font-medium text-yellow-800">
-            🎯 <strong>Tap huruf, lalu tap hewan yang sesuai!</strong><br />
-            <span class="text-sm">Setelah cocok, susun hurufnya untuk mengeja kata!</span>
-        </div>
-        <div id="board" class="relative rounded-3xl bg-white p-6 shadow-xl">
-            <svg id="lines-layer" class="pointer-events-none absolute inset-0 h-full w-full" style="z-index:1"></svg>
-            <div class="relative grid grid-cols-2 gap-20 md:gap-32" style="z-index: 2">
-                <div>
-                    <h3 class="mb-4 text-center text-xl font-bold text-gray-700">Huruf</h3>
-                    <div id="letters" class="space-y-4"></div>
-                </div>
-                <div>
-                    <h3 class="mb-4 text-center text-xl font-bold text-gray-700">Hewan</h3>
-                    <div id="animals" class="space-y-4"></div>
-                </div>
-            </div>
-        </div>
-        <p id="status" class="mt-6 text-center text-lg font-bold"></p>
-        <div class="mt-8 flex justify-center gap-4">
-            <button
-                id="resetBtn"
-                class="rounded-full bg-gray-200 px-6 py-4 font-bold text-gray-700 transition-all hover:bg-gray-300"
-            >
-                🔄 Ulangi
-            </button>
-        </div>
-        <div id="successModal" class="fixed inset-0 z-50 flex hidden items-center justify-center bg-black/70">
-            <div class="mx-4 max-w-md rounded-3xl bg-white p-10 text-center">
-                <div class="mb-4 animate-bounce text-8xl">🎉</div>
-                <h2 class="mb-2 text-4xl font-black text-emerald-600">Hebat Sekali!</h2>
-                <p class="mb-6 text-xl text-gray-600">Semua huruf sudah cocok dengan benar!</p>
-                <button
-                    onclick="
-                        document.getElementById('successModal').classList.add('hidden');
-                        resetGame();
-                    "
-                    class="rounded-full bg-emerald-500 px-8 py-3 text-lg font-bold text-white transition-all hover:bg-emerald-600"
-                >
-                    Main Lagi →
-                </button>
-            </div>
-        </div>
-    </main>
-    <script>
-        const items = @json($items);
-        const board = document.getElementById('board');
-        const linesLayer = document.getElementById('lines-layer');
-        const statusEl = document.getElementById('status');
-
-        let selectedLeft = null;
-        let previewLine = null;
-
-        function shuffle(arr) {
-            return [...arr].sort(() => Math.random() - 0.5);
-        }
-
-        function renderBoard() {
-            const lettersEl = document.getElementById('letters');
-            const animalsEl = document.getElementById('animals');
-            lettersEl.innerHTML = '';
-            animalsEl.innerHTML = '';
-
-            shuffle(items).forEach((item) => {
-                const div = document.createElement('div');
-                div.dataset.side = 'left';
-                div.dataset.letter = item.letter;
-                div.dataset.id = item.id;
-                div.dataset.audio = item.audio;
-                div.className =
-                    'item-box border-4 border-blue-200 rounded-2xl p-5 text-center cursor-pointer transition-all shadow-md text-5xl font-black flex items-center justify-center h-24 select-none';
-                div.textContent = item.letter;
-                lettersEl.appendChild(div);
-            });
-
-            shuffle(items).forEach((item) => {
-                const div = document.createElement('div');
-                div.dataset.side = 'right';
-                div.dataset.letter = item.letter;
-                div.dataset.id = item.id;
-                div.dataset.name = item.name;
-                div.className =
-                    'item-box border-4 border-purple-200 rounded-2xl p-4 cursor-pointer transition-all shadow-md flex flex-col items-center justify-center gap-2 h-32';
-                div.innerHTML = `<span class="text-6xl flex-shrink-0">${item.emoji}</span>
-                    <div class="font-bold text-lg tracking-widest text-gray-300 blank-text">${'_'.repeat(item.name.length)}</div>
-                    <div class="spell-tiles hidden flex gap-1 flex-wrap justify-center mt-1"></div>`;
-                animalsEl.appendChild(div);
-            });
-
-            bindItems();
-        }
-
-        function getPoint(evt) {
-            const rect = board.getBoundingClientRect();
-            const clientX = evt.touches ? evt.touches[0].clientX : evt.clientX;
-            const clientY = evt.touches ? evt.touches[0].clientY : evt.clientY;
-            return { x: clientX - rect.left, y: clientY - rect.top };
-        }
-
-        function getCenter(el) {
-            const r = el.getBoundingClientRect();
-            const b = board.getBoundingClientRect();
-            const side = el.dataset.side;
-            return {
-                x: side === 'left' ? r.right - b.left : r.left - b.left,
-                y: r.top - b.top + r.height / 2,
-            };
-        }
-
-        function startPreview(leftEl) {
-            const p1 = getCenter(leftEl);
-            previewLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-            previewLine.setAttribute('x1', p1.x);
-            previewLine.setAttribute('y1', p1.y);
-            previewLine.setAttribute('x2', p1.x);
-            previewLine.setAttribute('y2', p1.y);
-            previewLine.setAttribute('stroke', '#888780');
-            previewLine.setAttribute('stroke-width', '2.5');
-            previewLine.setAttribute('stroke-dasharray', '5,4');
-            linesLayer.appendChild(previewLine);
-        }
-
-        function updatePreview(evt) {
-            if (!previewLine) return;
-            const p = getPoint(evt);
-            previewLine.setAttribute('x2', p.x);
-            previewLine.setAttribute('y2', p.y);
-        }
-
-        function removePreview() {
-            if (previewLine) {
-                previewLine.remove();
-                previewLine = null;
-            }
-        }
-
-        board.addEventListener('mousemove', updatePreview);
-        board.addEventListener('touchmove', updatePreview);
-
-        function drawLine(leftEl, rightEl, isCorrect) {
-            const p1 = getCenter(leftEl),
-                p2 = getCenter(rightEl);
-            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-            line.setAttribute('x1', p1.x);
-            line.setAttribute('y1', p1.y);
-            line.setAttribute('x2', p2.x);
-            line.setAttribute('y2', p2.y);
-            line.setAttribute('stroke', isCorrect ? '#639922' : '#e24b4a');
-            line.setAttribute('stroke-width', '3');
-            linesLayer.appendChild(line);
-        }
-
-        function checkWin() {
-            const rightItems = document.querySelectorAll('[data-side="right"]');
-            const allSpelled = Array.from(rightItems).every((el) => el.classList.contains('spelled'));
-            if (allSpelled) {
-                statusEl.textContent = '🎉 Bagus! Semua kata sudah selesai ditulis.';
-                setTimeout(() => document.getElementById('successModal').classList.remove('hidden'), 400);
-            }
-        }
-
-        function setupSpelling(rightEl, word, audioSrc) {
-            const blankEl = rightEl.querySelector('.blank-text');
-            const tilesEl = rightEl.querySelector('.spell-tiles');
-            let progress = 0;
-            blankEl.textContent = '_'.repeat(word.length);
-
-            const letters = shuffle(word.split(''));
-            tilesEl.innerHTML = '';
-            tilesEl.classList.remove('hidden');
-
-            letters.forEach((ch) => {
-                const btn = document.createElement('button');
-                btn.textContent = ch;
-                btn.className =
-                    'spell-tile bg-blue-50 text-blue-600 border-2 border-blue-200 w-12 h-12 rounded-lg font-black text-2xl';
-                btn.onclick = (e) => {
-                    e.stopPropagation();
-                    if (btn.disabled) return;
-                    const expected = word[progress];
-                    if (ch === expected) {
-                        const chars = blankEl.textContent.split('');
-                        chars[progress] = ch;
-                        blankEl.textContent = chars.join('');
-                        progress++;
-                        btn.disabled = true;
-                        btn.classList.add('opacity-30');
-                        if (progress === word.length) {
-                            blankEl.classList.remove('text-gray-300');
-                            blankEl.classList.add('text-emerald-600');
-                            tilesEl.classList.add('hidden');
-                            rightEl.classList.add('spelled');
-                            if (audioSrc) new Audio(audioSrc).play();
-                            checkWin();
-                        }
-                    } else {
-                        btn.classList.add('animate-shake');
-                        setTimeout(() => btn.classList.remove('animate-shake'), 400);
-                    }
-                };
-                tilesEl.appendChild(btn);
-            });
-        }
-
-        function bindItems() {
-            document.querySelectorAll('.item-box').forEach((el) => {
-                el.onclick = () => {
-                    const side = el.dataset.side;
-                    const letter = el.dataset.letter;
-
-                    if (side === 'left') {
-                        if (el.classList.contains('correct')) return;
-                        document.querySelectorAll('.item-box').forEach((i) => i.classList.remove('selected'));
-                        removePreview();
-                        selectedLeft = el;
-                        el.classList.add('selected');
-                        startPreview(el);
-                    } else {
-                        if (!selectedLeft) return;
-                        const isCorrect = selectedLeft.dataset.letter === letter;
-
-                        removePreview();
-                        drawLine(selectedLeft, el, isCorrect);
-
-                        selectedLeft.classList.remove('selected');
-                        selectedLeft.classList.add(isCorrect ? 'correct' : 'wrong');
-                        el.classList.add(isCorrect ? 'correct' : 'wrong');
-
-                        if (isCorrect) {
-                            const audioSrc = selectedLeft.dataset.audio;
-                            setupSpelling(el, el.dataset.name, audioSrc);
-                        }
-
-                        if (!isCorrect) {
-                            const badLeft = selectedLeft,
-                                badRight = el;
-                            setTimeout(() => {
-                                badLeft.classList.remove('wrong');
-                                badRight.classList.remove('wrong');
-                                linesLayer.querySelectorAll('line').forEach((l) => {
-                                    if (l.getAttribute('stroke') === '#e24b4a') l.remove();
-                                });
-                            }, 700);
-                        }
-
-                        selectedLeft = null;
-                        checkWin();
-                    }
-                };
-            });
-        }
-
-        function resetGame() {
-            document.querySelectorAll('.item-box').forEach((i) => i.classList.remove('selected', 'correct', 'wrong'));
-            linesLayer.innerHTML = '';
-            statusEl.textContent = '';
-            selectedLeft = null;
-            previewLine = null;
-            renderBoard();
-        }
-
-        document.getElementById('resetBtn').addEventListener('click', resetGame);
-
-        document.addEventListener('DOMContentLoaded', () => {
-            renderBoard();
-        });
-    </script>
+<x-layout-game
+    title="{{$judul}}"
+    halaman="{{$halaman}}"
+>
     <style>
-        .item-box.selected {
+        /* Typography Judul Pop-out */
+        .title-text {
+            font-family: 'Fredoka', cursive, sans-serif;
+            color: #fbbf24;
+            -webkit-text-stroke: 1.5px #000000;
+            paint-order: stroke fill;
+            filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.8));
+        }
+
+        /* Card Gambar Putih */
+        .item-card {
+            background-color: #ffffff;
+            border-radius: 1.25rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        /* Titik Hubung Interaktif */
+        .connect-dot {
+            width: 22px;
+            height: 22px;
+            background-color: #1a100c;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            z-index: 30;
+        }
+
+        .connect-dot:hover, .connect-dot.active {
+            transform: scale(1.35);
+            background-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.3);
+        }
+        /* Styling Input Karakter Tulis Ulang */
+        .char-input {
+            width: 1.75rem;
+            height: 2rem;
+            border-radius: 0.375rem;
+            border: 2px solid #cbd5e1;
+            background-color: #ffffff;
+            font-family: 'Fredoka', cursive, sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            text-align: center;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .char-input:focus {
             border-color: #3b82f6;
-            background: #eff6ff;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
         }
 
-        .item-box.correct {
-            border-color: #639922;
-            background: #f0fdf4;
-            cursor: default;
+        .char-input.correct {
+            border-color: #22c55e !important;
+            background-color: #f0fdf4 !important;
+            color: #166534 !important;
+            box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.3);
         }
 
-        .item-box.wrong {
-            border-color: #e24b4a;
-            background: #fef2f2;
-        }
-
-        .spell-tile:disabled {
-            cursor: default;
+        .char-input.wrong {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+            color: #991b1b !important;
+            animation: shake 0.3s ease-in-out;
         }
 
         @keyframes shake {
-            0%,
-            100% {
-                transform: translateX(0);
-            }
-            25% {
-                transform: translateX(-6px);
-            }
-            75% {
-                transform: translateX(6px);
-            }
-        }
-
-        .animate-shake {
-            animation: shake 0.4s ease;
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-4px); }
+            40%, 80% { transform: translateX(4px); }
         }
     </style>
+
+    @php
+        // Acak urutan baris atas (gambar) dan baris bawah (kata target) secara independen,
+        // supaya posisi gambar dan kata tidak selalu sejajar 1:1.
+        $topItems = collect($items)->shuffle()->values();
+        $bottomItems = collect($items)->shuffle()->values();
+    @endphp
+
+    <div id="gameContainer" class="relative flex flex-col items-center justify-between h-full w-full my-auto select-none px-2">
+        <!-- Canvas Transparan untuk Garis Penghubung (Line Cursor Tracking) -->
+        <canvas id="lineCanvas" class="absolute inset-0 w-full h-full pointer-events-none z-20"></canvas>
+
+        <!-- Judul Atas -->
+        <div class="text-center mt-1 mb-2 z-10">
+            <h1 class="title-text text-lg sm:text-xl md:text-2xl font-extrabold tracking-wide px-2 leading-tight">
+                hubungkan gambar dengan kata<br>kemudian tulis ulang !
+            </h1>
+        </div>
+
+        <!-- Baris Atas: Objek Gambar + Nama + Titik Hubung (urutan acak) -->
+        <div class="grid grid-cols-3 gap-3 sm:gap-6 w-full max-w-xl z-10 my-auto ">
+            @foreach ($topItems as $item)
+                @php $word = strtolower($item['id']); @endphp
+                    <!-- {{ $item['id'] }} -->
+                <div class="flex flex-col items-center space-y-2">
+                    <div class="item-card" data-audio="{{ $item['audio'] }}">
+                        <img src="{{ $item['emoji'] }}" alt="{{ $word }}" class="h-16 sm:h-20 object-contain pointer-events-none" />
+                        <span class="text-xl sm:text-2xl font-black text-black mt-1">{{ $word }}</span>
+                    </div>
+                    <div class="connect-dot" data-type="top" data-id="{{ $word }}" data-match="{{ $word }}"></div>
+                </div>
+            @endforeach
+        </div>
+
+        <!-- Space Tengah untuk Penarikan Garis Interaktif -->
+        <div class="flex-1 min-h-[100px] w-full"></div>
+
+        <!-- Baris Bawah: Titik Hubung + Kata Tujuan + Kotak Tulis Ulang (urutan acak) -->
+        <div class="grid grid-cols-3 gap-2 sm:gap-4 w-full max-w-xl z-10 mb-2">
+            @foreach ($bottomItems as $item)
+                @php $word = strtolower($item['id']); @endphp
+                    <!-- Target: {{ $word }} -->
+                <div class="flex flex-col items-center space-y-2">
+                    <div class="connect-dot" data-type="bottom" data-id="{{ $word }}"></div>
+                    <span class="text-2xl font-black text-black tracking-widest">{{ implode(' ', str_split($word)) }}</span>
+                    <!-- Kotak Input Tulis Ulang -->
+                    <div class="flex space-x-1" data-word="{{ $word }}" data-audio="{{ $item['audio'] }}">
+                        @foreach (str_split($word) as $char)
+                            <input type="text" maxlength="1" data-char="{{ $char }}" class="char-input" />
+                        @endforeach
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
+    @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const container = document.getElementById('gameContainer');
+                const canvas = document.getElementById('lineCanvas');
+                const ctx = canvas.getContext('2d');
+                const dots = document.querySelectorAll('.connect-dot');
+
+                let selectedDot = null;
+                let currentMousePos = { x: 0, y: 0 };
+                let connections = [];
+
+{{--                const correctAudio = new Audio('{{ asset("audio/correct.mp3") }}');--}}
+{{--                const wrongAudio = new Audio('{{ asset("audio/wrong.mp3") }}');--}}
+
+                let wordAudioPlayer = new Audio();
+                let isWordAudioPlaying = false;
+
+                document.querySelectorAll('.item-card').forEach(card => {
+                    card.addEventListener('click', () => {
+                        if (isWordAudioPlaying) return;
+
+                        const src = card.dataset.audio;
+                        if (!src) return;
+
+                        isWordAudioPlaying = true;
+
+                        wordAudioPlayer.pause();
+                        wordAudioPlayer.removeAttribute('src');
+                        wordAudioPlayer.load();
+
+                        wordAudioPlayer = new Audio(src);
+                        wordAudioPlayer.addEventListener('ended', () => { isWordAudioPlaying = false; });
+                        wordAudioPlayer.addEventListener('error', () => { isWordAudioPlaying = false; });
+                        wordAudioPlayer.play().catch(() => { isWordAudioPlaying = false; });
+
+                        card.classList.add('drop-shadow-[0_0_10px_rgba(74,222,128,0.9)]');
+                    });
+                });
+
+                function resizeCanvas() {
+                    const rect = container.getBoundingClientRect();
+                    canvas.width = rect.width;
+                    canvas.height = rect.height;
+                    drawLines();
+                }
+
+                window.addEventListener('resize', resizeCanvas);
+                setTimeout(resizeCanvas, 100);
+
+                function getDotCenter(dot) {
+                    const parentRect = container.getBoundingClientRect();
+                    const dotRect = dot.getBoundingClientRect();
+                    return {
+                        x: dotRect.left + dotRect.width / 2 - parentRect.left,
+                        y: dotRect.top + dotRect.height / 2 - parentRect.top
+                    };
+                }
+
+                function updateMousePos(e) {
+                    const parentRect = container.getBoundingClientRect();
+                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+                    currentMousePos = {
+                        x: clientX - parentRect.left,
+                        y: clientY - parentRect.top
+                    };
+
+                    if (selectedDot) {
+                        drawLines();
+                    }
+                }
+
+                container.addEventListener('mousemove', updateMousePos);
+                container.addEventListener('touchmove', updateMousePos, { passive: true });
+
+                function drawLines() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    connections.forEach(conn => {
+                        const start = getDotCenter(conn.from);
+                        const end = getDotCenter(conn.to);
+
+                        ctx.beginPath();
+                        ctx.moveTo(start.x, start.y);
+                        ctx.lineTo(end.x, end.y);
+                        ctx.strokeStyle = '#22c55e';
+                        ctx.lineWidth = 5;
+                        ctx.lineCap = 'round';
+                        ctx.stroke();
+                    });
+
+                    if (selectedDot) {
+                        const start = getDotCenter(selectedDot);
+
+                        ctx.beginPath();
+                        ctx.moveTo(start.x, start.y);
+                        ctx.lineTo(currentMousePos.x, currentMousePos.y);
+                        ctx.strokeStyle = '#2563eb';
+                        ctx.lineWidth = 4;
+                        ctx.lineCap = 'round';
+                        ctx.setLineDash([8, 6]);
+                        ctx.stroke();
+                        ctx.setLineDash([]);
+                    }
+                }
+
+                dots.forEach(dot => {
+                    dot.addEventListener('click', (e) => {
+                        e.stopPropagation();
+
+                        if (connections.some(c => c.from === dot || c.to === dot)) return;
+
+                        if (!selectedDot) {
+                            selectedDot = dot;
+                            dot.classList.add('active');
+                            updateMousePos(e);
+                        } else {
+                            if (selectedDot === dot) {
+                                selectedDot.classList.remove('active');
+                                selectedDot = null;
+                                drawLines();
+                                return;
+                            }
+
+                            if (selectedDot.dataset.type === dot.dataset.type) {
+                                selectedDot.classList.remove('active');
+                                selectedDot = dot;
+                                dot.classList.add('active');
+                                drawLines();
+                                return;
+                            }
+
+                            const topDot = selectedDot.dataset.type === 'top' ? selectedDot : dot;
+                            const bottomDot = selectedDot.dataset.type === 'bottom' ? selectedDot : dot;
+
+                            if (topDot.dataset.match === bottomDot.dataset.id) {
+                                connections.push({ from: topDot, to: bottomDot });
+                                selectedDot.classList.remove('active');
+                                selectedDot = null;
+                                drawLines();
+
+                                // correctAudio.currentTime = 0;
+                                // correctAudio.play().catch(() => {});
+
+                                if (typeof showFlashMessage === 'function') {
+                                    showFlashMessage('success', 'Hebat! Garis terhubung dengan benar!');
+                                }
+                            } else {
+                                selectedDot.classList.remove('active');
+                                selectedDot = null;
+                                drawLines();
+
+                                // wrongAudio.currentTime = 0;
+                                // wrongAudio.play().catch(() => {});
+
+                                if (typeof showFlashMessage === 'function') {
+                                    showFlashMessage('error', 'Salah, coba hubungkan ke kata yang cocok!');
+                                }
+                            }
+                        }
+                    });
+                });
+
+                container.addEventListener('click', (e) => {
+                    if (selectedDot && !e.target.classList.contains('connect-dot')) {
+                        selectedDot.classList.remove('active');
+                        selectedDot = null;
+                        drawLines();
+                    }
+                });
+
+                const charInputs = document.querySelectorAll('.char-input');
+
+                charInputs.forEach((input) => {
+                    input.addEventListener('input', (e) => {
+                        const val = e.target.value.toLowerCase().trim();
+                        const targetChar = input.dataset.char.toLowerCase();
+
+                        input.classList.remove('correct', 'wrong');
+
+                        if (val === '') return;
+
+                        if (val === targetChar) {
+                            input.classList.add('correct');
+                            // correctAudio.currentTime = 0;
+                            // correctAudio.play().catch(() => {});
+
+                            const nextInput = input.nextElementSibling;
+                            if (nextInput && nextInput.classList.contains('char-input')) {
+                                nextInput.focus();
+                            }
+                            // NEW: check if the whole word is now complete
+                            const group = input.closest('[data-word]');
+                            const allInputs = group.querySelectorAll('.char-input');
+                            const allCorrect = Array.from(allInputs).every(i => i.classList.contains('correct'));
+
+                            if (allCorrect) {
+                                const wordAudioSrc = group.dataset.audio;
+                                if (wordAudioSrc) {
+                                    const wordDoneAudio = new Audio(wordAudioSrc);
+                                    wordDoneAudio.play().catch(() => {});
+                                }
+                                if (typeof showFlashMessage === 'function') {
+                                    showFlashMessage('success', 'Kata lengkap!');
+                                }
+                            }
+
+                        } else {
+                            input.classList.add('wrong');
+                            // wrongAudio.currentTime = 0;
+                            // wrongAudio.play().catch(() => {});
+
+                            setTimeout(() => {
+                                input.classList.remove('wrong');
+                                input.value = '';
+                            }, 400);
+                        }
+                    });
+
+                    input.addEventListener('keydown', (e) => {
+                        if (e.key === 'Backspace' && input.value === '') {
+                            const prevInput = input.previousElementSibling;
+                            if (prevInput && prevInput.classList.contains('char-input')) {
+                                prevInput.focus();
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
+    @endpush
 </x-layout-game>

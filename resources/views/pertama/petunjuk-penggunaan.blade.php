@@ -1,38 +1,13 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Petunjuk Penggunaan Buku</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Poppins -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    />
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-        /* Pattern background kertas milimeter / grid biru */
-        .bg-grid-pattern {
-            background-color: #dbeafe;
-            background-image:
-                linear-gradient(to right, #bfdbfe 1px, transparent 1px),
-                linear-gradient(to bottom, #bfdbfe 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
-    </style>
-</head>
-<body class="bg-grid-pattern flex min-h-screen items-center justify-center p-4 md:p-8">
+<x-layout-game
+    title="Petujuk Pengguaan Buku"
+    halaman="0"
+>
     <!-- Container Utama / Kartu Biru Muda -->
-    <div class="relative w-full max-w-2xl rounded-[2.5rem] border border-blue-100 bg-[#e8eeec] px-8 pt-16 pb-12 text-gray-800 shadow-xl">
+    <div class="relative w-full max-w-2xl rounded-[2.5rem] border border-blue-100 bg-white px-8 pt-16 pb-12 text-gray-800 shadow-xl mt-8">
         <!-- Lencana Judul (Petunjuk Penggunaan buku) -->
-        <div class="absolute -top-7 left-1/2 -translate-x-1/2 rounded-2xl border border-gray-100 bg-[#e8eeec] px-8 py-2 whitespace-nowrap shadow-md">
+        <div class="absolute -top-7 left-1/2 -translate-x-1/2 rounded-2xl border border-gray-100 bg-white px-8 py-2 whitespace-nowrap shadow-md">
             <h1 class="text-2xl font-extrabold tracking-wide text-black md:text-3xl">Petunjuk Penggunaan buku</h1>
         </div>
-
         <!-- Paragraf Pembuka -->
         <p class="mb-4 text-justify text-sm leading-relaxed font-normal md:text-base">
             Berbagai metode membaca telah banyak berkembang. Metode Fonik dapat diintegrasikan dengan menyelipkan
@@ -41,7 +16,6 @@
             terhubung dengan pengalaman membaca yang positif. Beberapa langkah dalam mengajarkan membaca metode fonik
             adalah sebagai berikut :
         </p>
-
         <!-- Daftar Poin (Bullet List) -->
         <ul class="mb-6 list-outside list-disc space-y-2 pl-5 text-justify text-sm font-normal md:text-base">
             <li>
@@ -67,11 +41,9 @@
                 keterampilan membaca anak.
             </li>
         </ul>
-
         <!-- Paragraf Penutup -->
         <p class="text-left text-sm leading-relaxed font-normal md:text-base">
             Selamat menikmati petualangan literasi bersama buku panduan ini, semoga dimudahkan dan dilancarkan !
         </p>
     </div>
-</body>
-</html>
+</x-layout-game>

@@ -14,11 +14,9 @@ class Halaman25 extends Controller
      */
     public function index(): View
     {
-        $data = $this->getDataPublicHalaman25();
 
         return $this->hubungkanTulisGame(
-            data: $data,
-            items: $data['items'],
+            data: $this->getDataPublicHalaman25(),
             halaman: 25,
             judul: 'Halaman 25 - Mencocokan Dan Menulis',
             deskripsi: 'Mengenal macam-macam!',
@@ -34,37 +32,25 @@ class Halaman25 extends Controller
     {
         /** @var list<array{
          *     id: string,
-         *     letter: string,
-         *     name: string,
          *     emoji: string,
-         *     hint: string,
-         *     audio: string
+         *     audio: string,
          * }> $items
          */
         $items = [
             [
-                'id' => 'robot',
-                'letter' => 'R',
-                'name' => 'Robot',
-                'emoji' => '🤖',
-                'hint' => 'Robot adalah mesin yang bisa bekerja otomatis!',
-                'audio' => asset('audio/Halaman 25/1. robot.m4a'),
+                'id' => 'Robot',
+                'emoji' => asset('gambar/halaman_25/robot.webp'),
+                'audio' => asset('audio/en/Halaman 25/1. robot.m4a'),
             ],
             [
-                'id' => 'lilin',
-                'letter' => 'L',
-                'name' => 'Lilin',
-                'emoji' => '🕯️',
-                'hint' => 'Lilin adalah alat penerangan dari wax!',
-                'audio' => asset('audio/Halaman 25/2. lilin.m4a'),
+                'id' => 'Lilin',
+                'emoji' => asset('gambar/halaman_25/lilin.webp'),
+                'audio' => asset('audio/en/Halaman 25/2. lilin.m4a'),
             ],
             [
-                'id' => 'mobil',
-                'letter' => 'M',
-                'name' => 'Mobil',
-                'emoji' => '🚗',
-                'hint' => 'Mobil adalah kendaraan bermotor beroda empat!',
-                'audio' => asset('audio/Halaman 25/3. mobil.m4a'),
+                'id' => 'Mobil',
+                'emoji' => asset('gambar/halaman_25/mobil.webp'),
+                'audio' => asset('audio/en/Halaman 25/3. mobil.m4a'),
             ],
         ];
 

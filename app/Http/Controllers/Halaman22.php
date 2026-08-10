@@ -16,12 +16,9 @@ class Halaman22 extends Controller
     #[Override]
     public function index(): View
     {
-        $data = $this->getDataPublicHalaman22();
 
         return $this->cariHurufPertama(
-
-            data: $data,
-            items: $data['items'],
+            data: $this->getDataPublicHalaman22(),
             halaman: 22,
             judul: 'Halaman 22 - Tebak Huruf Depan 🔤',
             deskripsi: 'Lihat gambarnya, tebak huruf depannya!',
@@ -35,32 +32,44 @@ class Halaman22 extends Controller
     {
         $items = [
             [
-                'id' => 'kelinci',
-                'name' => 'Kelinci',
-                'emoji' => '🐰',
-                'hint' => 'Kelinci adalah hewan berbulu yang lompat!',
-                'audio' => asset('audio/Halaman 22/1. kelinci.m4a'),
+                'id' => 'Kelinci',
+                'emoji' => asset('gambar/halaman_22/kelinci.webp'),
+                'audio' => asset('audio/id/Halaman 22/kelinci.wav'),
+                'options' => [
+                    ['letter' => 'k', 'correct' => true],
+                    ['letter' => 'b', 'correct' => false],
+                    ['letter' => 'c', 'correct' => false],
+                ],
             ],
             [
-                'id' => 'jagung',
-                'name' => 'Jagung',
-                'emoji' => '🌽',
-                'hint' => 'Jagung adalah tanaman pangan berwarna kuning!',
-                'audio' => asset('audio/Halaman 22/2. jagung.m4a'),
+                'id' => 'Jagung',
+                'emoji' => asset('gambar/halaman_22/jagung.webp'),
+                'audio' => asset('audio/id/Halaman 22/jagung.wav'),
+                'options' => [
+                    ['letter' => 'i', 'correct' => false],
+                    ['letter' => 'j', 'correct' => true],
+                    ['letter' => 'l', 'correct' => false],
+                ],
             ],
             [
-                'id' => 'alpukat',
-                'name' => 'Alpukat',
-                'emoji' => '🥑',
-                'hint' => 'Alpukat adalah buah hijau berisi lemak sehat!',
-                'audio' => asset('audio/Halaman 22/3. alpukat.m4a'),
+                'id' => 'Alpukat',
+                'emoji' => asset('gambar/halaman_22/alpukat.webp'),
+                'audio' => asset('audio/id/Halaman 22/alpukat.wav'),
+                'options' => [
+                    ['letter' => 'u', 'correct' => false],
+                    ['letter' => 'h', 'correct' => false],
+                    ['letter' => 'a', 'correct' => true],
+                ],
             ],
             [
-                'id' => 'bebek',
-                'name' => 'Bebek',
-                'emoji' => '🦆',
-                'hint' => 'Bebek adalah unggas air yang berenang!',
-                'audio' => asset('audio/Halaman 22/4. bebek.m4a'),
+                'id' => 'Bebek',
+                'emoji' => asset('gambar/halaman_22/bebek.webp'),
+                'audio' => asset('audio/id/Halaman 22/bebek.wav'),
+                'options' => [
+                    ['letter' => 'a', 'correct' => false],
+                    ['letter' => 'b', 'correct' => true],
+                    ['letter' => 'd', 'correct' => false],
+                ],
             ],
         ];
 

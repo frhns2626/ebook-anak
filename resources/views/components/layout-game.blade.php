@@ -1,26 +1,24 @@
+@props([
+    'title' => 'Default Title',
+    'halaman' => 0,
+])
 {{-- resources/views/components/layout-game.blade.php --}}
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>{{ $title ?? 'Ebook Anak TK' }}</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet"/>
     @fonts
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @else
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"/>
     @endif
     <style>
-        body {
-            font-family: 'Fredoka', 'Comic Neue', sans-serif;
-            background: linear-gradient(180deg, #fff9e6 0%, #e8f5e9 50%, #f0fff4 100%);
-            min-height: 100vh;
-        }
-
         @keyframes twinkle {
             0%,
             100% {
@@ -142,84 +140,42 @@
         .animate-wiggle {
             animation: wiggle 3s ease-in-out infinite;
         }
+
+        body {
+            font-family: 'Fredoka', cursive, sans-serif;
+        }
+
+        /* Pattern background grid biru */
+        .bg-grid-pattern {
+            background-color: #f4f8ff;
+            background-image: linear-gradient(to right, #b8ccf3 1px, transparent 1px),
+            linear-gradient(to bottom, #b8ccf3 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* Kartu putih bergelombang / rounded */
+        .card-box {
+            background-color: #ffffff;
+            border-radius: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
     </style>
 </head>
-<body class="min-h-screen overflow-x-hidden">
-    <div
-        class="pointer-events-none fixed inset-0 z-0 overflow-hidden"
-        style="background: linear-gradient(180deg, #fff9e6 0%, #e8f5e9 50%, #f0fff4 100%)"
-    ></div>
-    {{-- Floating stars --}}
-    <div class="animate-twinkle pointer-events-none fixed z-10" style="top: 5%; left: 3%">
-        <svg width="35" height="35" viewBox="0 0 45 45" fill="none">
-            <path d="M22.5 0L27.7 17.3H45L30.8 28L36 45L22.5 34.5L9 45L14.2 28L0 17.3H17.3L22.5 0Z" fill="#FBBF24" />
-        </svg>
-    </div>
-    <div class="animate-twinkle pointer-events-none fixed z-10" style="top: 8%; right: 5%; animation-delay: 0.5s">
-        <svg width="28" height="28" viewBox="0 0 45 45" fill="none">
-            <path d="M22.5 0L27.7 17.3H45L30.8 28L36 45L22.5 34.5L9 45L14.2 28L0 17.3H17.3L22.5 0Z" fill="#F472B6" />
-        </svg>
-    </div>
-    <div
-        class="animate-twinkle pointer-events-none fixed z-10 hidden md:block"
-        style="top: 25%; left: 2%; animation-delay: 1s"
-    >
-        <svg width="25" height="25" viewBox="0 0 45 45" fill="none">
-            <path d="M22.5 0L27.7 17.3H45L30.8 28L36 45L22.5 34.5L9 45L14.2 28L0 17.3H17.3L22.5 0Z" fill="#A78BFA" />
-        </svg>
-    </div>
-    <div
-        class="animate-twinkle pointer-events-none fixed z-10 hidden md:block"
-        style="top: 30%; right: 3%; animation-delay: 1.5s"
-    >
-        <svg width="32" height="32" viewBox="0 0 45 45" fill="none">
-            <path d="M22.5 0L27.7 17.3H45L30.8 28L36 45L22.5 34.5L9 45L14.2 28L0 17.3H17.3L22.5 0Z" fill="#34D399" />
-        </svg>
-    </div>
-    {{-- Floating clouds --}}
-    <div class="animate-float-cloud pointer-events-none fixed z-10 hidden md:block" style="top: 6%; left: 8%">
-        <svg width="100" height="60" viewBox="0 0 120 70" fill="none">
-            <ellipse cx="30" cy="45" rx="28" ry="20" fill="white" fill-opacity="0.8" />
-            <ellipse cx="60" cy="40" rx="35" ry="25" fill="white" fill-opacity="0.85" />
-        </svg>
-    </div>
-    <div
-        class="animate-float-cloud pointer-events-none fixed z-10 hidden md:block"
-        style="top: 12%; right: 12%; animation-delay: 2s"
-    >
-        <svg width="80" height="50" viewBox="0 0 120 70" fill="none">
-            <ellipse cx="30" cy="45" rx="28" ry="20" fill="white" fill-opacity="0.75" />
-            <ellipse cx="60" cy="40" rx="35" ry="25" fill="white" fill-opacity="0.8" />
-        </svg>
-    </div>
-    {{-- Floating animals --}}
-    <div
-        class="animate-float-gentle pointer-events-none fixed z-10 hidden md:block"
-        style="bottom: 18%; left: 3%; animation-duration: 5s"
-    >
-        🐰
-    </div>
-    <div class="animate-float-gentle pointer-events-none fixed z-10" style="bottom: 22%; right: 4%">🦊</div>
-    <div class="animate-float-gentle pointer-events-none fixed z-10 hidden md:block" style="top: 20%; left: 5%">🐻</div>
-    <div class="animate-float-gentle pointer-events-none fixed z-10" style="top: 22%; right: 6%">🐱</div>
-    {{-- Butterflies --}}
-    <div class="animate-float-side pointer-events-none fixed z-10 hidden md:block" style="top: 35%; left: 4%">🦋</div>
-    <div class="animate-float-side pointer-events-none fixed z-10 hidden md:block" style="top: 40%; right: 5%">🦋</div>
+{{-- md:p-8--}}
+<body class="bg-grid-pattern flex min-h-screen    justify-center items-start p-4">
+{{--border-8  rounded-xl shadow-2xl p-6 aspect-[1/1.41] sm:p-8 --}}
+<div class="relative   w-full max-w-xl  overflow-auto flex flex-col justify-between gap-10  ">
     {{ $slot }}
-    <svg class="pointer-events-none fixed bottom-0 left-0 z-0 h-24 w-full" viewBox="0 0 1440 120" fill="none" preserveAspectRatio="none">
-        <path
-            d="M0 120L48 110C96 100 192 80 288 70C384 60 480 60 576 65C672 70 768 80 864 85C960 90 1056 90 1152 82.5C1248 75 1344 60 1392 52.5L1440 45V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0Z"
-            fill="url(#wave-gradient)"
-            fill-opacity="0.15"
-        />
-        <defs>
-            <linearGradient id="wave-gradient" x1="0" y1="0" x2="1440" y2="0" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#10B981" />
-                <stop offset="0.5" stop-color="#8B5CF6" />
-                <stop offset="1" stop-color="#F97316" />
-            </linearGradient>
-        </defs>
-    </svg>
+    @if($halaman==='0')
+    @else
+        <div class="relative z-20 mx-auto mt-4 mb-1 ">
+            <div class="bg-[#facc15] border-2 border-black rounded-xl px-5 py-0.5 shadow-[2px_2px_0px_rgba(0,0,0,1)]">
+                <span class="font-extrabold text-xs sm:text-sm text-black tracking-wide">
+                    Halaman {{$halaman}}
+                </span>
+            </div>
+        </div>
+    @endif
     {{-- Flash Message Overlay --}}
     <div
         id="flashOverlay"
@@ -230,47 +186,44 @@
             <span id="flashText" class="text-[1.1rem] font-black text-white">Benar!</span>
         </div>
     </div>
-    @stack('scripts')
-    <script>
-        let flashTimeout = null;
+</div>
+<script>
+    let flashTimeout = null;
 
-        function showFlashMessage(type, message, detik = 2) {
-            const overlay = document.getElementById('flashOverlay');
-            const box = document.getElementById('flashBox');
-            const icon = document.getElementById('flashIcon');
-            const text = document.getElementById('flashText');
+    function showFlashMessage(type, message, detik = 2) {
+        const overlay = document.getElementById('flashOverlay');
+        const box = document.getElementById('flashBox');
+        const icon = document.getElementById('flashIcon');
+        const text = document.getElementById('flashText');
 
-            if (!overlay || !box || !icon || !text) {
-                console.error('[FlashMessage] ERROR: elemen flash overlay tidak ditemukan');
-                return;
-            }
-
-            clearTimeout(flashTimeout);
-
-            box.classList.remove('bg-green-400', 'bg-red-400');
-
-            if (type === 'success') {
-                box.classList.add('bg-green-400');
-                icon.textContent = '✅';
-                text.textContent = 'Benar!';
-                console.log('%c[FlashMessage] tampil: BENAR', 'color: #10B981; font-weight: bold;');
-            } else {
-                box.classList.add('bg-red-400');
-                icon.textContent = '❌';
-                text.textContent = 'Salah!';
-                console.log('%c[FlashMessage] tampil: SALAH', 'color: #EF4444; font-weight: bold;');
-            }
-
-            overlay.classList.remove('opacity-0', '-translate-y-4');
-            overlay.classList.add('opacity-100', 'translate-y-0');
-
-            flashTimeout = setTimeout(() => {
-                overlay.classList.remove('opacity-100', 'translate-y-0');
-                overlay.classList.add('opacity-0', '-translate-y-4');
-                console.log('[FlashMessage] overlay disembunyikan');
-            }, detik * 1000); // ← angka ini yang menentukan durasi (dalam milidetik)
+        if (!overlay || !box || !icon || !text) {
+            console.error('[FlashMessage] ERROR: elemen flash overlay tidak ditemukan');
+            return;
         }
-    </script>
-    @stack('scripts')
+
+        clearTimeout(flashTimeout);
+
+        box.classList.remove('bg-green-400', 'bg-red-400');
+
+        if (type === 'success') {
+            box.classList.add('bg-green-400');
+            icon.textContent = '✅';
+            text.textContent = 'Benar!';
+        } else {
+            box.classList.add('bg-red-400');
+            icon.textContent = '❌';
+            text.textContent = 'Salah!';
+        }
+
+        overlay.classList.remove('opacity-0', '-translate-y-4');
+        overlay.classList.add('opacity-100', 'translate-y-0');
+
+        flashTimeout = setTimeout(() => {
+            overlay.classList.remove('opacity-100', 'translate-y-0');
+            overlay.classList.add('opacity-0', '-translate-y-4');
+        }, detik * 1000);
+    }
+</script>
+@stack('scripts')
 </body>
 </html>

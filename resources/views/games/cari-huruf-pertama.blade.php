@@ -1,150 +1,161 @@
-<x-layout-game title="{{ $judul }}">
-    <main class="relative z-10 mx-auto max-w-4xl p-6">
-        <div class="relative mb-6 overflow-hidden rounded-3xl bg-white p-6 text-center shadow-xl">
-            <div
-                class="absolute top-0 right-0 left-0 h-2"
-                style="
-                    background: linear-gradient(90deg, #ff6b6b, #ff9f43, #ffe66d, #4ecdc4, #6c5ce7, #ff6b6b);
-                    background-size: 200% 100%;
-                    animation: rainbow 3s linear infinite;
-                "
-            ></div>
-            <a
-                href="{{ route('belajar.index') }}"
-                class="absolute top-1/2 left-4 -translate-y-1/2 rounded-full bg-red-100 px-4 py-2 text-sm font-bold text-red-500 transition-all hover:bg-red-200"
-            >← Kembali</a>
-            <span class="animate-bounce-subtle mb-2 block text-[3rem]">🐰</span>
-            <h1 class="mb-1 text-[1.8rem] font-black text-gray-800 md:text-[2.2rem]">Tebak Huruf Depan 🔤</h1>
-            <p class="text-[1rem] text-gray-500">Lihat gambarnya, tebak huruf depannya!</p>
-        </div>
-        {{-- GAME CARD --}}
-        <div class="mb-6 rounded-3xl bg-white p-8 text-center shadow-2xl">
-            <div class="animate-pop mb-2 text-[8rem] md:text-[10rem]" id="gameEmoji">🐰</div>
-            <div class="mb-6 text-[2.2rem] font-black tracking-widest text-gray-400" id="gameBlank">_ _ _ _ _ _</div>
-            <div id="letterOptions" class="flex flex-wrap justify-center gap-3"></div>
-        </div>
-        {{-- RESULTS TABLE --}}
-        <div class="mb-6 rounded-2xl bg-white p-4 shadow-lg">
-            <h2 class="mb-3 font-black text-gray-700">Hasil Pencarian Huruf Depan</h2>
-            <table class="w-full text-left text-sm">
-                <thead>
-                    <tr class="border-b text-gray-500">
-                        <th class="py-2">Nama Objek</th>
-                        <th class="py-2">Huruf Depan</th>
-                        <th class="py-2">Status</th>
-                    </tr>
-                </thead>
-                <tbody id="resultsBody"></tbody>
-            </table>
-        </div>
-        <div class="rounded-2xl bg-white p-4 shadow-lg">
-            <div class="mb-2 flex items-center justify-between">
-                <span class="text-sm font-bold text-gray-600">Progress</span>
-                <span id="progressText" class="text-sm font-bold text-green-500">0 / {{ count($items) }}</span>
-            </div>
-            <div class="h-4 overflow-hidden rounded-full bg-gray-200">
-                <div
-                    id="progressBar"
-                    class="h-full rounded-full bg-gradient-to-r from-green-400 to-emerald-500 transition-all duration-500"
-                    style="width: 0%"
-                ></div>
-            </div>
-        </div>
-    </main>
-    <script>
-        const items = @json($items);
-
-        function shuffle(arr) {
-            const a = [...arr];
-            for (let i = a.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [a[i], a[j]] = [a[j], a[i]];
-            }
-            return a;
+<x-layout-game
+    title="{{$judul}}"
+    halaman="{{$halaman}}"
+>
+    <style>
+        /* Typography Judul Pop-out */
+        .title-text {
+            font-family: 'Fredoka', cursive, sans-serif;
+            color: #fbbf24;
+            -webkit-text-stroke: 1.5px #000000;
+            paint-order: stroke fill;
+            filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.8));
         }
 
-        const gameOrder = shuffle(items);
-        const allFirstLetters = [...new Set(items.map((i) => i.name.charAt(0).toUpperCase()))];
-        let currentIndex = 0;
-        const results = {}; // id -> { name, letter, correct }
-
-        function renderItem() {
-            const item = gameOrder[currentIndex];
-            document.getElementById('gameEmoji').textContent = item.emoji;
-            document.getElementById('gameBlank').textContent = '_' + item.name.slice(1);
-            renderOptions(item);
+        .item-card {
+            background-color: #ffffff;
+            border-radius: 1.25rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
 
-        function renderOptions(item) {
-            const correctLetter = item.name.charAt(0).toUpperCase();
-            let options = shuffle(allFirstLetters);
-            if (!options.includes(correctLetter)) {
-                options.push(correctLetter);
-            }
-            options = shuffle(options);
+        .check-box {
+            width: 2.5rem;
+            height: 2.5rem;
+            background-color: #ffffff;
+            border: 3px solid #cbd5e1;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1.25rem;
+            font-weight: 900;
+        }
 
-            const wrap = document.getElementById('letterOptions');
-            wrap.innerHTML = '';
-            options.forEach((letter) => {
-                const btn = document.createElement('button');
-                btn.textContent = letter;
-                btn.className =
-                    'letter-btn bg-blue-50 text-blue-600 border-2 border-blue-200 w-16 h-16 rounded-2xl text-2xl font-black shadow hover:scale-105 transition-all';
-                btn.onclick = () => checkAnswer(letter, correctLetter, item, btn);
-                wrap.appendChild(btn);
+        .check-box:hover {
+            border-color: #3b82f6;
+            transform: scale(1.05);
+        }
+
+        .check-box.correct {
+            background-color: #22c55e !important;
+            border-color: #16a34a !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.3);
+            transform: scale(1.1);
+        }
+
+        .check-box.wrong {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+            color: #ef4444 !important;
+            animation: shake 0.3s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-4px); }
+            40%, 80% { transform: translateX(4px); }
+        }
+    </style>
+
+    <div class="flex flex-col items-center justify-between h-full w-full my-auto select-none px-2">
+
+        <!-- Judul Aktivitas -->
+        <div class="text-center mt-1 mb-2">
+            <h1 class="title-text text-lg sm:text-xl md:text-2xl font-extrabold tracking-wide leading-tight flex items-center justify-center gap-1">
+                Temukan huruf depan setiap<br>objek berikut, beri tanda <span class="text-green-500 inline-block drop-shadow-none" style="-webkit-text-stroke: 0;">✔</span>
+            </h1>
+        </div>
+
+        <!-- Grid 2x2 Objek -->
+        <div class="grid grid-cols-2 gap-3 sm:gap-6 w-full max-w-xl my-auto">
+            @foreach ($items as $item)
+                <!-- {{ $item['id'] }} -->
+                <div class="item-card p-3 flex items-center justify-between">
+                    <div class="flex flex-col items-center justify-center space-y-1">
+{{--                        <span class="text-lg sm:text-xl font-extrabold text-black">{{ strtolower($item['id']) }}</span>--}}
+                        <img src="{{ $item['emoji'] }}" alt="{{ $item['id'] }}" class="w-30 h-auto object-contain pointer-events-none rounded" />
+                    </div>
+                    <div class="flex flex-col space-y-2 pr-1">
+                        @foreach ($item['options'] as $opt)
+                            <div class="flex items-center space-x-2">
+                                <span class="text-4xl font-black text-black w-4 text-center">{{ $opt['letter'] }}</span>
+                                <div
+                                    class="check-box"
+                                    data-target="{{ $item['id'] }}"
+                                    data-letter="{{ $opt['letter'] }}"
+                                    data-correct="{{ $opt['correct'] ? 'true' : 'false' }}"
+                                    data-audio="{{ $item['audio'] }}"
+                                ></div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
+    @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const checkBoxes = document.querySelectorAll('.check-box');
+
+                let audioPlayer = new Audio();
+                let isPlaying = false;
+
+                checkBoxes.forEach(box => {
+                    box.addEventListener('click', () => {
+                        const isCorrect = box.dataset.correct === 'true';
+                        const targetName = box.dataset.target;
+                        const letter = box.dataset.letter;
+
+                        if (box.classList.contains('correct')) return;
+
+                        if (isCorrect) {
+                            const siblings = document.querySelectorAll(`.check-box[data-target="${targetName}"]`);
+                            siblings.forEach(s => {
+                                s.classList.remove('correct', 'wrong');
+                                s.innerHTML = '';
+                            });
+
+                            box.classList.add('correct');
+                            box.innerHTML = '✔';
+
+                            const src = box.dataset.audio;
+                            if (src && !isPlaying) {
+                                isPlaying = true;
+
+                                audioPlayer.pause();
+                                audioPlayer.removeAttribute('src');
+                                audioPlayer.load();
+
+                                audioPlayer = new Audio(src);
+                                audioPlayer.addEventListener('ended', () => { isPlaying = false; });
+                                audioPlayer.addEventListener('error', () => { isPlaying = false; });
+                                audioPlayer.play().catch(() => { isPlaying = false; });
+                            }
+
+                            if (typeof showFlashMessage === 'function') {
+                                showFlashMessage('success', `Benar! Huruf depan ${targetName} adalah '${letter}'`);
+                            }
+                        } else {
+                            box.classList.add('wrong');
+                            box.innerHTML = '✖';
+
+                            if (typeof showFlashMessage === 'function') {
+                                showFlashMessage('error', 'Salah, coba pilih huruf yang lain!');
+                            }
+
+                            setTimeout(() => {
+                                box.classList.remove('wrong');
+                                box.innerHTML = '';
+                            }, 500);
+                        }
+                    });
+                });
             });
-        }
-
-        function checkAnswer(letter, correctLetter, item, btn) {
-            const isCorrect = letter === correctLetter;
-            btn.classList.add(isCorrect ? 'correct' : 'wrong');
-            if (!isCorrect) {
-                btn.classList.add('animate-shake');
-            }
-
-            document.querySelectorAll('#letterOptions button').forEach((b) => (b.disabled = true));
-
-            results[item.id] = { name: item.name, letter: correctLetter, correct: isCorrect };
-            renderResultsTable();
-            updateProgress();
-
-            setTimeout(
-                () => {
-                    currentIndex++;
-                    if (currentIndex < gameOrder.length) {
-                        renderItem();
-                    } else {
-                        document.getElementById('letterOptions').innerHTML =
-                            '<p class="text-green-500 font-black text-lg">🎉 Selesai! Semua tertebak.</p>';
-                    }
-                },
-                isCorrect ? 700 : 1000,
-            );
-        }
-
-        function renderResultsTable() {
-            const body = document.getElementById('resultsBody');
-            body.innerHTML = '';
-            gameOrder.forEach((item) => {
-                const r = results[item.id];
-                const tr = document.createElement('tr');
-                tr.className = 'border-b last:border-0 result-row' + (r?.correct ? ' correct' : '');
-                tr.innerHTML = `
-                    <td class="py-2">${item.name}</td>
-                    <td class="py-2 font-bold">${r ? r.letter : '-'}</td>
-                    <td class="py-2">${r ? (r.correct ? '✓' : '✗') : '-'}</td>
-                `;
-                body.appendChild(tr);
-            });
-        }
-
-        function updateProgress() {
-            const count = Object.keys(results).length;
-            document.getElementById('progressText').textContent = count + ' / ' + items.length;
-            document.getElementById('progressBar').style.width = (count / items.length) * 100 + '%';
-        }
-
-        renderResultsTable();
-        renderItem();
-    </script>
+        </script>
+    @endpush
 </x-layout-game>

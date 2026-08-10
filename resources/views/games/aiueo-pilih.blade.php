@@ -1,4 +1,7 @@
-<x-layout-game title="{{ $judul }}">
+<x-layout-game
+    title="{{$judul}}"
+    halaman="{{$halaman}}"
+>
     <main class="relative z-10 mx-auto max-w-4xl p-6">
         <div class="relative mb-6 overflow-hidden rounded-3xl bg-white p-6 text-center shadow-xl">
             <div

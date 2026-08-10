@@ -276,6 +276,15 @@
                         'accent' => 'red',
                         'route' => 'belajar.penutupan',
                     ],
+    [
+                        'title' => 'Huruf Objek',
+                        'subtitle' => 'Huruf Objek',
+                        'emoji' => '🔤',
+                        'top_color' => '#FF6B6B',
+                        'bottom_color' => '#FF8E8E',
+                        'accent' => 'red',
+                        'route' => 'belajar.huruf-objek',
+                    ],
 
                     [
                         'title' => 'Halaman 1',

@@ -1,30 +1,9 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kata Pengantar</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-        /* Pattern background mirip kertas milimeter/grid biru */
-        .bg-grid-pattern {
-            background-color: #dbeafe;
-            background-image:
-                linear-gradient(to right, #bfdbfe 1px, transparent 1px),
-                linear-gradient(to bottom, #bfdbfe 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
-    </style>
-</head>
-<body class="bg-grid-pattern flex min-h-screen items-center justify-center p-4 md:p-8">
+<x-layout-game
+    title="kata Pengantar"
+    halaman="0"
+>
     <!-- Container Utama / Lembaran Putih -->
-    <div class="relative w-full max-w-2xl rounded-[2.5rem] border border-gray-100 bg-white px-8 pt-16 pb-12 text-gray-800 shadow-xl">
+    <div class="relative w-full max-w-2xl rounded-[2.5rem] border border-gray-100 bg-white px-8 pt-16 pb-12 text-gray-800 shadow-xl mt-8">
         <!-- Lencana Judul (Kata Pengantar) -->
         <div class="absolute -top-7 left-1/2 -translate-x-1/2 rounded-2xl border border-gray-100 bg-white px-8 py-2 shadow-md">
             <h1 class="text-2xl font-extrabold tracking-wide text-black md:text-3xl">Kata Pengantar</h1>
@@ -70,5 +49,4 @@
             <p class="mt-1 font-bold text-black">Penulis</p>
         </div>
     </div>
-</body>
-</html>
+</x-layout-game>

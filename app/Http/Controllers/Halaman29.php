@@ -16,11 +16,9 @@ class Halaman29 extends Controller
     #[Override]
     public function index(): View
     {
-        $data = $this->getDataPublicHalaman29();
 
         return $this->melengkapiSukukata(
-            data: $data,
-            items: $data['items'],
+            data: $this->getDataPublicHalaman29(),
             halaman: 29,
             judul: 'Halaman 29 - Melengkapi kata',
             deskripsi: 'Mengenal macam-macam suku kata!');
@@ -29,18 +27,28 @@ class Halaman29 extends Controller
     /**
      * @throws BindingResolutionException
      */
-    public function getDataPublicHalaman29(): array
+
+        public function getDataPublicHalaman29(): array
     {
         $items = [
-            ['id' => 'tomat', 'name' => 'Tomat', 'emoji' => '🍅', 'hint' => 'Tomat adalah buah merah untuk sauce!', 'syllables' => ['To', 'mat'], 'audio' => asset('audio/Halaman 29 -30/1. tomat.m4a')],
-            ['id' => 'payung', 'name' => 'Payung', 'emoji' => '☂️', 'hint' => 'Payung adalah alat untuk berlindung dari hujan!', 'syllables' => ['Pa', 'yung'], 'audio' => asset('audio/Halaman 29 -30/2. payung.m4a')],
-            ['id' => 'kelinci', 'name' => 'Kelinci', 'emoji' => '🐰', 'hint' => 'Kelinci adalah hewan berbulu yang lompat!', 'syllables' => ['Ke', 'lin', 'ci'], 'audio' => asset('audio/Halaman 29 -30/3. kelinci.m4a')],
-            ['id' => 'bola', 'name' => 'Bola', 'emoji' => '⚽', 'hint' => 'Bola adalah alat main bulat!', 'syllables' => ['Bo', 'la'], 'audio' => asset('audio/Halaman 29 -30/4. bola.m4a')],
+            [   'id' => 'Tomat',
+                'emoji' => asset('gambar/halaman_29/tomat.webp'),
+                'audio' => asset('audio/id/Halaman 29/tomat.wav')
+            ],
+            [   'id' => 'Kelinci',
+                'emoji' => asset('gambar/halaman_29/kelinci.webp'),
+                'audio' => asset('audio/id/Halaman 29/kelinci.wav')
+            ],
+            [   'id' => 'Payung',
+                'emoji' => asset('gambar/halaman_29/payung.webp'),
+                'audio' => asset('audio/id/Halaman 29/payung.wav')
+            ],
         ];
 
         return [
             'items' => $items,
             'total_item' => count($items),
         ];
+
     }
 }

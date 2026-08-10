@@ -16,11 +16,9 @@ class Halaman18 extends Controller
     #[Override]
     public function index(): View
     {
-        $data = $this->getDataPublicHalaman18();
 
         return $this->sukuBerakhiran(
-            data: $data,
-            items: $data['items'],
+            data:  $this->getDataPublicHalaman18(),
             halaman: 18,
             judul: 'Halaman 18 - Suku Kata Berakhiran -M & -S 🥬',
             deskripsi: 'Cocokkan kata dengan akhiran konsonan matinya!'
@@ -40,31 +38,34 @@ class Halaman18 extends Controller
          * 2. Akhiran -S: as, is, us, es, os
          *    as → Ka-pas ☁️ | is → Ku-bis 🥬 | us → Pa-us 🐋 | es → Me-ses 🍫 | os → Ka-os 👕
          */
-        $base = 'audio/halaman 16-19/';
-
         $items = [
             [
-                'masterPola' => 'am im um em om',
-                'audio' => asset($base.'halaman 18.m4a'),
+                'masterPola' => 'as is us es os',
+                'audio' => asset('audio/en/halaman 16-19/halaman 18.m4a'),
                 'items' => [
-                    ['id' => 'bayam', 'name' => 'Bayam', 'emoji' => '🥬', 'ending' => 'am', 'hint' => 'Bayam adalah sayur hijau yang menyehatkan!', 'audio' => asset($base.'halaman 18 bayam.m4a')],
-                    ['id' => 'eskrim', 'name' => 'Eskrim', 'emoji' => '🍦', 'ending' => 'im', 'hint' => 'Eskrim adalah makanan dingin yang manis!', 'audio' => asset($base.'halaman 18 eskrim.m4a')],
-                    ['id' => 'dimsum', 'name' => 'Dimsum', 'emoji' => '🥟', 'ending' => 'um', 'hint' => 'Dimsum adalah makanan kukus dari Cina!', 'audio' => asset($base.'halaman 18 dimsum.m4a')],
-                    ['id' => 'asem', 'name' => 'Asem', 'emoji' => '🥭', 'ending' => 'em', 'hint' => 'Asem adalah rasa buah yang kecut!', 'audio' => asset($base.'halaman 18 asem.m4a')],
-                    ['id' => 'pompom', 'name' => 'Pom-pom', 'emoji' => '📣', 'ending' => 'om', 'hint' => 'Pom-pom adalah alat yang digoyangkan saat bersorak!', 'audio' => asset($base.'halaman 18 pom pom.m4a')],
+                    ['id' => 'Asem', 'emoji' => asset('gambar/halaman_18/asem.webp'), 'ending' => 'as', 'audio' => asset('audio/en/halaman 16-19/halaman 18 asem.m4a')],
+                    ['id' => 'Kubis', 'emoji' => asset('gambar/halaman_18/kubis.webp'), 'ending' => 'is', 'audio' => asset('audio/en/halaman 16-19/halaman 18 kubis.m4a')],
+                    ['id' => 'Dimsum', 'emoji' => asset('gambar/halaman_18/dimsum.webp'), 'ending' => 'us', 'audio' => asset('audio/en/halaman 16-19/halaman 18 dimsum.m4a')],
+                    ['id' => 'Meses', 'emoji' => asset('gambar/halaman_18/meses.webp'), 'ending' => 'es', 'audio' => asset('audio/en/halaman 16-19/halaman 18 meses.m4a')],
+                    ['id' => 'Kaos', 'emoji' => asset('gambar/halaman_18/kaos.webp'), 'ending' => 'os', 'audio' => asset('audio/en/halaman 16-19/halaman 18 kaos.m4a')],
                 ],
             ],
             [
-                'masterPola' => 'as is us es os',
-                'audio' => asset($base.'halaman 18.m4a'),
+                'masterPola' => 'am im um em om',
+                'audio' => asset('audio/en/halaman 16-19/halaman 18.m4a'),
                 'items' => [
-                    ['id' => 'kapas', 'name' => 'Kapas', 'emoji' => '☁️', 'ending' => 'as', 'hint' => 'Kapas adalah serat lembut berwarna putih!', 'audio' => asset($base.'halaman 18 kapas.m4a')],
-                    ['id' => 'kubis', 'name' => 'Kubis', 'emoji' => '🥬', 'ending' => 'is', 'hint' => 'Kubis adalah sayur berlapis-lapis!', 'audio' => asset($base.'halaman 18 kubis.m4a')],
-                    ['id' => 'paus', 'name' => 'Paus', 'emoji' => '🐋', 'ending' => 'us', 'hint' => 'Paus adalah mamalia laut yang besar!', 'audio' => null],
-                    ['id' => 'meses', 'name' => 'Meses', 'emoji' => '🍫', 'ending' => 'es', 'hint' => 'Meses adalah taburan cokelat untuk roti!', 'audio' => asset($base.'halaman 18 meses.m4a')],
-                    ['id' => 'kaos', 'name' => 'Kaos', 'emoji' => '👕', 'ending' => 'os', 'hint' => 'Kaos adalah baju kaus yang nyaman dipakai!', 'audio' => asset($base.'halaman 18 kaos.m4a')],
+                    ['id' => 'Bayam', 'emoji' => asset('gambar/halaman_18/bayam.webp'), 'ending' => 'am', 'audio' => asset('audio/en/halaman 16-19/halaman 18 bayam.m4a')],
+                    ['id' => 'Eskrim', 'emoji' => asset('gambar/halaman_18/eskrim.webp'), 'ending' => 'im', 'audio' => asset('audio/en/halaman 16-19/halaman 18 eskrim.m4a')],
+                    ['id' => 'Paus', 'emoji' => asset('gambar/halaman_18/paus.webp'), 'ending' => 'us', 'audio' => asset('audio/en/halaman 16-19/halaman 18 paus.m4a')],
+                    ['id' => 'Kapas', 'emoji' => asset('gambar/halaman_18/kapas.webp'), 'ending' => 'as', 'audio' => asset('audio/en/halaman 16-19/halaman 18 kapas.m4a')],
+                    ['id' => 'Pompom', 'emoji' => asset('gambar/halaman_18/pompom.webp'), 'ending' => 'om', 'audio' => asset('audio/en/halaman 16-19/halaman 18 pompom.m4a')],
                 ],
             ],
+        ];
+
+        return [
+            'items' => $items,
+            'total_item' => count($items),
         ];
 
         return [

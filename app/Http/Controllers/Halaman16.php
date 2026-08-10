@@ -16,11 +16,9 @@ class Halaman16 extends Controller
     #[Override]
     public function index(): View
     {
-        $data = $this->getDataPublicHalaman16();
 
         return $this->sukuBerakhiran(
-            data: $data,
-            items: $data['items'],
+            data: $this->getDataPublicHalaman16(),
             halaman: 16,
             judul: 'Halaman 16 - Suku Kata Berakhiran -N 🪙',
             deskripsi: 'Cocokkan kata dengan akhiran konsonan matinya!');
@@ -51,29 +49,27 @@ class Halaman16 extends Controller
          *
          * Belum ada file audio untuk: batik, lauk, kodok — pakai null sementara.
          */
-        $base = 'audio/halaman 16-19/';
-
         $items = [
             [
                 'masterPola' => 'ak ik uk ek ok',
-                'audio' => asset($base.'halaman 16.m4a'),
+                'audio' => asset('audio/en/halaman 16-19/halaman 16.m4a'),
                 'items' => [
-                    ['id' => 'badak', 'name' => 'Badak', 'emoji' => '🦏', 'ending' => 'ak', 'hint' => 'Badak adalah hewan besar bertanduk!', 'audio' => asset($base.'Salinan badak.m4a')],
-                    ['id' => 'batik', 'name' => 'Batik', 'emoji' => '🎨', 'ending' => 'ik', 'hint' => 'Batik adalah kain bermotif khas Indonesia!', 'audio' => null],
-                    ['id' => 'lauk', 'name' => 'Lauk', 'emoji' => '🍽️', 'ending' => 'uk', 'hint' => 'Lauk adalah makanan pendamping nasi!', 'audio' => null],
-                    ['id' => 'bebek', 'name' => 'Bebek', 'emoji' => '🦆', 'ending' => 'ek', 'hint' => 'Bebek adalah unggas air yang berenang!', 'audio' => asset($base.'Salinan 1. bebek.m4a')],
-                    ['id' => 'kodok', 'name' => 'Kodok', 'emoji' => '🐸', 'ending' => 'ok', 'hint' => 'Kodok adalah hewan yang suka melompat!', 'audio' => null],
+                    ['id' => 'Badak', 'emoji' => asset('gambar/halaman_16/badak.webp'), 'ending' => 'ak', 'audio' => asset('audio/en/halaman 16-19/halaman 16. badak.m4a')],
+                    ['id' => 'Batik', 'emoji' => asset('gambar/halaman_16/batik.webp'), 'ending' => 'ik', 'audio' => asset('audio/en/halaman 16-19/halaman 16. batik.m4a')],
+                    ['id' => 'Lauk', 'emoji' => asset('gambar/halaman_16/lauk.webp'), 'ending' => 'uk', 'audio' => asset('audio/en/halaman 16-19/halaman 16. lauk.m4a')],
+                    ['id' => 'Bebek', 'emoji' => asset('gambar/halaman_16/bebek.webp'), 'ending' => 'ek', 'audio' => asset('audio/en/halaman 16-19/halaman 16. bebek.m4a')],
+                    ['id' => 'Kodok', 'emoji' => asset('gambar/halaman_16/kodok.webp'), 'ending' => 'ok', 'audio' => asset('audio / en / halaman 16 - 19 / halaman 16. kodok . m4a')],
                 ],
             ],
             [
                 'masterPola' => 'an in un en on',
-                'audio' => asset($base.'halaman 16.m4a'),
+                'audio' => asset('audio/en/halaman 16-19/halaman 16.m4a'),
                 'items' => [
-                    ['id' => 'taman', 'name' => 'Taman', 'emoji' => '🌻', 'ending' => 'an', 'hint' => 'Taman adalah tempat yang ditanami bunga!', 'audio' => asset($base.'halaman 16 taman.m4a')],
-                    ['id' => 'koin', 'name' => 'Koin', 'emoji' => '🪙', 'ending' => 'in', 'hint' => 'Koin adalah uang logam yang bulat!', 'audio' => asset($base.'halaman 16 koin.m4a')],
-                    ['id' => 'timun', 'name' => 'Timun', 'emoji' => '🥒', 'ending' => 'un', 'hint' => 'Timun adalah sayur hijau yang segar!', 'audio' => asset($base.'halaman 16 timun.m4a')],
-                    ['id' => 'permen', 'name' => 'Permen', 'emoji' => '🍬', 'ending' => 'en', 'hint' => 'Permen adalah makanan manis yang lucu!', 'audio' => asset($base.'halaman 16 permen.m4a')],
-                    ['id' => 'melon', 'name' => 'Melon', 'emoji' => '🍈', 'ending' => 'on', 'hint' => 'Melon adalah buah manis berwarna hijau!', 'audio' => asset($base.'halaman 16 melon.m4a')],
+                    ['id' => 'Taman', 'emoji' => asset('gambar/halaman_16/taman.webp'), 'ending' => 'an', 'audio' => asset('audio/en/halaman 16-19/halaman 16 taman.m4a')],
+                    ['id' => 'Koin', 'emoji' => asset('gambar/halaman_16/koin.webp'), 'ending' => 'in', 'audio' => asset('audio/en/halaman 16-19/halaman 16 koin.m4a')],
+                    ['id' => 'Timun', 'emoji' => asset('gambar/halaman_16/timun.webp'), 'ending' => 'un', 'audio' => asset('audio/en/halaman 16-19/halaman 16 timun.m4a')],
+                    ['id' => 'Permen', 'emoji' => asset('gambar/halaman_16/permen.webp'), 'ending' => 'en', 'audio' => asset('audio/en/halaman 16-19/halaman 16 permen.m4a')],
+                    ['id' => 'Melon', 'emoji' => asset('gambar/halaman_16/melon.webp'), 'ending' => 'on', 'audio' => asset('audio/en/halaman 16-19/halaman 16 melon.m4a')],
                 ],
             ],
         ];

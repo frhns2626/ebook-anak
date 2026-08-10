@@ -16,11 +16,9 @@ class Halaman9 extends Controller
     #[Override]
     public function index(): View
     {
-        $data = $this->getDataPublicHalaman9();
 
         return $this->hubungkanSukukataTerakhir(
-            data: $data,
-            items: $data['items'],
+            data: $this->getDataPublicHalaman9(),
             halaman: 9,
             judul: 'Halaman 9 - Menghubungkan Suku Kata',
             deskripsi: 'Gabungkan ba + suku kata jadi kata baru!',

@@ -19,11 +19,8 @@ class Halaman28 extends Controller
     #[Override]
     public function index(): View
     {
-        $data = $this->getDataPublicHalaman28();
-
-        return $this->aiueoPilih(
-            data: $data,
-            items: $data['items'],
+        return $this->sukuBerakhiran(
+            data: $this->getDataPublicHalaman28(),
             halaman: 28,
             judul: 'Halaman 28 - pilih AIUEO',
             deskripsi: 'Mengenal macam-macam! AIUEO',
@@ -44,34 +41,36 @@ class Halaman28 extends Controller
          *         hint: string,
          *         audio: string
          *     }>
-         * }> $groups
+         * }> $items
          */
-        $groups = [
+        $items = [
             [
-                'master' => 'Kelompok Bunyi "NY" (Nya, Nyi, Nyu, Nye, Nyo)',
+                'masterPola' => 'nya nyi nyu nye nyo',
+                'audio' => asset('audio/id/Halaman 28/nya-nyi-nyu.wav'),
                 'items' => [
-                    ['id' => 'minyak', 'name' => 'Minyak', 'emoji' => '🛢️', 'hint' => 'Minyak adalah cairan untuk memasak!', 'audio' => asset('audio/halaman 28/halaman 28 minyak.m4a')],
-                    ['id' => 'nyanyi', 'name' => 'Nyanyi', 'emoji' => '🎤', 'hint' => 'Nyanyi adalah mengeluarkan suara dengan irama!', 'audio' => asset('audio/halaman 28/halaman 28 nyanyi.m4a')],
-                    ['id' => 'senyum', 'name' => 'Senyum', 'emoji' => '😊', 'hint' => 'Senyum adalah wajah bahagia!', 'audio' => asset('audio/halaman 28/halaman 38 senyum.m4a')],
-                    ['id' => 'nyenyak', 'name' => 'Nyenyak', 'emoji' => '😴', 'hint' => 'Nyenyak adalah tidur dengan nyenyak!', 'audio' => asset('audio/halaman 28/halaman 28 nyenyak.m4a')],
-                    ['id' => 'nyonya', 'name' => 'Nyonya', 'emoji' => '👩', 'hint' => 'Nyonya adalah sebutan untuk wanita!', 'audio' => asset('audio/halaman 28/halaman 28 nyonya.m4a')],
+                    ['id' => 'Minyak', 'emoji' => asset('gambar/halaman_28/minyak.webp'), 'audio' => asset('audio/id/Halaman 28/minyak.wav')],
+                    ['id' => 'Nyanyi', 'emoji' => asset('gambar/halaman_28/nyanyi.webp'), 'audio' => asset('audio/id/Halaman 28/nyanyi.wav')],
+                    ['id' => 'Senyum', 'emoji' => asset('gambar/halaman_28/senyum.webp'), 'audio' => asset('audio/id/Halaman 28/senyum.wav')],
+                    ['id' => 'Nyenyak', 'emoji' => asset('gambar/halaman_28/nyenyak.webp'), 'audio' => asset('audio/id/Halaman 28/nyenyak.wav')],
+                    ['id' => 'Nyonya', 'emoji' => asset('gambar/halaman_28/nyonya.webp'), 'audio' => asset('audio/id/Halaman 28/nyonya.wav')],
                 ],
             ],
             [
-                'master' => 'Kelompok Bunyi "NG" (Ang, Ing, Ung, Eng, Ong)',
+                'masterPola' => 'ang ing ung eng ong',
+                'audio' => asset('audio/id/Halaman 28/ang-ing-ung.wav'),
                 'items' => [
-                    ['id' => 'mangga', 'name' => 'Mangga', 'emoji' => '🥭', 'hint' => 'Mangga adalah buah tropis manis!', 'audio' => asset('audio/halaman 28/halaman 28 mangga.m4a')],
-                    ['id' => 'singa', 'name' => 'Singa', 'emoji' => '🦁', 'hint' => 'Singa adalah raja hutan!', 'audio' => asset('audio/halaman 28/halaman 28 singa.m4a')],
-                    ['id' => 'sungai', 'name' => 'Sungai', 'emoji' => '🏞️', 'hint' => 'Sungai adalah air yang mengalir!', 'audio' => asset('audio/halaman 28/halaman 28 sungai.m4a')],
-                    ['id' => 'banteng', 'name' => 'Banteng', 'emoji' => '🐂', 'hint' => 'Banteng adalah hewan liar mirip sapi!', 'audio' => asset('audio/halaman 28/halaman 28 banteng.m4a')],
-                    ['id' => 'tongkat', 'name' => 'Tongkat', 'emoji' => '🏏', 'hint' => 'Tongkat adalah alat untuk menopang!', 'audio' => asset('audio/halaman 28/halaman 28 tongkat.m4a')],
+                    ['id' => 'Mangga', 'emoji' => asset('gambar/halaman_28/mangga.webp'), 'audio' => asset('audio/id/Halaman 28/mangga.wav')],
+                    ['id' => 'Singa', 'emoji' => asset('gambar/halaman_28/singa.webp'), 'audio' => asset('audio/id/Halaman 28/singa.wav')],
+                    ['id' => 'Sungai', 'emoji' => asset('gambar/halaman_28/sungai.webp'), 'audio' => asset('audio/id/Halaman 28/sungai.wav')],
+                    ['id' => 'Banteng', 'emoji' => asset('gambar/halaman_28/banteng.webp'), 'audio' => asset('audio/id/Halaman 28/banteng.wav')],
+                    ['id' => 'Tongkat', 'emoji' => asset('gambar/halaman_28/tongkat.webp'), 'audio' => asset('audio/id/Halaman 28/tongkat.wav')],
                 ],
             ],
         ];
-
         return [
-            'items' => $groups,
-            'total_item' => array_sum(array_map(fn ($g) => count($g['items']), $groups)),
+            'items' => $items,
+            'total_item' => count($items),
+
         ];
     }
 }

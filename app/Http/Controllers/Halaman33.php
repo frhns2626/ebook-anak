@@ -17,7 +17,7 @@ class Halaman33 extends Controller
     public function index(): View
     {
         return $this->cariKataGame(
-            items: $this->getDataPublicHalaman33()['items'],
+            data: $this->getDataPublicHalaman33(),
             halaman: 33,
             judul: 'Halaman 33 - Cari Kata 🔍',
             deskripsi: 'Temukan kata yang tersembunyi!'
@@ -33,39 +33,33 @@ class Halaman33 extends Controller
     {
         $items = [
             [
-                'id' => 'meja',
-                'name' => 'Meja',
-                'emoji' => '🪑',
-                'hint' => 'Meja adalah tempat untuk meletakkan berbagai barang.',
-                'audio' => asset('audio/Halaman 33/1. meja.m4a'),
+                'id' => 'Meja',
+                'emoji' => asset('gambar/halaman_33/meja.webp'),
+                'audio' => asset('audio/id/Halaman 33/meja.wav'),
+
             ],
             [
-                'id' => 'kue',
-                'name' => 'Kue',
-                'emoji' => '🎂',
-                'hint' => 'Kue adalah makanan manis yang enak dimakan.',
-                'audio' => asset('audio/Halaman 33/2. kue.m4a'),
+                'id' => 'Kue',
+                'emoji' => asset('gambar/halaman_33/kue.webp'),
+                'audio' => asset('audio/id/Halaman 33/kue.wav'),
+
             ],
             [
-                'id' => 'buku',
-                'name' => 'Buku',
-                'emoji' => '📚',
-                'hint' => 'Buku digunakan untuk membaca dan belajar.',
-                'audio' => asset('audio/Halaman 33/3. buku.m4a'),
+                'id' => 'Buku',
+                'emoji' => asset('gambar/halaman_33/buku.webp'),
+                'audio' => asset('audio/id/Halaman 33/buku.wav'),
+
             ],
             [
-                'id' => 'udang',
-                'name' => 'Udang',
-                'emoji' => '🦐',
-                'hint' => 'Udang adalah hewan yang hidup di air.',
-                'audio' => asset('audio/Halaman 33/4. udang.m4a'),
+                'id' => 'Udang',
+                'emoji' => asset('gambar/halaman_33/udang.webp'),
+                'audio' => asset('audio/id/Halaman 33/udang.wav'),
+
             ],
             [
-                'id' => 'sapi',
-                'name' => 'Sapi',
-                'emoji' => '🐄',
-                'hint' => 'Sapi adalah hewan ternak yang memakan rumput.',
-                'audio' => asset('audio/Halaman 33/5. sapi.m4a'),
+                'id' => 'Sapi',
+                'emoji' => asset('gambar/halaman_33/sapi.webp'),
+                'audio' => asset('audio/id/Halaman 33/sapi.wav'),
             ],
         ];
 

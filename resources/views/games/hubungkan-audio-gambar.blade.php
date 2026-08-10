@@ -1,256 +1,171 @@
-<x-layout-game title="{{ $judul }}">
-    <main class="relative z-10 mx-auto max-w-4xl p-6">
-        <div class="relative mb-6 overflow-hidden rounded-3xl bg-white p-6 text-center shadow-xl">
-            <div
-                class="absolute top-0 right-0 left-0 h-2"
-                style="
-                    background: linear-gradient(90deg, #ff6b6b, #ff9f43, #ffe66d, #4ecdc4, #6c5ce7, #ff6b6b);
-                    background-size: 200% 100%;
-                    animation: rainbow 3s linear infinite;
-                "
-            ></div>
-            <a
-                href="{{ route('belajar.index') }}"
-                class="absolute top-1/2 left-4 -translate-y-1/2 rounded-full bg-red-100 px-4 py-2 text-sm font-bold text-red-500 transition-all hover:bg-red-200"
-            >← Kembali</a>
-            <span class="animate-bounce-subtle mb-2 block text-[3rem]">🥕</span>
-            <h1 class="mb-1 text-[1.8rem] font-black text-gray-800 md:text-[2.2rem]">{{ $judul }}</h1>
-            <p class="text-[1.1rem] text-gray-500">{{ $deskripsi }}</p>
-        </div>
-        <div class="mb-6 rounded-2xl border border-yellow-300 bg-yellow-100 p-4 text-center font-medium text-yellow-800">
-            🎯 <strong>Tap tombol audio, dengarkan, lalu tap gambar yang sesuai!</strong>
-        </div>
-        <div id="board" class="relative rounded-3xl bg-white p-6 shadow-xl">
-            <svg id="lines-layer" class="pointer-events-none absolute inset-0 h-full w-full" style="z-index:1"></svg>
-            <div class="relative grid grid-cols-2 gap-16 md:gap-28" style="z-index: 2">
-                <div>
-                    <h3 class="mb-4 text-center text-xl font-bold text-gray-700">Audio</h3>
-                    <div id="audios" class="space-y-4"></div>
-                </div>
-                <div>
-                    <h3 class="mb-4 text-center text-xl font-bold text-gray-700">Gambar</h3>
-                    <div id="pictures" class="space-y-4"></div>
-                </div>
-            </div>
-        </div>
-        <p id="status" class="mt-6 text-center text-lg font-bold"></p>
-        <div class="mt-8 flex justify-center gap-4">
-            <button
-                id="resetBtn"
-                class="rounded-full bg-gray-200 px-6 py-4 font-bold text-gray-700 transition-all hover:bg-gray-300"
-            >
-                🔄 Ulangi
-            </button>
-        </div>
-        <div id="successModal" class="fixed inset-0 z-50 flex hidden items-center justify-center bg-black/70">
-            <div class="mx-4 max-w-md rounded-3xl bg-white p-10 text-center">
-                <div class="mb-4 animate-bounce text-8xl">🎉</div>
-                <h2 class="mb-2 text-4xl font-black text-emerald-600">Hebat Sekali!</h2>
-                <p class="mb-6 text-xl text-gray-600">Semua sudah cocok dengan benar!</p>
-                <button
-                    onclick="
-                        document.getElementById('successModal').classList.add('hidden');
-                        resetGame();
-                    "
-                    class="rounded-full bg-emerald-500 px-8 py-3 text-lg font-bold text-white transition-all hover:bg-emerald-600"
-                >
-                    Main Lagi →
-                </button>
-            </div>
-        </div>
-    </main>
-    <script>
-        const items = @json($items);
-        const board = document.getElementById('board');
-        const linesLayer = document.getElementById('lines-layer');
-        const statusEl = document.getElementById('status');
-
-        let selectedLeft = null;
-        let previewLine = null;
-
-        function shuffle(arr) {
-            return [...arr].sort(() => Math.random() - 0.5);
-        }
-
-        function renderBoard() {
-            const audiosEl = document.getElementById('audios');
-            const picturesEl = document.getElementById('pictures');
-            audiosEl.innerHTML = '';
-            picturesEl.innerHTML = '';
-
-            shuffle(items).forEach((item, index) => {
-                const div = document.createElement('div');
-                div.dataset.side = 'left';
-                div.dataset.id = item.id;
-                div.dataset.audio = item.audio;
-                div.className =
-                    'item-box border-4 border-blue-200 rounded-2xl p-4 cursor-pointer transition-all shadow-md flex items-center gap-3 h-24 select-none';
-                div.innerHTML = `
-                    <span class="w-8 h-8 flex items-center justify-center rounded-full bg-blue-50 font-black text-blue-600 flex-shrink-0">${index + 1}</span>
-                    <span class="flex-1 flex items-center justify-center text-3xl">🔊</span>
-                `;
-                audiosEl.appendChild(div);
-            });
-
-            shuffle(items).forEach((item) => {
-                const div = document.createElement('div');
-                div.dataset.side = 'right';
-                div.dataset.id = item.id;
-                div.className =
-                    'item-box border-4 border-purple-200 rounded-2xl p-4 cursor-pointer transition-all shadow-md flex items-center gap-3 h-24 select-none';
-                div.innerHTML = `<span class="text-5xl flex-shrink-0">${item.emoji}</span><span class="font-black text-lg text-gray-800">${item.name}</span>`;
-                picturesEl.appendChild(div);
-            });
-
-            bindItems();
-        }
-
-        function getPoint(evt) {
-            const rect = board.getBoundingClientRect();
-            const clientX = evt.touches ? evt.touches[0].clientX : evt.clientX;
-            const clientY = evt.touches ? evt.touches[0].clientY : evt.clientY;
-            return { x: clientX - rect.left, y: clientY - rect.top };
-        }
-
-        function getCenter(el) {
-            const r = el.getBoundingClientRect();
-            const b = board.getBoundingClientRect();
-            const side = el.dataset.side;
-            return {
-                x: side === 'left' ? r.right - b.left : r.left - b.left,
-                y: r.top - b.top + r.height / 2,
-            };
-        }
-
-        function startPreview(leftEl) {
-            const p1 = getCenter(leftEl);
-            previewLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-            previewLine.setAttribute('x1', p1.x);
-            previewLine.setAttribute('y1', p1.y);
-            previewLine.setAttribute('x2', p1.x);
-            previewLine.setAttribute('y2', p1.y);
-            previewLine.setAttribute('stroke', '#888780');
-            previewLine.setAttribute('stroke-width', '2.5');
-            previewLine.setAttribute('stroke-dasharray', '5,4');
-            linesLayer.appendChild(previewLine);
-        }
-
-        function updatePreview(evt) {
-            if (!previewLine) return;
-            const p = getPoint(evt);
-            previewLine.setAttribute('x2', p.x);
-            previewLine.setAttribute('y2', p.y);
-        }
-
-        function removePreview() {
-            if (previewLine) {
-                previewLine.remove();
-                previewLine = null;
-            }
-        }
-
-        board.addEventListener('mousemove', updatePreview);
-        board.addEventListener('touchmove', updatePreview);
-
-        function drawLine(leftEl, rightEl, isCorrect) {
-            const p1 = getCenter(leftEl),
-                p2 = getCenter(rightEl);
-            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-            line.setAttribute('x1', p1.x);
-            line.setAttribute('y1', p1.y);
-            line.setAttribute('x2', p2.x);
-            line.setAttribute('y2', p2.y);
-            line.setAttribute('stroke', isCorrect ? '#639922' : '#e24b4a');
-            line.setAttribute('stroke-width', '3');
-            linesLayer.appendChild(line);
-        }
-
-        function checkWin() {
-            const leftItems = document.querySelectorAll('[data-side="left"]');
-            const allCorrect = Array.from(leftItems).every((el) => el.classList.contains('correct'));
-            if (allCorrect) {
-                statusEl.textContent = '🎉 Bagus! Semua sudah cocok dengan benar.';
-                setTimeout(() => document.getElementById('successModal').classList.remove('hidden'), 400);
-            }
-        }
-
-        function bindItems() {
-            document.querySelectorAll('.item-box').forEach((el) => {
-                el.onclick = () => {
-                    const side = el.dataset.side;
-                    const id = el.dataset.id;
-
-                    if (side === 'left') {
-                        if (el.classList.contains('correct')) return;
-
-                        const audioSrc = el.dataset.audio;
-                        if (audioSrc) new Audio(audioSrc).play();
-
-                        document.querySelectorAll('.item-box').forEach((i) => i.classList.remove('selected'));
-                        removePreview();
-                        selectedLeft = el;
-                        el.classList.add('selected');
-                        startPreview(el);
-                    } else {
-                        if (!selectedLeft) return;
-                        const isCorrect = selectedLeft.dataset.id === id;
-
-                        removePreview();
-                        drawLine(selectedLeft, el, isCorrect);
-
-                        selectedLeft.classList.remove('selected');
-                        selectedLeft.classList.add(isCorrect ? 'correct' : 'wrong');
-                        el.classList.add(isCorrect ? 'correct' : 'wrong');
-
-                        if (!isCorrect) {
-                            const badLeft = selectedLeft,
-                                badRight = el;
-                            setTimeout(() => {
-                                badLeft.classList.remove('wrong');
-                                badRight.classList.remove('wrong');
-                                linesLayer.querySelectorAll('line').forEach((l) => {
-                                    if (l.getAttribute('stroke') === '#e24b4a') l.remove();
-                                });
-                            }, 700);
-                        }
-
-                        selectedLeft = null;
-                        checkWin();
-                    }
-                };
-            });
-        }
-
-        function resetGame() {
-            document.querySelectorAll('.item-box').forEach((i) => i.classList.remove('selected', 'correct', 'wrong'));
-            linesLayer.innerHTML = '';
-            statusEl.textContent = '';
-            selectedLeft = null;
-            previewLine = null;
-            renderBoard();
-        }
-
-        document.getElementById('resetBtn').addEventListener('click', resetGame);
-
-        document.addEventListener('DOMContentLoaded', () => {
-            renderBoard();
-        });
-    </script>
+<x-layout-game
+    title="{{$judul}}"
+    halaman="{{$halaman}}"
+>
     <style>
-        .item-box.selected {
+        /* Typography Judul Pop-out */
+        .title-text {
+            font-family: 'Fredoka', cursive, sans-serif;
+            color: #fbbf24;
+            -webkit-text-stroke: 1.5px #000000;
+            paint-order: stroke fill;
+            filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.8));
+        }
+
+        /* Styling Kartu Putih Bergelombang */
+        .item-card {
+            background-color: #ffffff;
+            border-radius: 1.25rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+        }
+
+        /* Styling Input Angka Jawaban */
+        .number-input {
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 0.75rem;
+            border: 3px solid #cbd5e1;
+            font-family: 'Fredoka', cursive, sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            text-align: center;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .number-input:focus {
             border-color: #3b82f6;
-            background: #eff6ff;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
         }
 
-        .item-box.correct {
-            border-color: #639922;
-            background: #f0fdf4;
-            cursor: default;
+        /* Feedback Jawaban Benar / Salah */
+        .input-correct {
+            border-color: #22c55e !important;
+            background-color: #f0fdf4;
+            color: #166534;
         }
 
-        .item-box.wrong {
-            border-color: #e24b4a;
-            background: #fef2f2;
+        .input-wrong {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2;
+            color: #991b1b;
+            animation: shake 0.3s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            20%, 60% {
+                transform: translateX(-4px);
+            }
+            40%, 80% {
+                transform: translateX(4px);
+            }
         }
     </style>
+    @php
+        // Perpasangan tetap (permutasi tanpa titik tetap), sesuai desain asli:
+        // baris 1 -> target kata milik item ke-3, baris 2 -> item ke-4, dst.
+        $targetOrder = [3, 4, 5, 2, 1];
+    @endphp
+    <div class="flex flex-col items-center justify-between h-full w-full my-auto select-none px-2">
+        <!-- Judul Atas -->
+        <div class="text-center mt-1 mb-3">
+            <h1 class="title-text text-lg sm:text-xl md:text-2xl font-extrabold tracking-wide leading-tight">
+                cocokkan gambar dan kata<br>dengan menuliskan angka !
+            </h1>
+        </div>
+        <!-- List Baris Matching (5 Pasang) -->
+        <div class="flex flex-col space-y-2 sm:space-y-3 w-full max-w-lg my-auto">
+            @foreach ($items as $i => $left)
+                @php
+                    $target = $items[$targetOrder[$i] - 1];
+                @endphp
+                <div class="flex items-center justify-between gap-2">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-2xl sm:text-3xl font-black text-black">{{ $i + 1 }}</span>
+                        <img
+                            src="{{ $left['emoji'] }}"
+                            alt="{{ $left['id'] }}"
+                            data-audio="{{ $left['audio'] }}"
+                            @class([
+                                    'baca-item object-contain',
+                                 'sm:w-24 w-20 h-auto' => $left['id'] !== 'kacamata',
+                                 'sm:w-30 w-24 h-auto' => $left['id'] === 'kacamata',
+                             ])
+                        />
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <input type="text" maxlength="1" data-answer="{{ $targetOrder[$i] }}" class="number-input text-black"/>
+                        <div class="item-card px-4 py-2 w-32 sm:w-36 text-center baca-item" data-audio="{{ $target['audio'] }}">
+                            <span class="text-lg sm:text-xl font-bold text-black">{{ $target['id'] }}</span>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+    @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const inputs = document.querySelectorAll('.number-input');
+
+                inputs.forEach(input => {
+                    input.addEventListener('input', (e) => {
+                        const val = e.target.value.trim();
+                        const correctAnswer = input.dataset.answer;
+
+                        input.classList.remove('input-correct', 'input-wrong');
+
+                        if (val === '') return;
+
+                        if (val === correctAnswer) {
+                            input.classList.add('input-correct');
+                            if (typeof showFlashMessage === 'function') {
+                                showFlashMessage('success', 'Benar!');
+                            }
+                        } else {
+                            input.classList.add('input-wrong');
+                            if (typeof showFlashMessage === 'function') {
+                                showFlashMessage('error', 'Coba lagi!');
+                            }
+                        }
+                    });
+                });
+
+                let audioPlayer = new Audio();
+                let isPlaying = false;
+
+                document.querySelectorAll('.baca-item').forEach(card => {
+                    card.addEventListener('click', () => {
+                        if (isPlaying) return;
+
+                        const src = card.dataset.audio;
+                        if (!src) return;
+
+                        isPlaying = true;
+
+                        audioPlayer.pause();
+                        audioPlayer.removeAttribute('src');
+                        audioPlayer.load();
+
+                        audioPlayer = new Audio(src);
+                        audioPlayer.addEventListener('ended', () => {
+                            isPlaying = false;
+                        });
+                        audioPlayer.addEventListener('error', () => {
+                            isPlaying = false;
+                        });
+                        audioPlayer.play().catch(() => {
+                            isPlaying = false;
+                        });
+
+                        card.classList.add('drop-shadow-[0_0_10px_rgba(74,222,128,0.9)]');
+                    });
+                });
+            });
+        </script>
+    @endpush
 </x-layout-game>

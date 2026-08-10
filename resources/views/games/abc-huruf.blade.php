@@ -1,112 +1,124 @@
-<x-layout-game title="{{ $judul }}">
-    {{-- Main content --}}
-    <main class="relative z-10 mx-auto max-w-4xl p-6">
-        {{-- Header --}}
-        <div class="relative mb-6 overflow-hidden rounded-3xl bg-white p-6 text-center shadow-xl">
-            <div
-                class="absolute top-0 right-0 left-0 h-2"
-                style="
-                    background: linear-gradient(90deg, #ff6b6b, #ff9f43, #ffe66d, #4ecdc4, #6c5ce7, #ff6b6b);
-                    background-size: 200% 100%;
-                    animation: rainbow 3s linear infinite;
-                "
-            ></div>
-            <a
-                href="{{ route('belajar.index') }}"
-                class="absolute top-1/2 left-4 -translate-y-1/2 rounded-full bg-red-100 px-4 py-2 text-sm font-bold text-red-500 transition-all hover:bg-red-200"
-            >← Kembali</a>
-            <span class="animate-bounce-subtle mb-2 block text-[3rem]">🔤</span>
-            <h1
-                class="mb-1 text-[1.8rem] font-black text-gray-800 md:text-[2.2rem]"
-                style="font-family: 'Fredoka One', cursive"
-            >
-                Belajar Huruf A-Z 🌟
-            </h1>
-            <p class="text-[1rem] text-gray-500">Klik huruf untuk mendengar bunyinya! 📚✨</p>
+<x-layout-game
+    title="{{$judul}}"
+    halaman="{{$halaman}}"
+>
+    <style>
+        .alphabet-card {
+            font-family: 'Fredoka', cursive, sans-serif;
+            color: #fbbf24;
+            -webkit-text-stroke: 2px #000000;
+            paint-order: stroke fill;
+            filter: drop-shadow(3px 3px 0px rgba(0, 0, 0, 0.85));
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .alphabet-card:hover {
+            transform: scale(1.15) rotate(-3deg);
+            filter: drop-shadow(4px 4px 0px rgba(0, 0, 0, 0.9));
+        }
+
+        .alphabet-card.playing {
+            transform: scale(1.25) rotate(3deg);
+        }
+
+        .alphabet-card.clicked {
+            color: #4ade80;
+            filter: drop-shadow(0px 0px 10px rgba(74, 222, 128, 0.9));
+        }
+
+        .alphabet-card.disabled {
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+    </style>
+    @php
+        $letterKey = $lang === 'en' ? 'huruf' : 'id';
+        $byLetter = collect($items)->keyBy($letterKey);
+    @endphp
+    <div class="flex flex-col items-center justify-center h-full w-full my-auto select-none px-2 py-4 z-10">
+        {{--        <div class="mb-2">--}}
+        {{--            <select--}}
+        {{--                id="langSelect"--}}
+        {{--                class="rounded-full border-2 border-black bg-white px-4 py-1 font-bold"--}}
+        {{--                style="font-family: 'Fredoka', cursive, sans-serif;"--}}
+        {{--                onchange="window.location.href = '?lang=' + this.value"--}}
+        {{--            >--}}
+        {{--                <option value="id" {{ $lang === 'id' ? 'selected' : '' }}>Indonesia</option>--}}
+        {{--                <option value="en" {{ $lang === 'en' ? 'selected' : '' }}>English</option>--}}
+        {{--            </select>--}}
+        {{--        </div>--}}
+        <div class="flex flex-col space-y-3 sm:space-y-5 w-full max-w-xl my-auto items-center justify-center">
+            @php
+                $alphabetRows = [
+                    ['Aa', 'Bb', 'Cc', 'Dd'],
+                    ['Ee', 'Ff', 'Gg', 'Hh', 'Ii'],
+                    ['Jj', 'Kk', 'Ll', 'Mm', 'Nn'],
+                    ['Oo', 'Pp', 'Qq', 'Rr', 'Ss'],
+                    ['Tt', 'Uu', 'Vv', 'Ww'],
+                    ['Xx', 'Yy', 'Zz']
+                ];
+            @endphp
+
+            @foreach($alphabetRows as $row)
+                <div class="flex justify-center items-center gap-4 sm:gap-8 w-full">
+                    @foreach($row as $pair)
+                        @php
+                            $letter = strtoupper(substr($pair, 0, 1));
+                        @endphp
+                        <div class="alphabet-card text-6xl font-black tracking-tight"
+                             data-letter="{{ $letter }}"
+                             data-audio="{{ $byLetter[$letter]['audio'] ?? '' }}"
+                             onclick="playLetterAudio(this)">
+                            {{ $pair }}
+                        </div>
+                    @endforeach
+                </div>
+            @endforeach
         </div>
-        {{-- Main Display --}}
-        <div class="mb-6 rounded-3xl bg-white p-8 text-center shadow-xl">
-            <div
-                id="bigLetter"
-                class="mb-6 bg-gradient-to-b from-red-400 via-orange-400 to-yellow-400 bg-clip-text pb-4 text-[12rem] leading-none font-black text-transparent md:text-[16rem]"
-                style="font-family: 'Fredoka', sans-serif"
-            >
-                Aa
-            </div>
-            <p class="mt-2 mb-6 text-[1.5rem] font-bold text-gray-600" id="letterHint">Huruf A Besar & a Kecil</p>
-            {{-- Audio buttons --}}
-            <div class="mb-4 flex flex-wrap justify-center gap-4">
-                <button
-                    onclick="playLetter()"
-                    class="flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-400 to-blue-500 px-8 py-4 text-lg font-bold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl"
-                    style="font-family: 'Fredoka', sans-serif"
-                >
-                    🔊 Dengarkan Suara
-                </button>
-            </div>
-            {{-- Feedback --}}
-            <div id="feedback" class="mb-4 hidden rounded-2xl p-4 text-[1.3rem] font-bold"></div>
-        </div>
-        {{-- Letter Grid --}}
-        <div class="mb-6 rounded-3xl bg-white p-6 shadow-xl">
-            <h3 class="mb-4 text-center text-[1.1rem] font-bold text-gray-700">📝 Pilih Huruf:</h3>
-            <div id="letterGrid" class="grid grid-cols-7 gap-2 md:grid-cols-9 md:gap-3"></div>
-        </div>
-    </main>
+    </div>
     @push('scripts')
         <script>
-            const letterData = @json(collect($data['items'])->keyBy('huruf'));
-            const alphabet = Object.keys(letterData);
+            let isPlaying = false;
 
-            let currentLetter = 'A';
-            let audioPlayer = new Audio();
+            function playLetterAudio(element) {
+                if (isPlaying) return;
 
-            function initLetterGrid() {
-                const grid = document.getElementById('letterGrid');
-                alphabet.forEach((letter) => {
-                    const item = letterData[letter];
-                    const btn = document.createElement('button');
-                    btn.className =
-                        'w-12 h-12 md:w-14 md:h-14 rounded-xl font-bold text-base md:text-lg shadow-md hover:scale-110 hover:shadow-lg transition-all cursor-pointer border-4 border-transparent hover:border-yellow-300';
-                    btn.style.background = item.color;
-                    btn.style.color = 'white';
-                    btn.style.fontFamily = "'Fredoka', sans-serif";
-                    btn.textContent = letter + letter.toLowerCase();
-                    btn.dataset.letter = letter;
-                    btn.onclick = () => selectLetter(letter);
-                    grid.appendChild(btn);
-                });
+                const letter = element.dataset.letter;
+                const audioUrl = element.dataset.audio;
+                const allCards = document.querySelectorAll('.alphabet-card');
+
+                isPlaying = true;
+                allCards.forEach(card => card.classList.add('disabled'));
+
+                element.classList.add('playing', 'clicked');
+                setTimeout(() => {
+                    element.classList.remove('playing');
+                }, 400);
+
+                if (typeof showFlashMessage === 'function') {
+                    showFlashMessage('success', `Huruf ${letter}!`);
+                }
+
+                const unlock = () => {
+                    isPlaying = false;
+                    allCards.forEach(card => card.classList.remove('disabled'));
+                };
+
+                if (audioUrl) {
+                    const audio = new Audio(audioUrl);
+                    audio.currentTime = 0;
+                    audio.addEventListener('ended', unlock);
+                    audio.addEventListener('error', unlock);
+                    audio.play().catch(() => {
+                        console.log(`Audio untuk huruf ${letter} tidak ditemukan atau belum diunggah.`);
+                        unlock();
+                    });
+                } else {
+                    setTimeout(unlock, 400);
+                }
             }
-
-            function selectLetter(letter) {
-                currentLetter = letter;
-
-                document.getElementById('bigLetter').textContent = letter + letter.toLowerCase();
-                document.getElementById('letterHint').textContent = `Huruf ${letter} Besar & ${letter.toLowerCase()} Kecil`;
-
-                document.querySelectorAll('#letterGrid button').forEach((btn) => {
-                    const active = btn.dataset.letter === letter;
-                    btn.classList.toggle('ring-4', active);
-                    btn.classList.toggle('ring-yellow-400', active);
-                    btn.classList.toggle('scale-125', active);
-                    btn.classList.toggle('shadow-xl', active);
-                });
-
-                document.getElementById('feedback').classList.add('hidden');
-                playLetter();
-            }
-
-            function playLetter() {
-                const data = letterData[currentLetter];
-                if (!data?.audio) return;
-                audioPlayer.pause();
-                audioPlayer = new Audio(data.audio);
-                audioPlayer.play().catch(() => {});
-            }
-
-            // Init
-            initLetterGrid();
-            selectLetter('A');
         </script>
     @endpush
 </x-layout-game>

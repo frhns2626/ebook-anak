@@ -1,258 +1,165 @@
-<x-layout-game title="🔤 Menghubungkan Suku Kata - Ebook Anak TK">
-    <main class="relative z-10 mx-auto max-w-4xl p-6">
-        <div class="relative mb-6 overflow-hidden rounded-3xl bg-white p-6 text-center shadow-xl">
-            <div
-                class="absolute top-0 right-0 left-0 h-2"
-                style="
-                    background: linear-gradient(90deg, #ff6b6b, #ff9f43, #ffe66d, #4ecdc4, #6c5ce7, #ff6b6b);
-                    background-size: 200% 100%;
-                    animation: rainbow 3s linear infinite;
-                "
-            ></div>
-            <a
-                href="{{ route('belajar.index') }}"
-                class="absolute top-1/2 left-4 -translate-y-1/2 rounded-full bg-red-100 px-4 py-2 text-sm font-bold text-red-500 transition-all hover:bg-red-200"
-            >← Kembali</a>
-            <span class="animate-bounce-subtle mb-2 block text-[3rem]">🔤</span>
-            <h1 class="mb-1 text-[1.8rem] font-black text-gray-800 md:text-[2.2rem]">{{ $judul }}</h1>
-            <p class="text-[1.1rem] text-gray-500">{{ $deskripsi }}</p>
-        </div>
-        <div class="mb-6 rounded-2xl border border-yellow-300 bg-yellow-100 p-4 text-center font-medium text-yellow-800">
-            🎯 <strong>Tap gambarnya, lalu tap suku kata yang cocok untuk melengkapi "ba"!</strong>
-        </div>
-        <div id="board" class="relative rounded-3xl bg-white p-6 shadow-xl">
-            <svg id="lines-layer" class="pointer-events-none absolute inset-0 h-full w-full" style="z-index:1"></svg>
-            <div class="relative grid grid-cols-2 gap-20 md:gap-36" style="z-index: 2">
-                <div>
-                    <h3 class="mb-3 text-center text-lg font-bold text-gray-700 md:text-xl">Gambar</h3>
-                    <div id="pictures" class="space-y-3"></div>
-                </div>
-
-                <div>
-                    <h3 class="mb-3 text-center text-lg font-bold text-gray-700 md:text-xl">"ba" + ?</h3>
-                    <div id="suffixes" class="space-y-3"></div>
-                </div>
-            </div>
-        </div>
-        <p id="status" class="mt-6 text-center text-lg font-bold"></p>
-        <div class="mt-8 flex justify-center gap-4">
-            <button
-                id="resetBtn"
-                class="rounded-full bg-gray-200 px-6 py-4 font-bold text-gray-700 transition-all hover:bg-gray-300"
-            >
-                🔄 Ulangi
-            </button>
-        </div>
-        <div id="successModal" class="fixed inset-0 z-50 flex hidden items-center justify-center bg-black/70">
-            <div class="mx-4 max-w-md rounded-3xl bg-white p-10 text-center">
-                <div class="mb-4 animate-bounce text-8xl">🎉</div>
-                <h2 class="mb-2 text-4xl font-black text-emerald-600">Hebat Sekali!</h2>
-                <p class="mb-6 text-xl text-gray-600">Semua kata sudah tersambung dengan benar!</p>
-                <button
-                    onclick="
-                        document.getElementById('successModal').classList.add('hidden');
-                        resetGame();
-                    "
-                    class="rounded-full bg-emerald-500 px-8 py-3 text-lg font-bold text-white transition-all hover:bg-emerald-600"
-                >
-                    Main Lagi →
-                </button>
-            </div>
-        </div>
-    </main>
-    <script>
-        const items = @json($items);
-        const board = document.getElementById('board');
-        const linesLayer = document.getElementById('lines-layer');
-        const statusEl = document.getElementById('status');
-
-        let selectedLeft = null;
-        let previewLine = null;
-
-        function shuffle(arr) {
-            return [...arr].sort(() => Math.random() - 0.5);
-        }
-
-        function renderBoard() {
-            const picturesEl = document.getElementById('pictures');
-            const suffixesEl = document.getElementById('suffixes');
-            picturesEl.innerHTML = '';
-            suffixesEl.innerHTML = '';
-
-            shuffle(items).forEach((item) => {
-                const div = document.createElement('div');
-                div.dataset.side = 'left';
-                div.dataset.suffix = item.suffix;
-                div.dataset.id = item.id;
-                div.dataset.name = item.name;
-                div.dataset.audio = item.audio;
-                div.className =
-                    'item-box border-4 border-blue-200 rounded-2xl p-3 text-center cursor-pointer transition-all shadow-md flex items-center justify-center gap-2 h-20 select-none mx-auto';
-                div.innerHTML = `<span class="text-5xl">${item.emoji}</span>`;
-                picturesEl.appendChild(div);
-            });
-
-            shuffle(items).forEach((item) => {
-                const div = document.createElement('div');
-                div.dataset.side = 'right';
-                div.dataset.suffix = item.suffix;
-                div.className =
-                    'item-box border-4 border-purple-200 rounded-2xl p-3 text-center cursor-pointer transition-all shadow-md flex items-center justify-center h-20 text-5xl font-black select-none mx-auto';
-                div.textContent = item.suffix;
-                suffixesEl.appendChild(div);
-            });
-            bindItems();
-        }
-
-        function getPoint(evt) {
-            const rect = board.getBoundingClientRect();
-            const clientX = evt.touches ? evt.touches[0].clientX : evt.clientX;
-            const clientY = evt.touches ? evt.touches[0].clientY : evt.clientY;
-            return { x: clientX - rect.left, y: clientY - rect.top };
-        }
-
-        function getCenter(el) {
-            const r = el.getBoundingClientRect();
-            const b = board.getBoundingClientRect();
-            const side = el.dataset.side;
-            return {
-                x: side === 'left' ? r.right - b.left : r.left - b.left,
-                y: r.top - b.top + r.height / 2,
-            };
-        }
-
-        function startPreview(leftEl) {
-            const p1 = getCenter(leftEl);
-            previewLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-            previewLine.setAttribute('x1', p1.x);
-            previewLine.setAttribute('y1', p1.y);
-            previewLine.setAttribute('x2', p1.x);
-            previewLine.setAttribute('y2', p1.y);
-            previewLine.setAttribute('stroke', '#888780');
-            previewLine.setAttribute('stroke-width', '2.5');
-            previewLine.setAttribute('stroke-dasharray', '5,4');
-            linesLayer.appendChild(previewLine);
-        }
-
-        function updatePreview(evt) {
-            if (!previewLine) return;
-            const p = getPoint(evt);
-            previewLine.setAttribute('x2', p.x);
-            previewLine.setAttribute('y2', p.y);
-        }
-
-        function removePreview() {
-            if (previewLine) {
-                previewLine.remove();
-                previewLine = null;
-            }
-        }
-
-        board.addEventListener('mousemove', updatePreview);
-        board.addEventListener('touchmove', updatePreview);
-
-        function drawLine(leftEl, rightEl, isCorrect) {
-            const p1 = getCenter(leftEl),
-                p2 = getCenter(rightEl);
-            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-            line.setAttribute('x1', p1.x);
-            line.setAttribute('y1', p1.y);
-            line.setAttribute('x2', p2.x);
-            line.setAttribute('y2', p2.y);
-            line.setAttribute('stroke', isCorrect ? '#639922' : '#e24b4a');
-            line.setAttribute('stroke-width', '3');
-            linesLayer.appendChild(line);
-        }
-
-        function checkWin() {
-            const leftItems = document.querySelectorAll('[data-side="left"]');
-            const allCorrect = Array.from(leftItems).every((el) => el.classList.contains('correct'));
-            if (allCorrect) {
-                statusEl.textContent = '🎉 Bagus! Semua kata sudah tersambung dengan benar.';
-                setTimeout(() => document.getElementById('successModal').classList.remove('hidden'), 400);
-            }
-        }
-
-        function bindItems() {
-            document.querySelectorAll('.item-box').forEach((el) => {
-                el.onclick = () => {
-                    const side = el.dataset.side;
-                    const suffix = el.dataset.suffix;
-
-                    if (side === 'left') {
-                        if (el.classList.contains('correct')) return;
-                        document.querySelectorAll('.item-box').forEach((i) => i.classList.remove('selected'));
-                        removePreview();
-                        selectedLeft = el;
-                        el.classList.add('selected');
-                        startPreview(el);
-                    } else {
-                        if (!selectedLeft) return;
-                        const isCorrect = selectedLeft.dataset.suffix === suffix;
-
-                        removePreview();
-                        drawLine(selectedLeft, el, isCorrect);
-
-                        selectedLeft.classList.remove('selected');
-                        selectedLeft.classList.add(isCorrect ? 'correct' : 'wrong');
-                        el.classList.add(isCorrect ? 'correct' : 'wrong');
-
-                        if (isCorrect) {
-                            selectedLeft.innerHTML = `<span class="text-5xl">${selectedLeft.querySelector('span').textContent}</span>
-                                <span class="font-black text-lg text-emerald-600">ba${selectedLeft.dataset.suffix}</span>`;
-                            const audioSrc = selectedLeft.dataset.audio;
-                            if (audioSrc) new Audio(audioSrc).play();
-                        }
-
-                        if (!isCorrect) {
-                            const badLeft = selectedLeft,
-                                badRight = el;
-                            setTimeout(() => {
-                                badLeft.classList.remove('wrong');
-                                badRight.classList.remove('wrong');
-                                linesLayer.querySelectorAll('line').forEach((l) => {
-                                    if (l.getAttribute('stroke') === '#e24b4a') l.remove();
-                                });
-                            }, 700);
-                        }
-
-                        selectedLeft = null;
-                        checkWin();
-                    }
-                };
-            });
-        }
-
-        function resetGame() {
-            document.querySelectorAll('.item-box').forEach((i) => i.classList.remove('selected', 'correct', 'wrong'));
-            linesLayer.innerHTML = '';
-            statusEl.textContent = '';
-            selectedLeft = null;
-            previewLine = null;
-            renderBoard();
-        }
-
-        document.getElementById('resetBtn').addEventListener('click', resetGame);
-
-        document.addEventListener('DOMContentLoaded', () => {
-            renderBoard();
-        });
-    </script>
+<x-layout-game
+    title="{{$judul}}"
+    halaman="{{$halaman}}"
+>
     <style>
-        .item-box.selected {
-            border-color: #3b82f6;
-            background: #eff6ff;
+        /* Style Judul Pop-out */
+        .title-text {
+            font-family: 'Fredoka', cursive, sans-serif;
+            color: #fbbf24;
+            -webkit-text-stroke: 1.5px #000000;
+            paint-order: stroke fill;
+            filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.8));
         }
 
-        .item-box.correct {
-            border-color: #639922;
-            background: #f0fdf4;
-            cursor: default;
+        /* Style Suku Kata Base */
+        .syllable-item {
+            font-size: 2rem;
+            font-weight: 700;
+            user-select: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.75rem;
+            border: 3px solid transparent; /* Placeholder border agar layout tidak bergeser */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .item-box.wrong {
-            border-color: #e24b4a;
-            background: #fef2f2;
+        /* Warna Suku Kata */
+        .c-green  { color: #10b981; }
+        .c-purple { color: #818cf8; }
+        .c-yellow { color: #eab308; }
+        .c-red    { color: #ef4444; }
+        .c-blue   { color: #3b82f6; }
+
+        /* Container Bergelombang Biru Muda */
+        .wavy-container {
+            background-color: #dbeafe;
+            border-radius: 2.5rem;
+            border: 2px solid #bfdbfe;
+        }
+
+        /* Styling Kotak Hijau ketika 'ba' berhasil ditemukan */
+        .found-box {
+            background-color: rgba(34, 197, 94, 0.15) !important;
+            border: 3px solid #22c55e !important;
+            box-shadow: 0 4px 6px -1px rgba(34, 197, 94, 0.3);
+            transform: scale(1.1);
+        }
+
+        /* Styling Kotak Merah sementara ketika salah memilih */
+        .wrong-box {
+            animation: shake 0.3s ease-in-out;
+            border: 3px solid #ef4444 !important;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
         }
     </style>
+
+    <!-- Container Utama Dalam Layout Game -->
+    <div class="wavy-container relative flex h-full w-full flex-col justify-between overflow-hidden p-4 sm:p-6 my-auto select-none">
+
+        <!-- Judul Aktivitas -->
+        <div class="z-10 mt-1 text-center">
+            <h1 class="title-text text-lg sm:text-2xl font-extrabold tracking-wide">
+                Temukan 5 suku kata “ba”.
+            </h1>
+            <h2 class="title-text mt-0.5 text-lg sm:text-2xl font-extrabold tracking-wide">
+                Kemudian hubungkan !
+            </h2>
+        </div>
+
+        <!-- Grid Sebaran Suku Kata -->
+        <div class="relative my-2 grid w-full flex-grow grid-cols-3 items-center justify-items-center gap-x-2 gap-y-2 text-center">
+
+            <!-- Baris 1 -->
+            <div class="syllable-item c-purple col-start-1" data-syllable="bi">bi</div>
+            <div class="syllable-item c-green col-start-3" data-syllable="be">be</div>
+
+            <!-- Baris 2 -->
+            <div class="syllable-item c-green relative col-start-1" data-syllable="ba">ba</div>
+            <div class="syllable-item c-yellow col-start-2" data-syllable="bu">bu</div>
+            <div class="syllable-item c-red col-start-3" data-syllable="bo">bo</div>
+
+            <!-- Baris 3 -->
+            <div class="syllable-item c-red col-start-1" data-syllable="bi">bi</div>
+            <div class="syllable-item c-green col-start-2" data-syllable="ba">ba</div>
+            <div class="syllable-item c-blue col-start-3" data-syllable="be">be</div>
+
+            <!-- Baris 4 -->
+            <div class="syllable-item c-yellow col-start-1" data-syllable="bo">bo</div>
+            <div class="syllable-item c-purple col-start-3" data-syllable="bo">bo</div>
+
+            <!-- Baris 5 -->
+            <div class="syllable-item c-red col-start-2" data-syllable="bu">bu</div>
+            <div class="syllable-item c-green col-start-3" data-syllable="ba">ba</div>
+
+            <!-- Baris 6 -->
+            <div class="syllable-item c-purple col-start-1" data-syllable="ba">ba</div>
+            <div class="syllable-item c-yellow col-start-2" data-syllable="bo">bo</div>
+            <div class="syllable-item c-blue col-start-3" data-syllable="bu">bu</div>
+
+            <!-- Baris 7 -->
+            <div class="syllable-item c-green col-start-1" data-syllable="be">be</div>
+            <div class="syllable-item c-blue col-start-2" data-syllable="bi">bi</div>
+            <div class="syllable-item c-red col-start-3" data-syllable="be">be</div>
+
+            <!-- Baris 8 -->
+            <div class="syllable-item c-yellow col-start-1" data-syllable="ba">ba</div>
+            <div class="syllable-item c-red col-start-2" data-syllable="bi">bi</div>
+            <div class="syllable-item c-yellow col-start-3" data-syllable="bu">bu</div>
+
+        </div>
+    </div>
+
+    @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const items = document.querySelectorAll('.syllable-item');
+                let foundCount = 0;
+                const targetCount = 5;
+
+                items.forEach(item => {
+                    item.addEventListener('click', () => {
+                        const text = item.dataset.syllable;
+
+                        // Abaikan jika item ini sudah berhasil ditemukan
+                        if (item.classList.contains('found-box')) {
+                            return;
+                        }
+
+                        if (text === 'ba') {
+                            // Tambahkan Kotak Hijau pada suku kata "ba"
+                            item.classList.add('found-box', 'animate-pop');
+                            foundCount++;
+
+                            if (typeof showFlashMessage === 'function') {
+                                if (foundCount < targetCount) {
+                                    showFlashMessage('success', `Benar! (${foundCount}/${targetCount})`);
+                                } else {
+                                    showFlashMessage('success', 'Hebat! Semua "ba" ditemukan! 🎉');
+                                }
+                            }
+                        } else {
+                            // Animasi salah sementara
+                            item.classList.add('wrong-box');
+                            if (typeof showFlashMessage === 'function') {
+                                showFlashMessage('error', 'Coba cari "ba"!');
+                            }
+
+                            setTimeout(() => {
+                                item.classList.remove('wrong-box');
+                            }, 400);
+                        }
+                    });
+                });
+            });
+        </script>
+    @endpush
 </x-layout-game>
