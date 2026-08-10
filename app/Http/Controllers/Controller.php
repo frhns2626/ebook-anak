@@ -735,7 +735,6 @@ abstract class Controller
 
     /**
      * @param array $hurufs
-     * @param array $hurufHilang
      * @param int $halaman
      * @param string $judul
      * @param string $deskripsi
@@ -744,16 +743,16 @@ abstract class Controller
      */
     public function melengkapiHuruf(
         array  $hurufs,
-        array  $hurufHilang,
         int    $halaman,
         string $judul,
+        string $lang,
         string $deskripsi): Factory|\Illuminate\Contracts\View\View|View
     {
         return view('games.melengkapi-huruf', [
             'hurufs' => $hurufs,
-            'hurufHilang' => $hurufHilang,   // ← penting sesuai request
             'halaman' => $halaman,
             'judul' => $judul,
+            'lang' => $lang,
             'deskripsi' => $deskripsi,
         ]);
     }
