@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 abstract class Controller
@@ -29,9 +30,10 @@ abstract class Controller
     ];
 
     /**
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\View\View
      */
-    abstract public function index(): View;
+    abstract public function index(Request $request): View;
 
     /**
      * @throws BindingResolutionException
@@ -705,13 +707,15 @@ abstract class Controller
      * @param int $halaman
      * @param string $judul
      * @param string $deskripsi
+     * @param string $lang
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\View\View|void
      */
     public function pengenalanAudio(
         array  $data,
         int    $halaman,
         string $judul,
-        string $deskripsi
+        string $deskripsi,
+        string $lang,
     )
     {
         try {
@@ -721,6 +725,7 @@ abstract class Controller
                 'halaman' => $halaman,
                 'judul' => $judul,
                 'deskripsi' => $deskripsi,
+                'lang' => $lang === 'en' ? 'en' : 'id',
             ]);
         } catch (BindingResolutionException $e) {
             abort(404, 'terjadi Kesalahan :' . $e->getMessage());

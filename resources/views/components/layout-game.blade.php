@@ -19,127 +19,6 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"/>
     @endif
     <style>
-        @keyframes twinkle {
-            0%,
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 0.7;
-                transform: scale(0.9);
-            }
-        }
-
-        @keyframes float-cloud {
-            0%,
-            100% {
-                transform: translateX(0) translateY(0);
-            }
-            50% {
-                transform: translateX(25px) translateY(-5px);
-            }
-        }
-
-        @keyframes float-gentle {
-            0%,
-            100% {
-                transform: translateY(0) rotate(0deg);
-            }
-            50% {
-                transform: translateY(-15px) rotate(5deg);
-            }
-        }
-
-        @keyframes float-side {
-            0%,
-            100% {
-                transform: translateX(0) translateY(0);
-            }
-            50% {
-                transform: translateX(15px) translateY(-10px);
-            }
-        }
-
-        @keyframes bounce-subtle {
-            0%,
-            100% {
-                transform: translateY(0) scale(1);
-            }
-            50% {
-                transform: translateY(-10px) scale(1.05);
-            }
-        }
-
-        @keyframes pop {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.2);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        @keyframes wiggle {
-            0%,
-            100% {
-                transform: rotate(-5deg);
-            }
-            50% {
-                transform: rotate(5deg);
-            }
-        }
-
-        @keyframes slideUp {
-            from {
-                transform: translateY(20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes rainbow {
-            0% {
-                background-position: 0% 50%;
-            }
-            100% {
-                background-position: 200% 50%;
-            }
-        }
-
-        .animate-twinkle {
-            animation: twinkle 3s ease-in-out infinite;
-        }
-
-        .animate-float-cloud {
-            animation: float-cloud 8s ease-in-out infinite;
-        }
-
-        .animate-float-gentle {
-            animation: float-gentle 4s ease-in-out infinite;
-        }
-
-        .animate-float-side {
-            animation: float-side 6s ease-in-out infinite;
-        }
-
-        .animate-bounce-subtle {
-            animation: bounce-subtle 2s ease-in-out infinite;
-        }
-
-        .animate-pop {
-            animation: pop 0.5s ease;
-        }
-
-        .animate-wiggle {
-            animation: wiggle 3s ease-in-out infinite;
-        }
 
         body {
             font-family: 'Fredoka', cursive, sans-serif;
@@ -164,11 +43,11 @@
 {{-- md:p-8--}}
 <body class="bg-grid-pattern flex min-h-screen    justify-center items-start p-4">
 {{--border-8  rounded-xl shadow-2xl p-6 aspect-[1/1.41] sm:p-8 --}}
-<div class="relative   w-full max-w-xl  overflow-auto flex flex-col justify-between gap-10  ">
+<div class="relative  w-full max-w-xl  overflow-auto flex flex-col justify-between gap-10  ">
     {{ $slot }}
     @if($halaman==='0')
     @else
-        <div class="relative z-20 mx-auto mt-4 mb-1 ">
+        <div class="fixed z-20 bottom-4 left-1/2 -translate-x-1/2">
             <div class="bg-[#facc15] border-2 border-black rounded-xl px-5 py-0.5 shadow-[2px_2px_0px_rgba(0,0,0,1)]">
                 <span class="font-extrabold text-xs sm:text-sm text-black tracking-wide">
                     Halaman {{$halaman}}

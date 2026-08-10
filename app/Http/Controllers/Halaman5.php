@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Override;
 
@@ -14,18 +15,21 @@ class Halaman5 extends Controller
 
 
     /**
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\View\View
-     * @throws Exception
      */
     #[Override]
-    public function index(): View
+    public function index(Request $request): View
     {
+        $lang = $request->query('lang', 'id');
+
         try {
             return $this->pengenalanAudio(
-                data: $this->getDataPublicHalaman5(),
+                data: $this->getDataPublicHalaman5($lang),
                 halaman: 5,
                 judul: 'Halaman 5 - Mengenal Dunia Hewan 🦁',
                 deskripsi: 'Mengenal macam-macam teman hewan yang lucu!',
+                lang: $lang,
             );
         } catch (Exception $e) {
             abort(404, $e->getMessage());
@@ -35,7 +39,7 @@ class Halaman5 extends Controller
     /**
      * @throws BindingResolutionException
      */
-    public function getDataPublicHalaman5(): array
+    public function getDataPublicHalaman5($lang): array
     {
         $id = [
             ['id' => 'singa', 'emoji' => asset('gambar/halaman_5/singa.webp'), 'audio' => asset('audio/id/Halaman 5/singa.wav')],
@@ -58,10 +62,11 @@ class Halaman5 extends Controller
             ['id' => 'yoyo', 'emoji' => asset('gambar/halaman_5/yoyo.webp'), 'audio' => asset('audio/en/Halaman 5/7. yoyo.m4a')],
             ['id' => 'zebra', 'emoji' => asset('gambar/halaman_5/zebra.webp'), 'audio' => asset('audio/en/Halaman 5/8. zebra.m4a')],
         ];
+        $items = $lang === 'en' ? $en : $id;
 
         return [
-            'items' => $id,
-            'total_item' => count($id),
+            'items' => $items,
+            'total_item' => count($items),
         ];
     }
 }

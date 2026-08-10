@@ -89,13 +89,17 @@
     // To make it even shorter (e.g. small tablets in landscape): try `height: 360`
 
     const pageFlip = new St.PageFlip(document.getElementById('book'), {
-        width: 400,
-        height: 600, // <-- reduced from 550; adjust this single value to resize
         size: 'stretch',
-        minWidth: 300,
-        maxWidth: 1000,
-        minHeight: 300, // <-- lowered in step with height above
-        maxHeight: 700, // <-- lowered in step with height above
+
+        width: 500,
+        height: 650,
+
+        minWidth: 280,
+        maxWidth: 500,
+
+        minHeight: 364,
+        maxHeight: 650,
+
         showCover: false,
         maxShadowOpacity: 0.5,
         mobileScrollSupport: true,

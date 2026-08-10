@@ -3,9 +3,9 @@
     halaman="0"
 >
     <!-- Container Utama / Lembaran Putih -->
-    <div class="relative w-full max-w-2xl rounded-[2.5rem] border border-gray-100 bg-white px-8 pt-16 pb-12 text-gray-800 shadow-xl mt-8">
+    <div class="relative w-full max-w-2xl rounded-[2.5rem] border border-gray-100 bg-white px-8 pt-16 pb-12 text-gray-800  mt-8">
         <!-- Lencana Judul (Kata Pengantar) -->
-        <div class="absolute -top-7 left-1/2 -translate-x-1/2 rounded-2xl border border-gray-100 bg-white px-8 py-2 shadow-md">
+        <div class="absolute -top-7 left-1/2 -translate-x-1/2 rounded-2xl border border-gray-100 bg-white px-8 py-2 ">
             <h1 class="text-2xl font-extrabold tracking-wide text-black md:text-3xl">Kata Pengantar</h1>
         </div>
 

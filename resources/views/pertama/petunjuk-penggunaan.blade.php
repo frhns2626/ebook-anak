@@ -3,9 +3,9 @@
     halaman="0"
 >
     <!-- Container Utama / Kartu Biru Muda -->
-    <div class="relative w-full max-w-2xl rounded-[2.5rem] border border-blue-100 bg-white px-8 pt-16 pb-12 text-gray-800 shadow-xl mt-8">
+    <div class="relative w-full max-w-2xl rounded-[2.5rem] border border-blue-100 bg-white px-8 pt-16 pb-12 text-gray-800  mt-8">
         <!-- Lencana Judul (Petunjuk Penggunaan buku) -->
-        <div class="absolute -top-7 left-1/2 -translate-x-1/2 rounded-2xl border border-gray-100 bg-white px-8 py-2 whitespace-nowrap shadow-md">
+        <div class="absolute -top-7 left-1/2 -translate-x-1/2 rounded-2xl border border-gray-100 bg-white px-8 py-2 whitespace-nowrap ">
             <h1 class="text-2xl font-extrabold tracking-wide text-black md:text-3xl">Petunjuk Penggunaan buku</h1>
         </div>
         <!-- Paragraf Pembuka -->

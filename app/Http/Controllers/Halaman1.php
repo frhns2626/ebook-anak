@@ -5,16 +5,19 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Override;
 
 class Halaman1 extends Controller
 {
     /**
-     * @throws BindingResolutionException
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\View\View
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     #[Override]
-    public function index(): View
+    public function index(Request $request): View
     {
         return $this->abcdHuruf(
             data: $this->getDataPublicHalaman1(),

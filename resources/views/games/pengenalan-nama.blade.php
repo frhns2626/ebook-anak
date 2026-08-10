@@ -2,22 +2,24 @@
     title="{{$judul}}"
     halaman="{{$halaman}}"
 >
-    <div class="grid grid-cols-2 gap-4  my-auto pt-2">
-        @php
-            $palette = ['#73c7b5', '#facc15', '#818cf8', '#ef4444', '#ef4444', '#73c7b5'];
-        @endphp
-
+    <div class=" flex w-full justify-center">
+        <select
+            id="langSelect"
+            class="rounded-full border-2 border-black bg-white px-4 py-1 font-bold"
+            style="font-family: 'Fredoka', cursive, sans-serif;"
+            onchange="window.location.href = '?lang=' + this.value"
+        >
+            <option value="id" {{ $lang === 'id' ? 'selected' : '' }}>Indonesia</option>
+            <option value="en" {{ $lang === 'en' ? 'selected' : '' }}>English</option>
+        </select>
+    </div>
+    <div class="grid grid-cols-2 gap-4 my-auto pt-2">
         @foreach ($items as $item)
-            @php
-                $color = $palette[$loop->index % count($palette)];
-                $letter = strtoupper(substr($item['id'], 0, 1)) . strtolower(substr($item['id'], 0, 1));
-            @endphp
-                <!-- Kartu {{ $letter }} - {{ $item['id'] }} -->
             <div class="flex flex-col justify-between gap-8 relative">
                 <img
                     src="{{ $item['emoji'] }}"
                     alt="{{ $item['id'] }}"
-                    class="w-full sm:h-36 h-24  object-contain rounded-lg transition-all target-img"
+                    class="w-full {{ count($items) < 8 ? 'h-32 sm:h-48' : 'h-24 sm:h-36' }} object-contain rounded-lg transition-all target-img"
                 />
             </div>
         @endforeach
@@ -34,7 +36,8 @@
         if (!item.audio) return;
         audioPlayer.pause();
         audioPlayer = new Audio(item.audio);
-        audioPlayer.play().catch(() => {});
+        audioPlayer.play().catch(() => {
+        });
     }
 
     document.querySelectorAll('.target-img').forEach(img => {

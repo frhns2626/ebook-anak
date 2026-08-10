@@ -38,17 +38,17 @@
         $byLetter = collect($items)->keyBy($letterKey);
     @endphp
     <div class="flex flex-col items-center justify-center h-full w-full my-auto select-none px-2 py-4 z-10">
-        {{--        <div class="mb-2">--}}
-        {{--            <select--}}
-        {{--                id="langSelect"--}}
-        {{--                class="rounded-full border-2 border-black bg-white px-4 py-1 font-bold"--}}
-        {{--                style="font-family: 'Fredoka', cursive, sans-serif;"--}}
-        {{--                onchange="window.location.href = '?lang=' + this.value"--}}
-        {{--            >--}}
-        {{--                <option value="id" {{ $lang === 'id' ? 'selected' : '' }}>Indonesia</option>--}}
-        {{--                <option value="en" {{ $lang === 'en' ? 'selected' : '' }}>English</option>--}}
-        {{--            </select>--}}
-        {{--        </div>--}}
+        <div class="mb-10">
+            <select
+                id="langSelect"
+                class="rounded-full border-2 border-black bg-white px-4 py-1 font-bold"
+                style="font-family: 'Fredoka', cursive, sans-serif;"
+                onchange="window.location.href = '?lang=' + this.value"
+            >
+                <option value="id" {{ $lang === 'id' ? 'selected' : '' }}>Indonesia</option>
+                <option value="en" {{ $lang === 'en' ? 'selected' : '' }}>English</option>
+            </select>
+        </div>
         <div class="flex flex-col space-y-3 sm:space-y-5 w-full max-w-xl my-auto items-center justify-center">
             @php
                 $alphabetRows = [
@@ -67,7 +67,7 @@
                         @php
                             $letter = strtoupper(substr($pair, 0, 1));
                         @endphp
-                        <div class="alphabet-card text-6xl font-black tracking-tight"
+                        <div class="alphabet-card text-5xl font-black tracking-tight"
                              data-letter="{{ $letter }}"
                              data-audio="{{ $byLetter[$letter]['audio'] ?? '' }}"
                              onclick="playLetterAudio(this)">
