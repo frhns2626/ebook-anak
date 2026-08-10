@@ -1,4 +1,14 @@
+<html>
 <style>
+    html,
+    body {
+        overflow-x: hidden;
+    }
+
+    #book {
+        overflow: hidden;
+    }
+
     .book-wrap {
         display: flex;
         flex-direction: column;
@@ -13,7 +23,8 @@
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
         border-radius: 8px;
         width: 100%;
-        max-width: 900px; /* cap how wide it gets on huge screens */
+        max-width: 900px;
+        /* cap how wide it gets on huge screens */
     }
 
     .page {
@@ -54,7 +65,8 @@
         box-shadow: none;
     }
 </style>
-<div class="book-wrap">
+<body>
+<div class="book-wrap overflow-hidden">
     <div id="book">
         <div class="page" style="padding: 10px;">
             <iframe data-src="{{ route('pertama.cover') }}" data-loaded="0"></iframe>
@@ -72,6 +84,9 @@
         @endfor
         <div class="page" style="padding: 10px;">
             <iframe data-src="{{ route('belajar.penutupan') }}" data-loaded="0"></iframe>
+        </div>
+        <div class="page" style="padding: 10px;">
+            <iframe data-src="{{ route('belajar.penutupan-blank') }}" data-loaded="0"></iframe>
         </div>
     </div>
     <div class="book-nav">
@@ -149,3 +164,5 @@
     document.getElementById('prevBtn').addEventListener('click', () => pageFlip.flipPrev());
     document.getElementById('nextBtn').addEventListener('click', () => pageFlip.flipNext());
 </script>
+</body>
+</html>

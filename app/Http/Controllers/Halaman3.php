@@ -45,7 +45,7 @@ class Halaman3 extends Controller
 
         $en = [
             ['id' => 'gajah', 'emoji' => asset('gambar/halaman_3/gajah.webp'), 'audio' => asset('audio/en/Halaman 3/1. gajah.m4a')],
-            ['id' => 'helicopter', 'emoji' => asset('gambar/halaman_3/helicopter.webp'), 'audio' => asset('audio/en/Halaman 3/2. helicopter.m4a')],
+            ['id' => 'helicopter', 'emoji' => asset('gambar/halaman_3/helikopter.webp'), 'audio' => asset('audio/en/Halaman 3/2. helikopter.m4a')],
             ['id' => 'ikan', 'emoji' => asset('gambar/halaman_3/ikan.webp'), 'audio' => asset('audio/en/Halaman 3/3. ikan.m4a')],
             ['id' => 'jerapah', 'emoji' => asset('gambar/halaman_3/jerapah.webp'), 'audio' => asset('audio/en/Halaman 3/4. jerapah.m4a')],
             ['id' => 'kelelawar', 'emoji' => asset('gambar/halaman_3/kelelawar.webp'), 'audio' => asset('audio/en/Halaman 3/5. kelelawar.m4a')],

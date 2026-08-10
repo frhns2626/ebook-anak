@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\View\View;
 use Override;
+use Illuminate\Http\Request;
 
 class Halaman32 extends Controller
 {
@@ -14,7 +15,7 @@ class Halaman32 extends Controller
      * @throws BindingResolutionException
      */
     #[Override]
-    public function index(): View
+    public function index(Request $request): View
     {
 
         return $this->deskripsiObject(
@@ -44,7 +45,7 @@ class Halaman32 extends Controller
         $items = [
             [
                 'id' => 'mountain',
-                'emoji' => asset('gambar/halaman_31-32/gunung.webp'),
+                'emoji' => asset('gambar/halaman_31-32/gunung_en.webp'),
                 'audio' => asset('audio/en/Halaman 32/gunung.m4a'),
                 'texts' => [
                     ['text' => 'A tall mountain rises upward.', 'audio' => asset('audio/id/Halaman 32/text1.wav')],

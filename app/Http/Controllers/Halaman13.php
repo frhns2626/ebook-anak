@@ -5,16 +5,19 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Override;
 
 class Halaman13 extends Controller
 {
     /**
-     * @throws BindingResolutionException
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\View\View
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     #[Override]
-    public function index(): View
+    public function index(Request $request): View
     {
 
         return $this->deskripsiObject(
@@ -46,7 +49,7 @@ class Halaman13 extends Controller
             [
                 'id' => 'bola',
                 'emoji' => asset('gambar/halaman_13-14/bola.webp'),
-                'audio' => asset('audio/id/Halaman 13/pembuka.wav'),
+                'audio' => asset('audio/id/Halaman 13/objek.wav'),
                 'texts' => [
                     ['text' => 'Bola kecil meluncur di atas meja.', 'audio' => asset('audio/id/Halaman 13/text1.wav')],
                     ['text' => 'Bola sepak dijaga oleh kiper di gawang.', 'audio' => asset('audio/id/Halaman 13/text2.wav')],

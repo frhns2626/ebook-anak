@@ -12,6 +12,11 @@
             filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.8));
         }
 
+        .letter-card.selected {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06), 0 0 0 4px #60a5fa;
+            transform: scale(1.05);
+        }
+
         .letter-card {
             background-color: #ffffff;
             border-radius: 0.75rem;
@@ -40,6 +45,7 @@
         .draggable-item {
             cursor: grab;
             transition: transform 0.15s ease;
+            touch-action: manipulation;
         }
 
         .draggable-item:active {
@@ -47,26 +53,23 @@
             transform: scale(1.1);
         }
     </style>
-
     @php
         $alphabet = range('a', 'z');
         $blankCount = 8; // jumlah huruf yang dikosongkan
         $willEmpety = collect($alphabet)->random($blankCount)->values()->all();
         $bank = collect($willEmpety)->shuffle()->values(); // Collection, for ->chunk()
     @endphp
-
     <div class="flex flex-col items-center justify-between h-full w-full my-auto">
         <div class="text-center mt-1 mb-3">
-            <h1 class="title-text text-xl sm:text-2xl md:text-3xl font-extrabold tracking-wide">
+            <h1 class="title-text text-2xl sm:text-4xl  font-extrabold tracking-wide mb-2">
                 Lengkapi huruf yang hilang !
             </h1>
         </div>
-
         <!-- Grid Utama Alfabet (A-Z dengan Slot Kosong, acak) -->
         <div class="grid grid-cols-5 gap-2 sm:gap-2.5 w-full max-w-md px-2">
             @foreach ($alphabet as $letter)
                 @if (in_array($letter, $willEmpety))
-                    <div class="drop-target h-10 sm:h-12 flex items-center justify-center text-xl sm:text-2xl font-bold" data-answer="{{ $letter }}"></div>
+                    <div class="drop-target h-10 sm:h-12 flex items-center justify-center text-2xl sm:text-4xl font-bold" data-answer="{{ $letter }}"></div>
                 @else
                     <div class="letter-card h-10 sm:h-12 text-xl sm:text-2xl">{{ $letter }}</div>
                 @endif
@@ -75,15 +78,13 @@
                 <div></div>
             @endfor
         </div>
-
-        <div class="my-2"></div>
-
+        <div class="my-10"></div>
         <!-- Bank Pilihan Huruf (sama persis dengan $willEmpety, cuma diacak urutannya) -->
         <div class="flex flex-col items-center gap-2 w-full max-w-md px-2">
             @foreach ($bank->chunk(6) as $row)
                 <div class="grid grid-cols-6 gap-2 w-full">
                     @foreach ($row as $letter)
-                        <div class="letter-card draggable-item h-10 sm:h-12 text-xl sm:text-2xl" draggable="true" data-letter="{{ $letter }}">{{ $letter }}</div>
+                        <div class="letter-card draggable-item h-10 sm:h-12 text-2xl sm:text-4xl" draggable="true" data-letter="{{ $letter }}">{{ $letter }}</div>
                     @endforeach
                     @for ($i = 0; $i < 6 - $row->count(); $i++)
                         <div></div>
@@ -92,24 +93,94 @@
             @endforeach
         </div>
     </div>
-
     @push('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', () => {
                 const draggables = document.querySelectorAll('.draggable-item');
                 const dropTargets = document.querySelectorAll('.drop-target');
                 let selectedLetterNode = null;
+                let floatingClone = null;
+                let activeItem = null;
+
+                function clearSelection() {
+                    draggables.forEach(d => d.classList.remove('selected'));
+                    selectedLetterNode = null;
+                }
+
+                function createFloatingClone(item, x, y) {
+                    floatingClone = item.cloneNode(true);
+                    floatingClone.style.position = 'fixed';
+                    floatingClone.style.width = item.offsetWidth + 'px';
+                    floatingClone.style.height = item.offsetHeight + 'px';
+                    floatingClone.style.pointerEvents = 'none';
+                    floatingClone.style.zIndex = '9999';
+                    floatingClone.style.opacity = '0.85';
+                    moveFloatingClone(x, y);
+                    document.body.appendChild(floatingClone);
+                }
+
+                function moveFloatingClone(x, y) {
+                    if (!floatingClone) return;
+                    floatingClone.style.left = (x - floatingClone.offsetWidth / 2) + 'px';
+                    floatingClone.style.top = (y - floatingClone.offsetHeight / 2) + 'px';
+                }
+
+                function removeFloatingClone() {
+                    if (floatingClone) {
+                        floatingClone.remove();
+                        floatingClone = null;
+                    }
+                }
+
+                function findDropTargetAt(x, y) {
+                    floatingClone.style.display = 'none';
+                    const el = document.elementFromPoint(x, y);
+                    floatingClone.style.display = '';
+                    if (!el) return null;
+                    return el.closest('.drop-target');
+                }
 
                 draggables.forEach(item => {
+                    // Tap-to-select fallback (still works if someone just taps)
+                    item.addEventListener('click', () => {
+                        if (item.style.visibility === 'hidden') return;
+                        clearSelection();
+                        selectedLetterNode = item;
+                        item.classList.add('selected');
+                    });
+
+                    // Touch drag
+                    item.addEventListener('touchstart', (e) => {
+                        if (item.style.visibility === 'hidden') return;
+                        activeItem = item;
+                        const touch = e.touches[0];
+                        createFloatingClone(item, touch.clientX, touch.clientY);
+                        item.style.opacity = '0.3';
+                    }, { passive: true });
+
+                    item.addEventListener('touchmove', (e) => {
+                        if (!floatingClone) return;
+                        const touch = e.touches[0];
+                        moveFloatingClone(touch.clientX, touch.clientY);
+                    }, { passive: true });
+
+                    item.addEventListener('touchend', (e) => {
+                        if (!floatingClone || !activeItem) return;
+                        const touch = e.changedTouches[0];
+                        const target = findDropTargetAt(touch.clientX, touch.clientY);
+                        removeFloatingClone();
+                        activeItem.style.opacity = '1';
+
+                        if (target) {
+                            checkAnswer(target, activeItem.dataset.letter, activeItem);
+                        }
+                        activeItem = null;
+                    });
+
+                    // Desktop native drag (unchanged)
                     item.addEventListener('dragstart', (e) => {
                         selectedLetterNode = item;
                         e.dataTransfer.setData('text/plain', item.dataset.letter);
-                    });
-
-                    item.addEventListener('click', () => {
-                        draggables.forEach(d => d.classList.remove('ring-4', 'ring-yellow-400'));
-                        selectedLetterNode = item;
-                        item.classList.add('ring-4', 'ring-yellow-400');
                     });
                 });
 
@@ -127,18 +198,18 @@
                         e.preventDefault();
                         target.classList.remove('drag-over');
                         const letter = e.dataTransfer.getData('text/plain');
-                        checkAnswer(target, letter);
+                        checkAnswer(target, letter, selectedLetterNode);
                     });
 
+                    // Tap-to-place fallback
                     target.addEventListener('click', () => {
                         if (selectedLetterNode) {
-                            const letter = selectedLetterNode.dataset.letter;
-                            checkAnswer(target, letter);
+                            checkAnswer(target, selectedLetterNode.dataset.letter, selectedLetterNode);
                         }
                     });
                 });
 
-                function checkAnswer(target, letter) {
+                function checkAnswer(target, letter, sourceNode) {
                     const correctAnswer = target.dataset.answer;
 
                     if (letter === correctAnswer) {
@@ -146,12 +217,11 @@
                         target.classList.remove('drop-target', 'border-dashed');
                         target.classList.add('letter-card', 'text-green-600', 'animate-pop');
 
-                        if (selectedLetterNode) {
-                            selectedLetterNode.style.visibility = 'hidden';
-                            selectedLetterNode.classList.remove('ring-4', 'ring-yellow-400');
-                            selectedLetterNode = null;
+                        if (sourceNode) {
+                            sourceNode.style.visibility = 'hidden';
+                            sourceNode.classList.remove('selected');
                         }
-
+                        selectedLetterNode = null;
                         showFlashMessage('success', 'Benar!');
                     } else {
                         showFlashMessage('error', 'Salah!');

@@ -5,24 +5,27 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use Exception;
-use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Override;
 
 class Halaman7 extends Controller
 {
     /**
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\View\View
      */
     #[Override]
-    public function index(): View
+    public function index(Request $request): View
     {
         try {
+            $lang = $request->query('lang', 'id');
             return $this->aioeoGame(
-                data: $this->getDataPublicHalaman7(),
+                data: $this->getDataPublicHalaman7($lang),
                 halaman: 7,
-                judul: 'Mengenal Huruf Vokal 🎵',
-                deskripsi: 'Membaca kosakata yang diawali huruf vokal A, I, U, E, O! 👶✨',
+                judul: 'Halaman 7 - Mengenal Huruf Vokal',
+                deskripsi: 'Membaca kosakata yang diawali huruf vokal A, I, U, E, O!',
+                lang: $lang,
             );
         } catch (Exception $e) {
             abort(404, $e->getMessage());
@@ -30,9 +33,18 @@ class Halaman7 extends Controller
     }
 
     /**
-     * @throws BindingResolutionException
+     * Data kosakata huruf vokal AIUEO (A-I-U-E-O) Halaman 7.
+     * Setiap item punya:
+     *   - id    : identitas unik
+     *   - emoji : path gambar (webp)
+     *   - vocal : huruf vokal utama
+     *   - audio : path file audio sesuai bahasa yang dipilih
+     *
+     * @param string $lang 'id' (Indonesia, default) atau 'en' (English)
+     * @return array{items: list<array{id: string, emoji: string, vocal: string, audio: string}>, total_item: int}
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function getDataPublicHalaman7(): array
+    public function getDataPublicHalaman7(string $lang): array
     {
         $id = [
             ['id' => 'a-ayam', 'emoji' => asset('gambar/halaman_7/ayam.webp'), 'vocal' => 'A', 'audio' => asset('audio/id/Halaman 7/ayam.wav')],
@@ -57,7 +69,7 @@ class Halaman7 extends Controller
             ['id' => 'a-awan', 'emoji' => asset('gambar/halaman_7/awan.webp'), 'vocal' => 'A', 'audio' => asset('audio/en/Halaman 7/2A. awan.m4a')],
             ['id' => 'a-akar', 'emoji' => asset('gambar/halaman_7/akar.webp'), 'vocal' => 'A', 'audio' => asset('audio/en/Halaman 7/3A. akar.m4a')],
             ['id' => 'i-ikan', 'emoji' => asset('gambar/halaman_7/ikan.webp'), 'vocal' => 'I', 'audio' => asset('audio/en/Halaman 7/4I. ikan.m4a')],
-            ['id' => 'i-iguana', 'emoji' => asset('gambar/halaman_7/iguana.webp'), 'vocal' => 'I', 'audio' => asset('audio/en/Halaman 7/5I. iguana.m4a')],
+            ['id' => 'i-iguana', 'emoji' => asset('gambar/halaman_7/iguana.webp'), 'vocal' => 'I', 'audio' => asset('audio/en/Halaman 7/5I. iguana_.m4a')],
             ['id' => 'i-itik', 'emoji' => asset('gambar/halaman_7/itik.webp'), 'vocal' => 'I', 'audio' => asset('audio/en/Halaman 7/6I. itik.m4a')],
             ['id' => 'u-ular', 'emoji' => asset('gambar/halaman_7/ular.webp'), 'vocal' => 'U', 'audio' => asset('audio/en/Halaman 7/7U. ular.m4a')],
             ['id' => 'u-udang', 'emoji' => asset('gambar/halaman_7/udang.webp'), 'vocal' => 'U', 'audio' => asset('audio/en/Halaman 7/8U. udang.m4a')],
@@ -70,9 +82,11 @@ class Halaman7 extends Controller
             ['id' => 'o-ombak', 'emoji' => asset('gambar/halaman_7/ombak.webp'), 'vocal' => 'O', 'audio' => asset('audio/en/Halaman 7/15O. ombak.m4a')],
         ];
 
+        $items = $lang === 'en' ? $en : $id;
+
         return [
-            'items' => $id,
-            'total_item' => count($id),
+            'items' => $items,
+            'total_item' => count($items),
         ];
     }
 }

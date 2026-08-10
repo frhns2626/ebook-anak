@@ -1,6 +1,8 @@
 <x-layout-game
     title="{{$judul}}"
     halaman="{{$halaman}}"
+    :lang_on="true"
+    lang="{{$lang}}"
 >
     <style>
         .alphabet-card {
@@ -37,18 +39,7 @@
         $letterKey = $lang === 'en' ? 'huruf' : 'id';
         $byLetter = collect($items)->keyBy($letterKey);
     @endphp
-    <div class="flex flex-col items-center justify-center h-full w-full my-auto select-none px-2 py-4 z-10">
-        <div class="mb-10">
-            <select
-                id="langSelect"
-                class="rounded-full border-2 border-black bg-white px-4 py-1 font-bold"
-                style="font-family: 'Fredoka', cursive, sans-serif;"
-                onchange="window.location.href = '?lang=' + this.value"
-            >
-                <option value="id" {{ $lang === 'id' ? 'selected' : '' }}>Indonesia</option>
-                <option value="en" {{ $lang === 'en' ? 'selected' : '' }}>English</option>
-            </select>
-        </div>
+    <div class="flex flex-col items-center justify-center h-full w-full my-auto select-none px-2 py-4 z-10 mt-10" >
         <div class="flex flex-col space-y-3 sm:space-y-5 w-full max-w-xl my-auto items-center justify-center">
             @php
                 $alphabetRows = [
@@ -62,7 +53,7 @@
             @endphp
 
             @foreach($alphabetRows as $row)
-                <div class="flex justify-center items-center gap-4 sm:gap-8 w-full">
+                <div class="flex justify-center items-center gap-6 sm:gap-10 w-full">
                     @foreach($row as $pair)
                         @php
                             $letter = strtoupper(substr($pair, 0, 1));

@@ -1,6 +1,8 @@
 <x-layout-game
     title="{{$judul}}"
     halaman="{{$halaman}}"
+    :lang_on="true"
+    lang="{{$lang}}"
 >
     <style>
         /* Typography Judul Pop-out */
@@ -32,19 +34,23 @@
     @php
         $grouped = collect($items)->groupBy('vocal');
     @endphp
+
+
+
     <div class="flex flex-col items-center justify-between h-full w-full my-auto">
+
         <!-- Judul Atas -->
-        <div class="text-center mt-1 mb-2">
+        <div class="text-center  mb-2">
             <h1 class="title-text text-2xl sm:text-3xl font-extrabold tracking-wide">
                 Huruf vokal
             </h1>
         </div>
         <!-- Daftar Baris Huruf Vokal (A, I, U, E, O) -->
-        <div class="flex flex-col space-y-2.5 w-full my-auto px-1">
+        <div class="flex flex-col space-y-3 w-full my-auto px-1">
             @foreach ($grouped as $vocal => $group)
                 @php $lower = strtolower($vocal); @endphp
                     <!-- Baris {{ $vocal }}{{ $lower }} -->
-                <div class="vowel-card py-2 px-3 sm:px-4 flex items-center justify-between shadow-sm">
+                <div class="vowel-card p-3 flex items-center justify-between shadow-sm">
                     <span class="text-3xl sm:text-4xl font-extrabold text-black w-12 text-center">{{ $vocal }}{{ $lower }}</span>
                     <div class="grid grid-cols-3 gap-2 flex-1 text-center items-end">
                         @foreach ($group as $item)
@@ -54,7 +60,7 @@
                                     src="{{ $item['emoji'] }}"
                                     alt="{{ $item['id'] }}"
                                     data-audio="{{ $item['audio'] }}"
-                                    class="vocal-img w-auto sm:h-24 h-14 object-contain rounded-xl"
+                                    class="vocal-img w-auto sm:h-24 h-[4rem] object-contain "
                                 />
                             </div>
                         @endforeach

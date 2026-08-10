@@ -1,6 +1,8 @@
 <x-layout-game
-    title="{{$judul}}"
-    halaman="{{$halaman}}"
+    title="{{ $judul }}"
+    halaman="{{ $halaman }}"
+    :lang_on="true"
+    lang="{{ $lang }}"
 >
     <style>
         /* Typography Judul Pop-out */
@@ -15,7 +17,7 @@
         /* Container Biru Bergelombang */
         .group-card {
             background-color: #dbeafe;
-            border-radius: 2rem;
+            border-radius: 1rem;
             border: 2px solid #bfdbfe;
             position: relative;
         }
@@ -57,12 +59,12 @@
             transition: all 0.15s ease;
         }
     </style>
-    <div class="flex flex-col justify-between h-full w-full max-w-xl mx-auto py-2 px-1 select-none">
+    <div class="flex flex-col justify-between h-full w-full max-w-xl mx-auto pb-2  select-none">
         {{-- Loop 2 Blok Grup Suku Kata (Grup 1: ak ik uk ek ok | Grup 2: an in un en on) --}}
         @foreach($data['items'] as $groupIndex => $group)
-            <div class="group-card p-4 my-1 flex flex-col justify-between flex-1">
+            <div class="group-card p-2 my-1 flex flex-col justify-between flex-1">
                 <!-- Master Pola Header (ak ik uk ek ok) -->
-                <div class="flex justify-around items-center mb-2 suku-img cursor-pointer transition-all"
+                <div class="flex justify-around items-center mb-1 suku-img cursor-pointer transition-all"
                      data-audio="{{ $group['audio'] }}">
                     @foreach(explode(' ', $group['masterPola']) as $pola)
                         <span class="header-title text-2xl sm:text-3xl font-black">
@@ -79,7 +81,7 @@
                                 <img src="{{ $item['emoji'] }}"
                                      alt="{{ $item['id'] }}"
                                      data-audio="{{ $item['audio'] }}"
-                                     class="suku-img w-40 h-auto object-contain rounded shrink-0"/>
+                                     class="suku-img w-36 h-auto object-contain shrink-0"/>
                             </div>
                         @endforeach
                     </div>
@@ -90,7 +92,7 @@
                                 <img src="{{ $item['emoji'] }}"
                                      alt="{{ $item['id'] }}"
                                      data-audio="{{ $item['audio'] }}"
-                                     class="suku-img w-40 h-auto object-contain rounded shrink-0"/>
+                                     class="suku-img w-36 h-auto object-contain shrink-0"/>
                             </div>
                         @endforeach
                     </div>

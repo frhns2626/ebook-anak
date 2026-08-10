@@ -36,8 +36,12 @@ use App\Http\Controllers\Halaman9;
 use Illuminate\Support\Facades\Route;
 
 // Home page
-Route::get('/', function () {
+Route::get('/home', function () {
     return view('home');
+})->name('home/index');
+// Home page
+Route::get('/', function () {
+    return view('book');
 })->name('home');
 
 // Games list page
@@ -74,6 +78,7 @@ Route::get('/belajar/cover', fn() => view('pertama.cover'))->name('pertama.cover
 Route::get('/belajar/kata-pengantar', fn() => view('pertama.kata-pengantar'))->name('pertama.kata-pengantar');
 Route::get('/belajar/petujuk-penggunaan', fn() => view('pertama.petunjuk-penggunaan'))->name('pertama.petujuk-penggunaan');
 Route::get('/belajar/penutupan', fn() => view('pertama.penutupan'))->name('belajar.penutupan');
+Route::get('/belajar/penutupan-blank', fn() => view('pertama.penutupan-blank'))->name('belajar.penutupan-blank');
 
 Route::get('/belajar/abc', fn() => view('abc'))->name('belajar.abc');
 Route::get('/belajar/temukan-suku-kata', fn() => view('temukan-suku-kata'))->name('belajar.temukan-suku-kata');
@@ -87,7 +92,6 @@ Route::get('/belajar/halaman-3', [Halaman3::class, 'index'])->name('belajar.hala
 Route::get('/belajar/halaman-4', [Halaman4::class, 'index'])->name('belajar.halaman-4'); // sudah
 Route::get('/belajar/halaman-5', [Halaman5::class, 'index'])->name('belajar.halaman-5'); // sudah
 Route::get('/belajar/halaman-6', [Halaman6::class, 'index'])->name('belajar.halaman-6'); // sudah
-// Route::get('/belajar/halaman-7', [SusunHurufController::class, 'index'])->name('belajar.halaman-7');
 Route::get('/belajar/halaman-7', [Halaman7::class, 'index'])->name('belajar.halaman-7'); // sudah
 Route::get('/belajar/halaman-8', [Halaman8::class, 'index'])->name('belajar.halaman-8'); // sudah
 Route::get('/belajar/halaman-9', [Halaman9::class, 'index'])->name('belajar.halaman-9'); // sudah

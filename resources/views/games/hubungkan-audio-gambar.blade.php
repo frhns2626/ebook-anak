@@ -1,6 +1,8 @@
 <x-layout-game
     title="{{$judul}}"
     halaman="{{$halaman}}"
+    :lang_on="true"
+    lang="{{$lang}}"
 >
     <style>
         /* Typography Judul Pop-out */
@@ -22,12 +24,12 @@
 
         /* Styling Input Angka Jawaban */
         .number-input {
-            width: 3.5rem;
-            height: 3.5rem;
+            width: 2.3rem;
+            height: 2.3rem;
             border-radius: 0.75rem;
             border: 3px solid #cbd5e1;
             font-family: 'Fredoka', cursive, sans-serif;
-            font-size: 1.75rem;
+            font-size: 1rem;
             font-weight: 700;
             text-align: center;
             outline: none;
@@ -74,7 +76,7 @@
         <!-- Judul Atas -->
         <div class="text-center mt-1 mb-3">
             <h1 class="title-text text-lg sm:text-xl md:text-2xl font-extrabold tracking-wide leading-tight">
-                cocokkan gambar dan kata<br>dengan menuliskan angka !
+                Cocokkan gambar dan kata dengan menuliskan angka !
             </h1>
         </div>
         <!-- List Baris Matching (5 Pasang) -->
@@ -92,8 +94,8 @@
                             data-audio="{{ $left['audio'] }}"
                             @class([
                                     'baca-item object-contain',
-                                 'sm:w-24 w-20 h-auto' => $left['id'] !== 'kacamata',
-                                 'sm:w-30 w-24 h-auto' => $left['id'] === 'kacamata',
+                                    'w-[72px] h-auto' => $left['id'] !== 'kacamata',
+                                    'w-20 h-auto' => $left['id'] === 'kacamata',
                              ])
                         />
                     </div>
@@ -126,6 +128,26 @@
                             if (typeof showFlashMessage === 'function') {
                                 showFlashMessage('success', 'Benar!');
                             }
+
+                            const row = input.closest('.flex.items-center.justify-between');
+                            const targetCard = row?.querySelector('.item-card[data-audio]');
+                            const src = targetCard?.dataset.audio;
+                            if (src && !isPlaying) {
+                                isPlaying = true;
+                                audioPlayer.pause();
+                                audioPlayer.removeAttribute('src');
+                                audioPlayer.load();
+                                audioPlayer = new Audio(src);
+                                audioPlayer.addEventListener('ended', () => {
+                                    isPlaying = false;
+                                });
+                                audioPlayer.addEventListener('error', () => {
+                                    isPlaying = false;
+                                });
+                                audioPlayer.play().catch(() => {
+                                    isPlaying = false;
+                                });
+                            }
                         } else {
                             input.classList.add('input-wrong');
                             if (typeof showFlashMessage === 'function') {
@@ -134,6 +156,7 @@
                         }
                     });
                 });
+
 
                 let audioPlayer = new Audio();
                 let isPlaying = false;

@@ -1,6 +1,8 @@
 <x-layout-game
-    title="{{$judul}}"
-    halaman="{{$halaman}}"
+    title="{{ $judul }}"
+    halaman="{{ $halaman }}"
+    :lang_on="true"
+    lang="{{ $lang }}"
 >
     <style>
         /* Typography Judul Pop-out */
@@ -20,14 +22,14 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 0.5rem;
-            width: 7rem;
+            /*padding: 0.5rem;*/
+            /*width: 7rem;*/
         }
 
         .word-box {
             background-color: #ffffff;
             border-radius: 1rem;
-            padding: 0.5rem 1.25rem;
+            padding: 10px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             display: flex;
             align-items: center;
@@ -39,8 +41,8 @@
         }
 
         .drop-target {
-            width: 2.75rem;
-            height: 3rem;
+            width: 2.5rem;
+            height: 2.5rem;
             border-radius: 0.5rem;
             background-color: #f8fafc;
             border: 2px dashed #94a3b8;
@@ -117,28 +119,29 @@
         }
 
         @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-4px); }
-            40%, 80% { transform: translateX(4px); }
+            0%, 100% {
+                transform: translateX(0);
+            }
+            20%, 60% {
+                transform: translateX(-4px);
+            }
+            40%, 80% {
+                transform: translateX(4px);
+            }
         }
     </style>
-
     @php $byWord = collect($items)->keyBy(fn ($i) => strtolower($i['id'])); @endphp
-
     <div class="flex flex-col items-center justify-between h-full w-full my-auto select-none px-2">
-
         <div class="text-center mt-1 mb-2">
             <h1 class="title-text text-lg sm:text-xl md:text-2xl font-extrabold tracking-wide leading-tight">
-                Lengkapi nama objek berikut<br>dengan suku kata yang tepat !
+                Lengkapi nama objek berikut dengan suku kata yang tepat !
             </h1>
         </div>
-
         <div class="flex flex-col space-y-4 w-full max-w-lg my-auto">
-
             <!-- 1. Tomat -->
             <div class="flex items-center justify-between px-4">
                 <div class="item-card">
-                    <img src="{{ $byWord['tomat']['emoji'] }}" alt="tomat" class="size-32 object-contain pointer-events-none" />
+                    <img src="{{ $byWord['tomat']['emoji'] }}" alt="tomat" class="size-28 object-contain pointer-events-none"/>
                 </div>
                 <div class="word-box" data-audio="{{ $byWord['tomat']['audio'] }}">
                     <span>to</span>
@@ -146,11 +149,10 @@
                     <span>at</span>
                 </div>
             </div>
-
             <!-- 2. Payung -->
             <div class="flex items-center justify-between px-4">
                 <div class="item-card">
-                    <img src="{{ $byWord['payung']['emoji'] }}" alt="payung" class="size-32 object-contain pointer-events-none" />
+                    <img src="{{ $byWord['payung']['emoji'] }}" alt="payung" class="size-28 object-contain pointer-events-none"/>
                 </div>
                 <div class="word-box" data-audio="{{ $byWord['payung']['audio'] }}">
                     <span>pay</span>
@@ -159,20 +161,19 @@
                     <div class="drop-target" data-word="payung" data-correct="g"></div>
                 </div>
             </div>
-
             <!-- 3. Kelinci -->
             <div class="flex items-center justify-between px-4">
                 <div class="item-card">
-                    <img src="{{ $byWord['kelinci']['emoji'] }}" alt="kelinci" class="size-32  object-contain pointer-events-none" />
+                    <img src="{{ $byWord['kelinci']['emoji'] }}" alt="kelinci" class="size-28  object-contain pointer-events-none"/>
                 </div>
                 <div class="word-box" data-audio="{{ $byWord['kelinci']['audio'] }}">
                     <span>k</span>
                     <div class="drop-target" data-word="kelinci" data-correct="e"></div>
+                    <div class="drop-target" data-word="kelinci" data-correct="l"></div>
                     <span>inci</span>
                 </div>
             </div>
         </div>
-
         <div class="flex justify-center items-center gap-2 sm:gap-3 w-full max-w-lg my-3">
             <div class="letter-tile" draggable="true" data-letter="l">l</div>
             <div class="letter-tile" draggable="true" data-letter="m">m</div>
@@ -181,7 +182,6 @@
             <div class="letter-tile" draggable="true" data-letter="e">e</div>
             <div class="letter-tile" draggable="true" data-letter="n">n</div>
         </div>
-
     </div>
 
     @push('scripts')
@@ -190,9 +190,62 @@
                 const tiles = document.querySelectorAll('.letter-tile');
                 const dropTargets = document.querySelectorAll('.drop-target');
 
+                let floatingClone = null;
+                let touchActiveTile = null;
+
+
                 let activeTile = null;
 
-{{--                const wrongAudio = new Audio('{{ asset("audio/wrong.mp3") }}');--}}
+                function createFloatingClone(tile, x, y) {
+                    floatingClone = tile.cloneNode(true);
+                    floatingClone.style.position = 'fixed';
+                    floatingClone.style.width = tile.offsetWidth + 'px';
+                    floatingClone.style.height = tile.offsetHeight + 'px';
+                    floatingClone.style.pointerEvents = 'none';
+                    floatingClone.style.zIndex = '9999';
+                    floatingClone.style.opacity = '0.85';
+                    floatingClone.style.transition = 'none'; // <-- kill inherited transition so it tracks the finger instantly
+                    moveFloatingClone(x, y);
+                    document.body.appendChild(floatingClone);
+                }
+
+                function moveFloatingClone(x, y) {
+                    if (!floatingClone) return;
+                    floatingClone.style.left = (x - floatingClone.offsetWidth / 2) + 'px';
+                    floatingClone.style.top = (y - floatingClone.offsetHeight / 2) + 'px';
+                }
+
+                function removeFloatingClone() {
+                    if (floatingClone) {
+                        floatingClone.remove();
+                        floatingClone = null;
+                    }
+                }
+
+                function findDropTargetAt(x, y) {
+                    floatingClone.style.display = 'none';
+                    const el = document.elementFromPoint(x, y);
+                    floatingClone.style.display = '';
+                    if (!el) return null;
+                    return el.closest('.drop-target');
+                }
+
+                let rafPending = false;
+                let lastTouch = { x: 0, y: 0 };
+
+                tile.addEventListener('touchmove', (e) => {
+                    if (!floatingClone) return;
+                    const touch = e.touches[0];
+                    lastTouch = { x: touch.clientX, y: touch.clientY };
+
+                    if (!rafPending) {
+                        rafPending = true;
+                        requestAnimationFrame(() => {
+                            moveFloatingClone(lastTouch.x, lastTouch.y);
+                            rafPending = false;
+                        });
+                    }
+                }, { passive: true });
 
                 tiles.forEach(tile => {
                     tile.addEventListener('dragstart', (e) => {
@@ -217,6 +270,33 @@
                             tile.classList.add('selected');
                             activeTile = tile;
                         }
+                    });
+
+                    tile.addEventListener('touchstart', (e) => {
+                        if (tile.classList.contains('used')) return;
+                        touchActiveTile = tile;
+                        const touch = e.touches[0];
+                        createFloatingClone(tile, touch.clientX, touch.clientY);
+                        tile.style.opacity = '0.3';
+                    }, { passive: true });
+
+                    tile.addEventListener('touchmove', (e) => {
+                        if (!floatingClone) return;
+                        const touch = e.touches[0];
+                        moveFloatingClone(touch.clientX, touch.clientY);
+                    }, { passive: true });
+
+                    tile.addEventListener('touchend', (e) => {
+                        if (!floatingClone || !touchActiveTile) return;
+                        const touch = e.changedTouches[0];
+                        const target = findDropTargetAt(touch.clientX, touch.clientY);
+                        removeFloatingClone();
+                        touchActiveTile.style.opacity = '1';
+
+                        if (target && !target.classList.contains('correct')) {
+                            processAnswer(target, touchActiveTile, touchActiveTile.dataset.letter);
+                        }
+                        touchActiveTile = null;
                     });
                 });
 
@@ -259,47 +339,55 @@
                     });
                 });
 
-                function processAnswer(target, tileElement, selectedLetter) {
-                    const correctLetter = target.dataset.correct;
 
-                    if (selectedLetter === correctLetter) {
-                        target.classList.remove('wrong');
-                        target.classList.add('correct');
-                        target.innerText = selectedLetter;
+            });
 
-                        tileElement.classList.remove('selected', 'dragging');
-                        tileElement.classList.add('used');
-                        tileElement.setAttribute('draggable', 'false');
-                        activeTile = null;
+            function processAnswer(target, tileElement, selectedLetter) {
+                const correctLetter = target.dataset.correct;
 
-                        const wordBox = target.closest('.word-box');
-                        const src = wordBox?.dataset.audio;
+                if (selectedLetter === correctLetter) {
+                    target.classList.remove('wrong');
+                    target.classList.add('correct');
+                    target.innerText = selectedLetter;
+
+                    tileElement.classList.remove('selected', 'dragging');
+                    tileElement.classList.add('used');
+                    tileElement.setAttribute('draggable', 'false');
+                    activeTile = null;
+
+                    if (typeof showFlashMessage === 'function') {
+                        showFlashMessage('success', 'Hebat! Suku kata tepat!');
+                    }
+
+                    const wordBox = target.closest('.word-box');
+                    const allTargets = wordBox?.querySelectorAll('.drop-target');
+                    const allCorrect = allTargets && Array.from(allTargets).every(t => t.classList.contains('correct'));
+
+                    if (allCorrect) {
+                        const src = wordBox.dataset.audio;
                         if (src) {
                             const wordAudio = new Audio(src);
                             wordAudio.play().catch(() => {});
                         }
-
-                        if (typeof showFlashMessage === 'function') {
-                            showFlashMessage('success', 'Hebat! Suku kata tepat!');
-                        }
-                    } else {
-                        target.classList.add('wrong');
-                        target.innerText = selectedLetter;
-
-                        // wrongAudio.currentTime = 0;
-                        // wrongAudio.play().catch(() => {});
-
-                        if (typeof showFlashMessage === 'function') {
-                            showFlashMessage('error', 'Coba lagi, pilih/tarik huruf yang sesuai!');
-                        }
-
-                        setTimeout(() => {
-                            target.classList.remove('wrong');
-                            target.innerText = '';
-                        }, 500);
                     }
+                } else {
+                    target.classList.add('wrong');
+                    target.innerText = selectedLetter;
+
+                    if (typeof showFlashMessage === 'function') {
+                        showFlashMessage('error', 'Coba lagi, pilih/tarik huruf yang sesuai!');
+                    }
+
+                    setTimeout(() => {
+                        target.classList.remove('wrong');
+                        target.innerText = '';
+                    }, 500);
                 }
-            });
+            }
+
         </script>
     @endpush
+
+
+
 </x-layout-game>

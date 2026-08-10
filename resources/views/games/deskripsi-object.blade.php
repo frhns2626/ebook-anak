@@ -38,7 +38,7 @@
         />
     </div>
     <!-- Kotak Kalimat Latihan Baca -->
-    <div class="custom-card flex w-full flex-col space-y-6 px-6 py-8 text-center text-2xl shadow-sm">
+    <div class="custom-card flex w-full flex-col space-y-6 px-6 py-8 text-center text-xl shadow-sm">
         @foreach ($sentences as $sentence)
             <p
                 class="baca-text leading-tight font-extrabold tracking-wide text-black"

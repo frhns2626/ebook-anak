@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Override;
 
@@ -14,7 +15,7 @@ class Halaman24 extends Controller
      * @throws BindingResolutionException
      */
     #[Override]
-    public function index(): View
+    public function index(Request $request): View
     {
 
         return $this->deskripsiObject(
@@ -51,7 +52,7 @@ class Halaman24 extends Controller
         $items = [
             [
                 'id' => 'carrot',
-                'emoji' => asset('gambar/halaman_23-24/wortel.webp'),
+                'emoji' => asset('gambar/halaman_23-24/wortel_en.webp'),
                 'audio' => asset('audio/en/Halaman 24/wortel.m4a'),
                 'texts' => [
                     ['text' => 'Carrots are orange.', 'audio' => asset('audio/id/Halaman 24/text1.wav')],

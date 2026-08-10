@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\View\View;
 use Override;
+use Illuminate\Http\Request;
 
 class Halaman31 extends Controller
 {
@@ -14,7 +15,7 @@ class Halaman31 extends Controller
      * @throws BindingResolutionException
      */
     #[Override]
-    public function index(): View
+    public function index(Request $request): View
     {
 
         return $this->deskripsiObject(

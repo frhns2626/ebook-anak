@@ -1,6 +1,8 @@
 <x-layout-game
     title="{{$judul}}"
     halaman="{{$halaman}}"
+    :lang_on="true"
+    lang="{{$lang}}"
 >
     <style>
         /* Typography Judul Pop-out */
@@ -35,6 +37,7 @@
             cursor: pointer;
             transition: transform 0.2s ease, background-color 0.2s ease;
             z-index: 30;
+            touch-action: none;
         }
 
         .connect-dot:hover, .connect-dot.active {
@@ -42,10 +45,11 @@
             background-color: #2563eb;
             box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.3);
         }
+
         /* Styling Input Karakter Tulis Ulang */
         .char-input {
-            width: 1.75rem;
-            height: 2rem;
+            width: 1.5rem;
+            height: 1.5rem;
             border-radius: 0.375rem;
             border: 2px solid #cbd5e1;
             background-color: #ffffff;
@@ -80,31 +84,35 @@
             20%, 60% { transform: translateX(-4px); }
             40%, 80% { transform: translateX(4px); }
         }
+        .char-input:disabled {
+            background-color: #f1f5f9 !important;
+            border-color: #e2e8f0 !important;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
     </style>
 
     @php
-        // Acak urutan baris atas (gambar) dan baris bawah (kata target) secara independen,
-        // supaya posisi gambar dan kata tidak selalu sejajar 1:1.
         $topItems = collect($items)->shuffle()->values();
         $bottomItems = collect($items)->shuffle()->values();
     @endphp
 
     <div id="gameContainer" class="relative flex flex-col items-center justify-between h-full w-full my-auto select-none px-2">
-        <!-- Canvas Transparan untuk Garis Penghubung (Line Cursor Tracking) -->
+        <!-- Canvas Transparan untuk Garis Penghubung -->
         <canvas id="lineCanvas" class="absolute inset-0 w-full h-full pointer-events-none z-20"></canvas>
 
         <!-- Judul Atas -->
         <div class="text-center mt-1 mb-2 z-10">
             <h1 class="title-text text-lg sm:text-xl md:text-2xl font-extrabold tracking-wide px-2 leading-tight">
-                hubungkan gambar dengan kata<br>kemudian tulis ulang !
+                hubungkan gambar dengan kata kemudian tulis ulang !
             </h1>
         </div>
 
-        <!-- Baris Atas: Objek Gambar + Nama + Titik Hubung (urutan acak) -->
+        <!-- Baris Atas: Objek Gambar + Nama + Titik Hubung -->
         <div class="grid grid-cols-3 gap-3 sm:gap-6 w-full max-w-xl z-10 my-auto ">
             @foreach ($topItems as $item)
                 @php $word = strtolower($item['id']); @endphp
-                    <!-- {{ $item['id'] }} -->
                 <div class="flex flex-col items-center space-y-2">
                     <div class="item-card" data-audio="{{ $item['audio'] }}">
                         <img src="{{ $item['emoji'] }}" alt="{{ $word }}" class="h-16 sm:h-20 object-contain pointer-events-none" />
@@ -115,21 +123,19 @@
             @endforeach
         </div>
 
-        <!-- Space Tengah untuk Penarikan Garis Interaktif -->
+        <!-- Space Tengah -->
         <div class="flex-1 min-h-[100px] w-full"></div>
 
-        <!-- Baris Bawah: Titik Hubung + Kata Tujuan + Kotak Tulis Ulang (urutan acak) -->
+        <!-- Baris Bawah: Titik Hubung + Kata Tujuan + Kotak Tulis Ulang -->
         <div class="grid grid-cols-3 gap-2 sm:gap-4 w-full max-w-xl z-10 mb-2">
             @foreach ($bottomItems as $item)
                 @php $word = strtolower($item['id']); @endphp
-                    <!-- Target: {{ $word }} -->
                 <div class="flex flex-col items-center space-y-2">
                     <div class="connect-dot" data-type="bottom" data-id="{{ $word }}"></div>
-                    <span class="text-2xl font-black text-black tracking-widest">{{ implode(' ', str_split($word)) }}</span>
-                    <!-- Kotak Input Tulis Ulang -->
+                    <span class="text-xl font-black text-black tracking-widest">{{ implode(' ', str_split($word)) }}</span>
                     <div class="flex space-x-1" data-word="{{ $word }}" data-audio="{{ $item['audio'] }}">
                         @foreach (str_split($word) as $char)
-                            <input type="text" maxlength="1" data-char="{{ $char }}" class="char-input" />
+                            <input type="text" maxlength="1" data-char="{{ $char }}" class="char-input" disabled />
                         @endforeach
                     </div>
                 </div>
@@ -148,9 +154,6 @@
                 let selectedDot = null;
                 let currentMousePos = { x: 0, y: 0 };
                 let connections = [];
-
-{{--                const correctAudio = new Audio('{{ asset("audio/correct.mp3") }}');--}}
-{{--                const wrongAudio = new Audio('{{ asset("audio/wrong.mp3") }}');--}}
 
                 let wordAudioPlayer = new Audio();
                 let isWordAudioPlaying = false;
@@ -198,21 +201,25 @@
 
                 function updateMousePos(e) {
                     const parentRect = container.getBoundingClientRect();
-                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                    const touch = e.touches ? e.touches[0] : (e.changedTouches ? e.changedTouches[0] : e);
 
-                    currentMousePos = {
-                        x: clientX - parentRect.left,
-                        y: clientY - parentRect.top
-                    };
+                    if (touch) {
+                        currentMousePos = {
+                            x: touch.clientX - parentRect.left,
+                            y: touch.clientY - parentRect.top
+                        };
+                    }
 
                     if (selectedDot) {
                         drawLines();
                     }
                 }
 
-                container.addEventListener('mousemove', updateMousePos);
-                container.addEventListener('touchmove', updateMousePos, { passive: true });
+                window.addEventListener('mousemove', updateMousePos);
+                window.addEventListener('touchmove', (e) => {
+                    if (selectedDot) e.preventDefault();
+                    updateMousePos(e);
+                }, { passive: false });
 
                 function drawLines() {
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -245,70 +252,77 @@
                     }
                 }
 
-                dots.forEach(dot => {
-                    dot.addEventListener('click', (e) => {
-                        e.stopPropagation();
+                function evaluateConnection(startDot, endDot) {
+                    startDot.classList.remove('active');
+                    selectedDot = null;
 
-                        if (connections.some(c => c.from === dot || c.to === dot)) return;
-
-                        if (!selectedDot) {
-                            selectedDot = dot;
-                            dot.classList.add('active');
-                            updateMousePos(e);
-                        } else {
-                            if (selectedDot === dot) {
-                                selectedDot.classList.remove('active');
-                                selectedDot = null;
-                                drawLines();
-                                return;
-                            }
-
-                            if (selectedDot.dataset.type === dot.dataset.type) {
-                                selectedDot.classList.remove('active');
-                                selectedDot = dot;
-                                dot.classList.add('active');
-                                drawLines();
-                                return;
-                            }
-
-                            const topDot = selectedDot.dataset.type === 'top' ? selectedDot : dot;
-                            const bottomDot = selectedDot.dataset.type === 'bottom' ? selectedDot : dot;
-
-                            if (topDot.dataset.match === bottomDot.dataset.id) {
-                                connections.push({ from: topDot, to: bottomDot });
-                                selectedDot.classList.remove('active');
-                                selectedDot = null;
-                                drawLines();
-
-                                // correctAudio.currentTime = 0;
-                                // correctAudio.play().catch(() => {});
-
-                                if (typeof showFlashMessage === 'function') {
-                                    showFlashMessage('success', 'Hebat! Garis terhubung dengan benar!');
-                                }
-                            } else {
-                                selectedDot.classList.remove('active');
-                                selectedDot = null;
-                                drawLines();
-
-                                // wrongAudio.currentTime = 0;
-                                // wrongAudio.play().catch(() => {});
-
-                                if (typeof showFlashMessage === 'function') {
-                                    showFlashMessage('error', 'Salah, coba hubungkan ke kata yang cocok!');
-                                }
-                            }
-                        }
-                    });
-                });
-
-                container.addEventListener('click', (e) => {
-                    if (selectedDot && !e.target.classList.contains('connect-dot')) {
-                        selectedDot.classList.remove('active');
-                        selectedDot = null;
+                    if (!endDot || startDot === endDot || startDot.dataset.type === endDot.dataset.type) {
                         drawLines();
+                        return;
                     }
+
+                    if (connections.some(c => c.from === endDot || c.to === endDot)) {
+                        drawLines();
+                        return;
+                    }
+
+                    const topDot = startDot.dataset.type === 'top' ? startDot : endDot;
+                    const bottomDot = startDot.dataset.type === 'bottom' ? startDot : endDot;
+
+                    if (topDot.dataset.match === bottomDot.dataset.id) {
+                        connections.push({ from: topDot, to: bottomDot });
+                        drawLines();
+
+                        if (typeof showFlashMessage === 'function') {
+                            showFlashMessage('success', 'Hebat! Garis terhubung dengan benar!');
+                        }
+
+                        const group = document.querySelector(`[data-word="${bottomDot.dataset.id}"]`);
+                        if (group) {
+                            const inputs = group.querySelectorAll('.char-input');
+                            inputs.forEach(i => i.disabled = false);
+                            inputs[0]?.focus();
+                        }
+                    } else {
+                        drawLines();
+
+                        if (typeof showFlashMessage === 'function') {
+                            showFlashMessage('error', 'Salah, coba hubungkan ke kata yang cocok!');
+                        }
+                    }
+                }
+
+                function startDrag(e) {
+                    e.preventDefault();
+                    const dot = e.currentTarget;
+
+                    if (connections.some(c => c.from === dot || c.to === dot)) return;
+
+                    selectedDot = dot;
+                    selectedDot.classList.add('active');
+                    updateMousePos(e);
+                    drawLines();
+                }
+
+                function endDrag(e) {
+                    if (!selectedDot) return;
+
+                    const clientX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+                    const clientY = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
+
+                    const targetElement = document.elementFromPoint(clientX, clientY);
+                    const targetDot = targetElement ? targetElement.closest('.connect-dot') : null;
+
+                    evaluateConnection(selectedDot, targetDot);
+                }
+
+                dots.forEach(dot => {
+                    dot.addEventListener('mousedown', startDrag);
+                    dot.addEventListener('touchstart', startDrag, { passive: false });
                 });
+
+                window.addEventListener('mouseup', endDrag);
+                window.addEventListener('touchend', endDrag);
 
                 const charInputs = document.querySelectorAll('.char-input');
 
@@ -323,14 +337,12 @@
 
                         if (val === targetChar) {
                             input.classList.add('correct');
-                            // correctAudio.currentTime = 0;
-                            // correctAudio.play().catch(() => {});
 
                             const nextInput = input.nextElementSibling;
                             if (nextInput && nextInput.classList.contains('char-input')) {
                                 nextInput.focus();
                             }
-                            // NEW: check if the whole word is now complete
+
                             const group = input.closest('[data-word]');
                             const allInputs = group.querySelectorAll('.char-input');
                             const allCorrect = Array.from(allInputs).every(i => i.classList.contains('correct'));
@@ -348,8 +360,6 @@
 
                         } else {
                             input.classList.add('wrong');
-                            // wrongAudio.currentTime = 0;
-                            // wrongAudio.play().catch(() => {});
 
                             setTimeout(() => {
                                 input.classList.remove('wrong');

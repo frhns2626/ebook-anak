@@ -18,8 +18,8 @@
             font-weight: 700;
             user-select: none;
             cursor: pointer;
+            padding: 0.1rem;
             transition: all 0.2s ease;
-            padding: 0.25rem 0.75rem;
             border-radius: 0.75rem;
             border: 3px solid transparent; /* Placeholder border agar layout tidak bergeser */
             display: inline-flex;
@@ -63,7 +63,7 @@
     </style>
 
     <!-- Container Utama Dalam Layout Game -->
-    <div class="wavy-container relative flex h-full w-full flex-col justify-between overflow-hidden p-4 sm:p-6 my-auto select-none">
+    <div class="wavy-container relative flex h-full w-full flex-col justify-between overflow-hidden p-2  my-auto select-none">
 
         <!-- Judul Aktivitas -->
         <div class="z-10 mt-1 text-center">
@@ -76,7 +76,7 @@
         </div>
 
         <!-- Grid Sebaran Suku Kata -->
-        <div class="relative my-2 grid w-full flex-grow grid-cols-3 items-center justify-items-center gap-x-2 gap-y-2 text-center">
+        <div class="relative  grid w-full flex-grow grid-cols-3 items-center justify-items-center  text-center">
 
             <!-- Baris 1 -->
             <div class="syllable-item c-purple col-start-1" data-syllable="bi">bi</div>

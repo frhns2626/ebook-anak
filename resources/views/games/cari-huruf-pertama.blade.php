@@ -1,6 +1,8 @@
 <x-layout-game
     title="{{$judul}}"
     halaman="{{$halaman}}"
+    :lang_on="true"
+    lang="{{$lang}}"
 >
     <style>
         /* Typography Judul Pop-out */

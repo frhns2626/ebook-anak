@@ -1,6 +1,8 @@
 <x-layout-game
     title="{{$judul}}"
     halaman="{{$halaman}}"
+    :lang_on="true"
+    lang="{{$lang}}"
 >
     <style>
         /* Typography Judul Pop-out */
@@ -34,22 +36,24 @@
     </style>
 
     <div class="flex flex-col items-center justify-between h-full w-full my-auto select-none">
+
+
         <!-- Judul Atas -->
-        <div class="text-center mt-1 mb-2">
-            <h1 class="title-text text-lg sm:text-xl md:text-2xl font-extrabold tracking-wide leading-tight">
-                Pengengenalan huruf<br>a,i,u,e,o diakhir
+        <div class="text-center my-4">
+            <h1 class="title-text sm:text-2xl text-xl font-extrabold tracking-wide leading-tight">
+                Pengenalan huruf a,i,u,e,o diakhir
             </h1>
         </div>
 
         <!-- Grid 2 Kolom x 5 Baris Kartu Kosakata -->
-        <div class="grid grid-cols-2 gap-3 sm:gap-4 w-full px-1 sm:px-2 my-auto items-end">
+        <div class="grid grid-cols-2 gap-3 sm:gap-4 w-full px-1 sm:px-2 my-auto items-center justify-items-center ">
             @foreach ($items as $item)
-                <!-- {{ $item['id'] }} -->
-                    <img src="{{ $item['emoji'] }}"
-                         alt="{{ $item['id'] }}"
-                         class="w-72 h-auto object-contain rounded-lg kosakata-card"
-                         data-audio="{{ $item['audio'] }}"
-                    />
+                <img
+                    src="{{ $item['emoji'] }}"
+                    alt="{{ $item['id'] }}"
+                    class="w-40 h-auto object-contain rounded-lg kosakata-card"
+                    data-audio="{{ $item['audio'] }}"
+                />
             @endforeach
         </div>
     </div>

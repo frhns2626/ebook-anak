@@ -19,17 +19,21 @@ class Halaman1 extends Controller
     #[Override]
     public function index(Request $request): View
     {
+        $lang = $request->query('lang', 'id');
+
         return $this->abcdHuruf(
-            data: $this->getDataPublicHalaman1(),
+            data: $this->getDataPublicHalaman1($lang),
             halaman: 1,
             judul: 'Pengenalan Huruf Abjad',
-            deskripsi: 'Belajar huruf A sampai Z dengan suara dan pengucapan');
+            deskripsi: 'Belajar huruf A sampai Z dengan suara dan pengucapan',
+            lang: $lang,
+        );
     }
 
     /**
      * @throws BindingResolutionException
      */
-    public function getDataPublicHalaman1(): array
+    public function getDataPublicHalaman1($lang): array
     {
         $en = [
             ['huruf' => 'A', 'spelling' => 'A', 'audio' => asset('audio/en/Halaman 1/1.A.m4a'),],
@@ -88,7 +92,6 @@ class Halaman1 extends Controller
             ['id' => 'Y', 'spelling' => 'Ye', 'audio' => asset('audio/id/Halaman 1/y.wav')],
             ['id' => 'Z', 'spelling' => 'Zet', 'audio' => asset('audio/id/Halaman 1/z.wav')],
         ];
-        $lang = request()->query('lang', 'id') === 'en' ? 'en' : 'id';
 
         return [
             'items' => $lang === 'en' ? $en : $id,

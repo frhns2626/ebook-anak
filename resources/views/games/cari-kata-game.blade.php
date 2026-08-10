@@ -1,6 +1,8 @@
 <x-layout-game
     title="{{$judul}}"
     halaman="{{$halaman}}"
+    lang="{{$lang}}"
+    lang_on={{true}}
 >
     <style>
         /* Typography Judul Pop-out */
@@ -13,12 +15,10 @@
         }
 
         .puzzle-card {
-            background-color: #dbeafe;
-            border-radius: 1.5rem;
-            border: 2px solid #bfdbfe;
-            padding: 0.75rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: center;
         }
+
 
         .grid-board {
             display: grid;
@@ -56,34 +56,23 @@
         }
 
         .target-card {
-            background-color: #ffffff;
-            border-radius: 1.25rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 0.5rem;
-            border: 2px solid #e2e8f0;
-            transition: all 0.3s ease;
-            position: relative;
         }
 
         .target-card.found {
             background-color: #f0fdf4;
             border-color: #22c55e;
             box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.3);
+            padding-top: 10px;
         }
 
         .target-card.found::after {
             content: '✔';
             position: absolute;
-            top: -0.5rem;
-            right: -0.5rem;
             background-color: #22c55e;
             color: #ffffff;
-            width: 1.5rem;
-            height: 1.5rem;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -96,6 +85,8 @@
     @php $byWord = collect($items)->keyBy(fn ($i) => strtolower($i['id'])); @endphp
 
     <div class="flex flex-col items-center justify-between h-full w-full my-auto select-none px-2 z-10">
+
+
 
         <div class="text-center mt-1 mb-2">
             <h1 class="title-text text-xl sm:text-2xl md:text-3xl font-extrabold tracking-wide px-2 leading-tight">
@@ -132,26 +123,26 @@
             <div class="grid grid-cols-3 gap-2 sm:gap-4">
                 <!-- Meja -->
                 <div class="target-card" data-word="meja" data-audio="{{ $byWord['meja']['audio'] }}">
-                    <img src="{{ $byWord['meja']['emoji'] }}" alt="meja" class="size-32 object-contain pointer-events-none" />
+                    <img src="{{ $byWord['meja']['emoji'] }}" alt="meja" class="size-28 object-contain pointer-events-none" />
                 </div>
                 <!-- Kue -->
                 <div class="target-card" data-word="kue" data-audio="{{ $byWord['kue']['audio'] }}">
-                    <img src="{{ $byWord['kue']['emoji'] }}" alt="kue" class="size-32 object-contain pointer-events-none" />
+                    <img src="{{ $byWord['kue']['emoji'] }}" alt="kue" class="size-28 object-contain pointer-events-none" />
                 </div>
                 <!-- Buku -->
                 <div class="target-card" data-word="buku" data-audio="{{ $byWord['buku']['audio'] }}">
-                    <img src="{{ $byWord['buku']['emoji'] }}" alt="buku" class="size-32 object-contain pointer-events-none" />
+                    <img src="{{ $byWord['buku']['emoji'] }}" alt="buku" class="size-28 object-contain pointer-events-none" />
                 </div>
             </div>
 
             <div class="grid grid-cols-2 gap-2 sm:gap-4 max-w-xs mx-auto">
                 <!-- Udang -->
                 <div class="target-card" data-word="udang" data-audio="{{ $byWord['udang']['audio'] }}">
-                    <img src="{{ $byWord['udang']['emoji'] }}" alt="udang" class="size-32 object-contain pointer-events-none" />
+                    <img src="{{ $byWord['udang']['emoji'] }}" alt="udang" class="size-28 object-contain pointer-events-none" />
                 </div>
                 <!-- Sapi -->
                 <div class="target-card" data-word="sapi" data-audio="{{ $byWord['sapi']['audio'] }}">
-                    <img src="{{ $byWord['sapi']['emoji'] }}" alt="sapi" class="size-32 object-contain pointer-events-none" />
+                    <img src="{{ $byWord['sapi']['emoji'] }}" alt="sapi" class="size-28 object-contain pointer-events-none" />
                 </div>
             </div>
         </div>

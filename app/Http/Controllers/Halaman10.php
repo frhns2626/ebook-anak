@@ -4,37 +4,42 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use Illuminate\Contracts\Container\BindingResolutionException;
+use Exception;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Override;
 
 class Halaman10 extends Controller
 {
     /**
-     * @throws BindingResolutionException
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\View\View
      */
     #[Override]
-    public function index(): View
+    public function index(Request $request): View
     {
-        return $this->belajarHurufVokalKonsonan(
-            data: $this->getDataPublicHalaman10(),
-            halaman: 10,
-            judul: 'Halaman 10 - Membaca Suku Kata Terbuka',
-            deskripsi: 'Mengenal bunyi konsonan dan vokal (A, I, U, E, O)!');
+        try {
+            return $this->belajarHurufVokalKonsonan(
+                data: $this->getDataPublicHalaman10(),
+                halaman: 10,
+                judul: 'Halaman 10 - Membaca Suku Kata Terbuka',
+                deskripsi: 'Mengenal bunyi konsonan dan vokal (A, I, U, E, O)!'
+            );
+        } catch (Exception $e) {
+            abort(404, $e->getMessage());
+        }
     }
 
     /**
      * @return array{
+     *     pembukaan: string,
      *     items: list<array{
-     *     vokal:string,
-     *     suku_kata:list<array{
-     *              text:string,
-     *              audio:string
-     *              }
-     *     }
-     *  }>>,
-     * total_item: int}
-     * @throws BindingResolutionException
+     *         vokal: string,
+     *         suku_kata: list<array{text: string, audio: string}>
+     *     }>,
+     *     total_item: int
+     * }
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function getDataPublicHalaman10(): array
     {

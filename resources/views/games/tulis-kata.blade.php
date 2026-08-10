@@ -1,6 +1,8 @@
 <x-layout-game
-    title="{{$judul}}"
-    halaman="{{$halaman}}"
+    title="{{ $judul }}"
+    halaman="{{ $halaman }}"
+    :lang_on="true"
+    lang="{{ $lang }}"
 >
     <style>
         /* Typography Judul Pop-out */
@@ -13,16 +15,16 @@
         }
 
         .item-card {
-            background-color: #ffffff;
-            border-radius: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-            width: 100%;
-            border: 2px solid #e2e8f0;
+            /*background-color: #ffffff;*/
+            /*border-radius: 1.5rem;*/
+            /*box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);*/
+            /*display: flex;*/
+            /*flex-direction: column;*/
+            /*align-items: center;*/
+            /*justify-content: center;*/
+            /*padding: 1rem;*/
+            /*width: 100%;*/
+            /*border: 2px solid #e2e8f0;*/
         }
 
         .word-display {

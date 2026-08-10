@@ -6,7 +6,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
 use Override;
+
 
 class Halaman11 extends Controller
 {
@@ -14,8 +16,9 @@ class Halaman11 extends Controller
      * @throws BindingResolutionException
      */
     #[Override]
-    public function index(): View
+    public function index(Request $request): View
     {
+        $lang = $request->query('lang', 'id');
         return $this->belajarHurufVokalKonsonan(
             data: $this->getDataPublicHalaman11(),
             halaman: 11,

@@ -47,13 +47,13 @@ class Halaman5 extends Controller
             ['id' => 'ubi', 'emoji' => asset('gambar/halaman_5/ubi.webp'), 'audio' => asset('audio/id/Halaman 5/ubi.wav')],
             ['id' => 'vespa', 'emoji' => asset('gambar/halaman_5/vespa.webp'), 'audio' => asset('audio/id/Halaman 5/vespa.wav')],
             ['id' => 'wortel', 'emoji' => asset('gambar/halaman_5/wortel.webp'), 'audio' => asset('audio/id/Halaman 5/wortel.wav')],
-            ['id' => 'xilofon', 'emoji' => asset('gambar/halaman_5/xilofon.webp'), 'audio' => asset('audio/id/Halaman 5/xilofon.wav')],
+            ['id' => 'xilofon', 'emoji' => asset('gambar/halaman_5/xilofon.webp'), 'audio' => asset('audio/id/Halaman 5/xilophone.wav')],
             ['id' => 'yoyo', 'emoji' => asset('gambar/halaman_5/yoyo.webp'), 'audio' => asset('audio/id/Halaman 5/yoyo.wav')],
             ['id' => 'zebra', 'emoji' => asset('gambar/halaman_5/zebra.webp'), 'audio' => asset('audio/id/Halaman 5/zebra.wav')],
         ];
 
         $en = [
-            ['id' => 'singa', 'emoji' => asset('gambar/halaman_5/singa.webp'), 'audio' => asset('audio/en/Halaman 5/1. singa.m4a')],
+            ['id' => 'singa', 'emoji' => asset('gambar/halaman_5/singa.webp'), 'audio' => asset('audio/en/Halaman 5/1. singa_.m4a')],
             ['id' => 'tomat', 'emoji' => asset('gambar/halaman_5/tomat.webp'), 'audio' => asset('audio/en/Halaman 5/2. tomat.m4a')],
             ['id' => 'ubi', 'emoji' => asset('gambar/halaman_5/ubi.webp'), 'audio' => asset('audio/en/Halaman 5/3. ubi.m4a')],
             ['id' => 'vespa', 'emoji' => asset('gambar/halaman_5/vespa.webp'), 'audio' => asset('audio/en/Halaman 5/4. vespa.m4a')],

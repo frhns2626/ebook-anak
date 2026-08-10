@@ -15,7 +15,6 @@ class Halaman6 extends Controller
     /**
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\View\View
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     #[Override]
     public function index(Request $request): View
@@ -24,9 +23,9 @@ class Halaman6 extends Controller
             $lang = $request->query('lang', 'id');
             return $this->melengkapiHuruf(
                 hurufs: $this->getDataPublicHalaman6(lang: $lang),
-                lang: $lang,
                 halaman: 6,
                 judul: 'Halaman 6 - Lengkapi Huruf yang Hilang',
+                lang: $lang,
                 deskripsi: 'Berlatih melengkapi huruf A sampai Z yang hilang!'
             );
         } catch (Exception $e) {

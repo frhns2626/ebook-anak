@@ -1,19 +1,11 @@
 <x-layout-game
-    title="{{$judul}}"
-    halaman="{{$halaman}}"
+    title="{{ $judul }}"
+    halaman="{{ $halaman }}"
+    :lang_on="true"
+    lang="{{ $lang }}"
 >
-    <div class=" flex w-full justify-center">
-        <select
-            id="langSelect"
-            class="rounded-full border-2 border-black bg-white px-4 py-1 font-bold"
-            style="font-family: 'Fredoka', cursive, sans-serif;"
-            onchange="window.location.href = '?lang=' + this.value"
-        >
-            <option value="id" {{ $lang === 'id' ? 'selected' : '' }}>Indonesia</option>
-            <option value="en" {{ $lang === 'en' ? 'selected' : '' }}>English</option>
-        </select>
-    </div>
-    <div class="grid grid-cols-2 gap-4 my-auto pt-2">
+
+    <div class="grid grid-cols-2 gap-4 my-auto pt-10">
         @foreach ($items as $item)
             <div class="flex flex-col justify-between gap-8 relative">
                 <img

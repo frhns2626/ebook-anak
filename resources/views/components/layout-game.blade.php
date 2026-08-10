@@ -1,6 +1,8 @@
 @props([
     'title' => 'Default Title',
     'halaman' => 0,
+    'lang' => 'id',
+    'lang_on' => false,
 ])
 {{-- resources/views/components/layout-game.blade.php --}}
     <!DOCTYPE html>
@@ -19,7 +21,6 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"/>
     @endif
     <style>
-
         body {
             font-family: 'Fredoka', cursive, sans-serif;
         }
@@ -47,12 +48,25 @@
     {{ $slot }}
     @if($halaman==='0')
     @else
-        <div class="fixed z-20 bottom-4 left-1/2 -translate-x-1/2">
+        <div class="fixed z-20 bottom-4 left-1/2 -translate-x-1/2 flex gap-2 ">
             <div class="bg-[#facc15] border-2 border-black rounded-xl px-5 py-0.5 shadow-[2px_2px_0px_rgba(0,0,0,1)]">
-                <span class="font-extrabold text-xs sm:text-sm text-black tracking-wide">
+                <span class="font-extrabold text-xs sm:text-sm text-black tracking-wide text-nowrap">
                     Halaman {{$halaman}}
                 </span>
             </div>
+            @if($lang_on)
+                <div class="bg-white border-2 border-black rounded-xl px-5 py-0.5 shadow-[2px_2px_0px_rgba(0,0,0,1)]">
+                    <select
+                        id="langSelect"
+                        class="font-extrabold text-xs sm:text-sm text-black tracking-wide bg-transparent border-0 outline-none"
+                        style="font-family: 'Fredoka', cursive, sans-serif;"
+                        onchange="window.location.href = '?lang=' + this.value"
+                    >
+                        <option value="id" {{ $lang === 'id' ? 'selected' : '' }}>Indonesia</option>
+                        <option value="en" {{ $lang === 'en' ? 'selected' : '' }}>English</option>
+                    </select>
+                </div>
+            @endif
         </div>
     @endif
     {{-- Flash Message Overlay --}}
