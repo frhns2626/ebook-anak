@@ -67,9 +67,23 @@
         </div>
         <!-- Grid Utama Alfabet (A-Z dengan Slot Kosong, acak) -->
         <div class="grid grid-cols-5 gap-2 sm:gap-2.5 w-full max-w-md px-2">
+            @php
+                $alphabet = range('a', 'z');
+                $blankCount = 8;
+                $willEmpety = collect($alphabet)->random($blankCount)->values()->all();
+                $bank = collect($willEmpety)->shuffle()->values();
+
+                // map lowercase letter -> audio url from controller data
+                $audioMap = collect($hurufs['items'] ?? [])->mapWithKeys(function ($item) {
+                    $key = strtolower($item['huruf'] ?? $item['id'] ?? '');
+                    return [$key => $item['audio']];
+                });
+            @endphp
             @foreach ($alphabet as $letter)
                 @if (in_array($letter, $willEmpety))
-                    <div class="drop-target h-10 sm:h-12 flex items-center justify-center text-2xl sm:text-4xl font-bold" data-answer="{{ $letter }}"></div>
+                    <div class="drop-target h-10 sm:h-12 flex items-center justify-center text-2xl sm:text-4xl font-bold"
+                         data-answer="{{ $letter }}"
+                         data-audio="{{ $audioMap[$letter] ?? '' }}"></div>
                 @else
                     <div class="letter-card h-10 sm:h-12 text-xl sm:text-2xl">{{ $letter }}</div>
                 @endif
@@ -101,6 +115,8 @@
                 let selectedLetterNode = null;
                 let floatingClone = null;
                 let activeItem = null;
+{{--                const audioBenar = new Audio("{{ asset('audio/master/benar.mp3') }}");--}}
+                const audioSalah = new Audio("{{ asset('audio/master/coba-lagi.mp3') }}");
 
                 function clearSelection() {
                     draggables.forEach(d => d.classList.remove('selected'));
@@ -156,13 +172,13 @@
                         const touch = e.touches[0];
                         createFloatingClone(item, touch.clientX, touch.clientY);
                         item.style.opacity = '0.3';
-                    }, { passive: true });
+                    }, {passive: true});
 
                     item.addEventListener('touchmove', (e) => {
                         if (!floatingClone) return;
                         const touch = e.touches[0];
                         moveFloatingClone(touch.clientX, touch.clientY);
-                    }, { passive: true });
+                    }, {passive: true});
 
                     item.addEventListener('touchend', (e) => {
                         if (!floatingClone || !activeItem) return;
@@ -209,6 +225,7 @@
                     });
                 });
 
+
                 function checkAnswer(target, letter, sourceNode) {
                     const correctAnswer = target.dataset.answer;
 
@@ -222,8 +239,16 @@
                             sourceNode.classList.remove('selected');
                         }
                         selectedLetterNode = null;
+
+                        const letterAudioUrl = target.dataset.audio;
+                        if (letterAudioUrl) {
+                            new Audio(letterAudioUrl).play();
+                        }
+
                         showFlashMessage('success', 'Benar!');
                     } else {
+                        audioSalah.currentTime = 0;
+                        audioSalah.play();
                         showFlashMessage('error', 'Salah!');
                     }
                 }

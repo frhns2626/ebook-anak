@@ -183,7 +183,6 @@
             <div class="letter-tile" draggable="true" data-letter="n">n</div>
         </div>
     </div>
-
     @push('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', () => {
@@ -192,9 +191,9 @@
 
                 let floatingClone = null;
                 let touchActiveTile = null;
-
-
                 let activeTile = null;
+                let rafPending = false;
+                let lastTouch = {x: 0, y: 0};
 
                 function createFloatingClone(tile, x, y) {
                     floatingClone = tile.cloneNode(true);
@@ -204,7 +203,7 @@
                     floatingClone.style.pointerEvents = 'none';
                     floatingClone.style.zIndex = '9999';
                     floatingClone.style.opacity = '0.85';
-                    floatingClone.style.transition = 'none'; // <-- kill inherited transition so it tracks the finger instantly
+                    floatingClone.style.transition = 'none';
                     moveFloatingClone(x, y);
                     document.body.appendChild(floatingClone);
                 }
@@ -229,23 +228,6 @@
                     if (!el) return null;
                     return el.closest('.drop-target');
                 }
-
-                let rafPending = false;
-                let lastTouch = { x: 0, y: 0 };
-
-                tile.addEventListener('touchmove', (e) => {
-                    if (!floatingClone) return;
-                    const touch = e.touches[0];
-                    lastTouch = { x: touch.clientX, y: touch.clientY };
-
-                    if (!rafPending) {
-                        rafPending = true;
-                        requestAnimationFrame(() => {
-                            moveFloatingClone(lastTouch.x, lastTouch.y);
-                            rafPending = false;
-                        });
-                    }
-                }, { passive: true });
 
                 tiles.forEach(tile => {
                     tile.addEventListener('dragstart', (e) => {
@@ -278,13 +260,21 @@
                         const touch = e.touches[0];
                         createFloatingClone(tile, touch.clientX, touch.clientY);
                         tile.style.opacity = '0.3';
-                    }, { passive: true });
+                    }, {passive: true});
 
                     tile.addEventListener('touchmove', (e) => {
                         if (!floatingClone) return;
                         const touch = e.touches[0];
-                        moveFloatingClone(touch.clientX, touch.clientY);
-                    }, { passive: true });
+                        lastTouch = {x: touch.clientX, y: touch.clientY};
+
+                        if (!rafPending) {
+                            rafPending = true;
+                            requestAnimationFrame(() => {
+                                moveFloatingClone(lastTouch.x, lastTouch.y);
+                                rafPending = false;
+                            });
+                        }
+                    }, {passive: true});
 
                     tile.addEventListener('touchend', (e) => {
                         if (!floatingClone || !touchActiveTile) return;
@@ -338,8 +328,6 @@
                         processAnswer(target, activeTile, activeTile.dataset.letter);
                     });
                 });
-
-
             });
 
             function processAnswer(target, tileElement, selectedLetter) {
@@ -367,7 +355,8 @@
                         const src = wordBox.dataset.audio;
                         if (src) {
                             const wordAudio = new Audio(src);
-                            wordAudio.play().catch(() => {});
+                            wordAudio.play().catch(() => {
+                            });
                         }
                     }
                 } else {
@@ -384,10 +373,6 @@
                     }, 500);
                 }
             }
-
         </script>
     @endpush
-
-
-
 </x-layout-game>
