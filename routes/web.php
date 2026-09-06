@@ -34,6 +34,10 @@ use App\Http\Controllers\Halaman7;
 use App\Http\Controllers\Halaman8;
 use App\Http\Controllers\Halaman9;
 use Illuminate\Support\Facades\Route;
+use Spatie\ResponseCache\Middlewares\CacheResponse;
+use function Illuminate\Support\minutes;
+
+Route::middleware(CacheResponse::for(minutes(10)))->group(function () {
 
 // Home page
 Route::get('/home', function () {
@@ -119,3 +123,4 @@ Route::get('/belajar/halaman-30', [Halaman30::class, 'index'])->name('belajar.ha
 Route::get('/belajar/halaman-31', [Halaman31::class, 'index'])->name('belajar.halaman-31'); // sudah
 Route::get('/belajar/halaman-32', [Halaman32::class, 'index'])->name('belajar.halaman-32'); // -----------  eng belum
 Route::get('/belajar/halaman-33', [Halaman33::class, 'index'])->name('belajar.halaman-33'); // sudah
+});
