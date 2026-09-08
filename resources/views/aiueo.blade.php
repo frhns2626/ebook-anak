@@ -7,10 +7,13 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Fredoka / Bubble font -->
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&display=swap"
+        rel="stylesheet"
+    />
     <style>
         body {
-            font-family: 'Fredoka', cursive, sans-serif;
+            font-family: "Fredoka", cursive, sans-serif;
         }
 
         /* Grid pattern background */
@@ -55,16 +58,26 @@
 </head>
 <body class="flex min-h-screen items-center justify-center bg-gray-800 p-4">
     <!-- Frame Utama Buku -->
-    <div class="bg-grid-pattern relative flex aspect-[1/1.41] w-full max-w-xl flex-col justify-between overflow-hidden rounded-xl border-8 border-black p-4 shadow-2xl sm:p-6">
+    <div
+        class="bg-grid-pattern relative flex aspect-[1/1.41] w-full max-w-xl flex-col justify-between overflow-hidden rounded-xl border-8 border-black p-4 shadow-2xl sm:p-6"
+    >
         <!-- Kartu Putih Bergelombang di Tengah -->
-        <div class="relative flex h-full w-full flex-col justify-between overflow-hidden rounded-[2.5rem] bg-white p-6 shadow-md">
+        <div
+            class="relative flex h-full w-full flex-col justify-between overflow-hidden rounded-[2.5rem] bg-white p-6 shadow-md"
+        >
             <!-- Judul Bagian Atas -->
             <div class="z-10 mt-1 text-center">
-                <h1 class="title-text text-2xl font-extrabold tracking-wide sm:text-3xl">Ayo coba baca lagi !</h1>
+                <h1
+                    class="title-text text-2xl font-extrabold tracking-wide sm:text-3xl"
+                >
+                    Ayo coba baca lagi !
+                </h1>
             </div>
 
             <!-- Tabel / Grid Suku Kata (5 Kolom x 11 Baris) -->
-            <div class="my-auto grid grid-cols-5 items-center justify-items-center gap-y-2 text-center sm:gap-y-3">
+            <div
+                class="my-auto grid grid-cols-5 items-center justify-items-center gap-y-2 text-center sm:gap-y-3"
+            >
                 <!-- Baris 1: Vokal (Merah) -->
                 <span class="syllable-text row-red">a</span>
                 <span class="syllable-text row-red">i</span>
@@ -145,8 +158,14 @@
 
             <!-- Badge Nomor Halaman -->
             <div class="relative z-20 mx-auto mt-1">
-                <div class="rounded-xl border-2 border-black bg-[#facc15] px-5 py-0.5 shadow-[2px_2px_0px_rgba(0,0,0,1)]">
-                    <span class="text-xs font-extrabold tracking-wide text-black sm:text-sm"> Halaman 10 </span>
+                <div
+                    class="rounded-xl border-2 border-black bg-[#facc15] px-5 py-0.5 shadow-[2px_2px_0px_rgba(0,0,0,1)]"
+                >
+                    <span
+                        class="text-xs font-extrabold tracking-wide text-black sm:text-sm"
+                    >
+                        Halaman 10
+                    </span>
                 </div>
             </div>
         </div>

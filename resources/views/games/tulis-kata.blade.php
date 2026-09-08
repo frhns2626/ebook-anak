@@ -7,7 +7,7 @@
     <style>
         /* Typography Judul Pop-out */
         .title-text {
-            font-family: 'Fredoka', cursive, sans-serif;
+            font-family: "Fredoka", cursive, sans-serif;
             color: #fbbf24;
             -webkit-text-stroke: 1.5px #000000;
             paint-order: stroke fill;
@@ -28,7 +28,7 @@
         }
 
         .word-display {
-            font-family: 'Fredoka', cursive, sans-serif;
+            font-family: "Fredoka", cursive, sans-serif;
             font-size: 2.25rem;
             font-weight: 700;
             color: #1a100c;
@@ -41,7 +41,7 @@
             border-radius: 1rem;
             border: 3px solid #cbd5e1;
             background-color: #ffffff;
-            font-family: 'Fredoka', cursive, sans-serif;
+            font-family: "Fredoka", cursive, sans-serif;
             font-size: 1.5rem;
             font-weight: 600;
             color: #1a100c;
@@ -72,101 +72,158 @@
         }
 
         @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-4px); }
-            40%, 80% { transform: translateX(4px); }
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+            20%,
+            60% {
+                transform: translateX(-4px);
+            }
+            40%,
+            80% {
+                transform: translateX(4px);
+            }
         }
     </style>
 
     @php $byWord = collect($items)->keyBy(fn ($i) => strtolower($i['id'])); @endphp
 
-    <div class="flex flex-col items-center justify-between h-full w-full my-auto select-none px-2 z-10">
-
-        <div class="text-center mt-1 mb-2">
-            <h1 class="title-text text-xl sm:text-2xl md:text-3xl font-extrabold tracking-wide px-2 leading-tight">
+    <div
+        class="z-10 my-auto flex h-full w-full flex-col items-center justify-between px-2 select-none"
+    >
+        <div class="mt-1 mb-2 text-center">
+            <h1
+                class="title-text px-2 text-xl leading-tight font-extrabold tracking-wide sm:text-2xl md:text-3xl"
+            >
                 Baca dan tulis kembali !
             </h1>
         </div>
 
-        <div class="grid grid-cols-2 gap-4 sm:gap-6 w-full max-w-2xl px-1 sm:px-2 my-auto z-10">
-
+        <div
+            class="z-10 my-auto grid w-full max-w-2xl grid-cols-2 gap-4 px-1 sm:gap-6 sm:px-2"
+        >
             <!-- 1. Bola -->
             <div class="flex flex-col items-center space-y-2">
                 <div class="item-card">
-                    <img src="{{ $byWord['bola']['emoji'] }}" alt="bola" class="h-40 object-contain pointer-events-none" />
+                    <img
+                        src="{{ $byWord['bola']['emoji'] }}"
+                        alt="bola"
+                        class="pointer-events-none h-40 object-contain"
+                    />
                 </div>
-                <input type="text" data-answer="bola" data-audio="{{ $byWord['bola']['audio'] }}" class="rewrite-input text-black" placeholder=". . ." />
+                <input
+                    type="text"
+                    data-answer="bola"
+                    data-audio="{{ $byWord['bola']['audio'] }}"
+                    class="rewrite-input text-black"
+                    placeholder=". . ."
+                />
             </div>
 
             <!-- 2. Buaya -->
             <div class="flex flex-col items-center space-y-2">
                 <div class="item-card">
-                    <img src="{{ $byWord['buaya']['emoji'] }}" alt="buaya" class="h-40 object-contain pointer-events-none" />
+                    <img
+                        src="{{ $byWord['buaya']['emoji'] }}"
+                        alt="buaya"
+                        class="pointer-events-none h-40 object-contain"
+                    />
                 </div>
-                <input type="text" data-answer="buaya" data-audio="{{ $byWord['buaya']['audio'] }}" class="rewrite-input text-black" placeholder=". . ." />
+                <input
+                    type="text"
+                    data-answer="buaya"
+                    data-audio="{{ $byWord['buaya']['audio'] }}"
+                    class="rewrite-input text-black"
+                    placeholder=". . ."
+                />
             </div>
 
             <!-- 3. Donat -->
             <div class="flex flex-col items-center space-y-2">
                 <div class="item-card">
-                    <img src="{{ $byWord['donat']['emoji'] }}" alt="donat" class="h-40 object-contain pointer-events-none" />
+                    <img
+                        src="{{ $byWord['donat']['emoji'] }}"
+                        alt="donat"
+                        class="pointer-events-none h-40 object-contain"
+                    />
                 </div>
-                <input type="text" data-answer="donat" data-audio="{{ $byWord['donat']['audio'] }}" class="rewrite-input text-black" placeholder=". . ." />
+                <input
+                    type="text"
+                    data-answer="donat"
+                    data-audio="{{ $byWord['donat']['audio'] }}"
+                    class="rewrite-input text-black"
+                    placeholder=". . ."
+                />
             </div>
 
             <!-- 4. Jerapah -->
             <div class="flex flex-col items-center space-y-2">
                 <div class="item-card">
-                    <img src="{{ $byWord['jerapah']['emoji'] }}" alt="jerapah" class="h-40 object-contain pointer-events-none" />
+                    <img
+                        src="{{ $byWord['jerapah']['emoji'] }}"
+                        alt="jerapah"
+                        class="pointer-events-none h-40 object-contain"
+                    />
                 </div>
-                <input type="text" data-answer="jerapah" data-audio="{{ $byWord['jerapah']['audio'] }}" class="rewrite-input text-black" placeholder=". . ." />
+                <input
+                    type="text"
+                    data-answer="jerapah"
+                    data-audio="{{ $byWord['jerapah']['audio'] }}"
+                    class="rewrite-input text-black"
+                    placeholder=". . ."
+                />
             </div>
-
         </div>
 
-        <div class="flex-1 min-h-10 z-10"></div>
+        <div class="z-10 min-h-10 flex-1"></div>
     </div>
 
     @push('scripts')
         <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                const inputs = document.querySelectorAll('.rewrite-input');
+            document.addEventListener("DOMContentLoaded", () => {
+                const inputs = document.querySelectorAll(".rewrite-input")
 
+                inputs.forEach((input) => {
+                    input.addEventListener("input", (e) => {
+                        const val = e.target.value.toLowerCase().trim()
+                        const correctAnswer = input.dataset.answer.toLowerCase()
 
-                inputs.forEach(input => {
-                    input.addEventListener('input', (e) => {
-                        const val = e.target.value.toLowerCase().trim();
-                        const correctAnswer = input.dataset.answer.toLowerCase();
+                        input.classList.remove("wrong", "correct")
 
-                        input.classList.remove('wrong', 'correct');
-
-                        if (val === '') return;
+                        if (val === "") return
 
                         if (val === correctAnswer) {
-                            input.classList.add('correct');
+                            input.classList.add("correct")
 
                             if (input.dataset.audio) {
-                                const wordAudio = new Audio(input.dataset.audio);
-                                wordAudio.play().catch(() => {});
+                                const wordAudio = new Audio(input.dataset.audio)
+                                wordAudio.play().catch(() => {})
                             }
 
-                            if (typeof showFlashMessage === 'function') {
-                                showFlashMessage('success', 'Hebat! Penulisan tepat!');
+                            if (typeof showFlashMessage === "function") {
+                                showFlashMessage(
+                                    "success",
+                                    "Hebat! Penulisan tepat!",
+                                )
                             }
                         } else if (val.length >= correctAnswer.length) {
-                            input.classList.add('wrong');
-                            if (typeof showFlashMessage === 'function') {
-                                showFlashMessage('error', 'Salah, coba tulis ulang dengan benar!');
+                            input.classList.add("wrong")
+                            if (typeof showFlashMessage === "function") {
+                                showFlashMessage(
+                                    "error",
+                                    "Salah, coba tulis ulang dengan benar!",
+                                )
                             }
 
                             setTimeout(() => {
-                                input.classList.remove('wrong');
-                                input.value = '';
-                            }, 500);
+                                input.classList.remove("wrong")
+                                input.value = ""
+                            }, 500)
                         }
-                    });
-                });
-            });
+                    })
+                })
+            })
         </script>
     @endpush
 </x-layout-game>

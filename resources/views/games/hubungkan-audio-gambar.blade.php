@@ -1,13 +1,13 @@
 <x-layout-game
-    title="{{$judul}}"
-    halaman="{{$halaman}}"
+    title="{{ $judul }}"
+    halaman="{{ $halaman }}"
     :lang_on="true"
-    lang="{{$lang}}"
+    lang="{{ $lang }}"
 >
     <style>
         /* Typography Judul Pop-out */
         .title-text {
-            font-family: 'Fredoka', cursive, sans-serif;
+            font-family: "Fredoka", cursive, sans-serif;
             color: #fbbf24;
             -webkit-text-stroke: 1.5px #000000;
             paint-order: stroke fill;
@@ -28,7 +28,7 @@
             height: 2.3rem;
             border-radius: 0.75rem;
             border: 3px solid #cbd5e1;
-            font-family: 'Fredoka', cursive, sans-serif;
+            font-family: "Fredoka", cursive, sans-serif;
             font-size: 1rem;
             font-weight: 700;
             text-align: center;
@@ -56,13 +56,16 @@
         }
 
         @keyframes shake {
-            0%, 100% {
+            0%,
+            100% {
                 transform: translateX(0);
             }
-            20%, 60% {
+            20%,
+            60% {
                 transform: translateX(-4px);
             }
-            40%, 80% {
+            40%,
+            80% {
                 transform: translateX(4px);
             }
         }
@@ -72,22 +75,31 @@
         // baris 1 -> target kata milik item ke-3, baris 2 -> item ke-4, dst.
         $targetOrder = [3, 4, 5, 2, 1];
     @endphp
-    <div class="flex flex-col items-center justify-between h-full w-full my-auto select-none px-2">
+    <div
+        class="my-auto flex h-full w-full flex-col items-center justify-between px-2 select-none"
+    >
         <!-- Judul Atas -->
-        <div class="text-center mt-1 mb-3">
-            <h1 class="title-text text-lg sm:text-xl md:text-2xl font-extrabold tracking-wide leading-tight">
+        <div class="mt-1 mb-3 text-center">
+            <h1
+                class="title-text text-lg leading-tight font-extrabold tracking-wide sm:text-xl md:text-2xl"
+            >
                 Cocokkan gambar dan kata dengan menuliskan angka !
             </h1>
         </div>
         <!-- List Baris Matching (5 Pasang) -->
-        <div class="flex flex-col space-y-2 sm:space-y-3 w-full max-w-lg my-auto">
+        <div
+            class="my-auto flex w-full max-w-lg flex-col space-y-2 sm:space-y-3"
+        >
             @foreach ($items as $i => $left)
                 @php
                     $target = $items[$targetOrder[$i] - 1];
                 @endphp
                 <div class="flex items-center justify-between gap-2">
                     <div class="flex items-center space-x-2">
-                        <span class="text-2xl sm:text-3xl font-black text-black">{{ $i + 1 }}</span>
+                        <span
+                            class="text-2xl font-black text-black sm:text-3xl"
+                            >{{ $i + 1 }}</span
+                        >
                         <img
                             src="{{ $left['emoji'] }}"
                             alt="{{ $left['id'] }}"
@@ -100,9 +112,20 @@
                         />
                     </div>
                     <div class="flex items-center space-x-2">
-                        <input type="text" maxlength="1" data-answer="{{ $targetOrder[$i] }}" class="number-input text-black"/>
-                        <div class="item-card px-4 py-2 w-32 sm:w-36 text-center baca-item" data-audio="{{ $target['audio'] }}">
-                            <span class="text-lg sm:text-xl font-bold text-black">{{ $target['id'] }}</span>
+                        <input
+                            type="text"
+                            maxlength="1"
+                            data-answer="{{ $targetOrder[$i] }}"
+                            class="number-input text-black"
+                        />
+                        <div
+                            class="item-card baca-item w-32 px-4 py-2 text-center sm:w-36"
+                            data-audio="{{ $target['audio'] }}"
+                        >
+                            <span
+                                class="text-lg font-bold text-black sm:text-xl"
+                                >{{ $target['id'] }}</span
+                            >
                         </div>
                     </div>
                 </div>
@@ -111,84 +134,89 @@
     </div>
     @push('scripts')
         <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                const inputs = document.querySelectorAll('.number-input');
+            document.addEventListener("DOMContentLoaded", () => {
+                const inputs = document.querySelectorAll(".number-input")
 
-                inputs.forEach(input => {
-                    input.addEventListener('input', (e) => {
-                        const val = e.target.value.trim();
-                        const correctAnswer = input.dataset.answer;
+                inputs.forEach((input) => {
+                    input.addEventListener("input", (e) => {
+                        const val = e.target.value.trim()
+                        const correctAnswer = input.dataset.answer
 
-                        input.classList.remove('input-correct', 'input-wrong');
+                        input.classList.remove("input-correct", "input-wrong")
 
-                        if (val === '') return;
+                        if (val === "") return
 
                         if (val === correctAnswer) {
-                            input.classList.add('input-correct');
-                            if (typeof showFlashMessage === 'function') {
-                                showFlashMessage('success', 'Benar!');
+                            input.classList.add("input-correct")
+                            if (typeof showFlashMessage === "function") {
+                                showFlashMessage("success", "Benar!")
                             }
 
-                            const row = input.closest('.flex.items-center.justify-between');
-                            const targetCard = row?.querySelector('.item-card[data-audio]');
-                            const src = targetCard?.dataset.audio;
+                            const row = input.closest(
+                                ".flex.items-center.justify-between",
+                            )
+                            const targetCard = row?.querySelector(
+                                ".item-card[data-audio]",
+                            )
+                            const src = targetCard?.dataset.audio
                             if (src && !isPlaying) {
-                                isPlaying = true;
-                                audioPlayer.pause();
-                                audioPlayer.removeAttribute('src');
-                                audioPlayer.load();
-                                audioPlayer = new Audio(src);
-                                audioPlayer.addEventListener('ended', () => {
-                                    isPlaying = false;
-                                });
-                                audioPlayer.addEventListener('error', () => {
-                                    isPlaying = false;
-                                });
+                                isPlaying = true
+                                audioPlayer.pause()
+                                audioPlayer.removeAttribute("src")
+                                audioPlayer.load()
+                                audioPlayer = new Audio(src)
+                                audioPlayer.addEventListener("ended", () => {
+                                    isPlaying = false
+                                })
+                                audioPlayer.addEventListener("error", () => {
+                                    isPlaying = false
+                                })
                                 audioPlayer.play().catch(() => {
-                                    isPlaying = false;
-                                });
+                                    isPlaying = false
+                                })
                             }
                         } else {
-                            input.classList.add('input-wrong');
-                            if (typeof showFlashMessage === 'function') {
-                                showFlashMessage('error', 'Coba lagi!');
+                            input.classList.add("input-wrong")
+                            if (typeof showFlashMessage === "function") {
+                                showFlashMessage("error", "Coba lagi!")
                             }
                         }
-                    });
-                });
+                    })
+                })
 
+                let audioPlayer = new Audio()
+                let isPlaying = false
 
-                let audioPlayer = new Audio();
-                let isPlaying = false;
+                document.querySelectorAll(".baca-item").forEach((card) => {
+                    card.addEventListener("click", () => {
+                        if (isPlaying) return
 
-                document.querySelectorAll('.baca-item').forEach(card => {
-                    card.addEventListener('click', () => {
-                        if (isPlaying) return;
+                        const src = card.dataset.audio
+                        if (!src) return
 
-                        const src = card.dataset.audio;
-                        if (!src) return;
+                        isPlaying = true
 
-                        isPlaying = true;
+                        audioPlayer.pause()
+                        audioPlayer.removeAttribute("src")
+                        audioPlayer.load()
 
-                        audioPlayer.pause();
-                        audioPlayer.removeAttribute('src');
-                        audioPlayer.load();
-
-                        audioPlayer = new Audio(src);
-                        audioPlayer.addEventListener('ended', () => {
-                            isPlaying = false;
-                        });
-                        audioPlayer.addEventListener('error', () => {
-                            isPlaying = false;
-                        });
+                        audioPlayer = new Audio(src)
+                        audioPlayer.addEventListener("ended", () => {
+                            isPlaying = false
+                        })
+                        audioPlayer.addEventListener("error", () => {
+                            isPlaying = false
+                        })
                         audioPlayer.play().catch(() => {
-                            isPlaying = false;
-                        });
+                            isPlaying = false
+                        })
 
-                        card.classList.add('drop-shadow-[0_0_10px_rgba(74,222,128,0.9)]');
-                    });
-                });
-            });
+                        card.classList.add(
+                            "drop-shadow-[0_0_10px_rgba(74,222,128,0.9)]",
+                        )
+                    })
+                })
+            })
         </script>
     @endpush
 </x-layout-game>

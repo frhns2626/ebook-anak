@@ -3,7 +3,8 @@
         /* Pattern grid background */
         .bg-grid-pattern {
             background-color: #ffffff;
-            background-image: linear-gradient(to right, #bfdbfe 1px, transparent 1px),
+            background-image:
+                linear-gradient(to right, #bfdbfe 1px, transparent 1px),
                 linear-gradient(to bottom, #bfdbfe 1px, transparent 1px);
             background-size: 24px 24px;
         }
@@ -34,12 +35,13 @@
     </style>
     <!-- Frame Utama Buku (A4 Aspect Ratio) -->
     <div
-        class="relative flex aspect-[1/1.41] w-full max-w-xl flex-col justify-between overflow-hidden ">
+        class="relative flex aspect-[1/1.41] w-full max-w-xl flex-col justify-between overflow-hidden"
+    >
         <!-- Abstract Background Blobs -->
         <div class="bg-blob-top-left absolute -top-10 -left-10 z-0"></div>
-        <div class="bg-blob-bottom-pink absolute -right-10 -bottom-10 z-0"></div>
+        <div
+            class="bg-blob-bottom-pink absolute -right-10 -bottom-10 z-0"
+        ></div>
         <div class="bg-blob-bottom-blue absolute -bottom-10 -left-10 z-0"></div>
-
-
     </div>
 </x-layout-game>

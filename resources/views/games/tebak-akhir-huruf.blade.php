@@ -1,13 +1,13 @@
 <x-layout-game
-    title="{{$judul}}"
-    halaman="{{$halaman}}"
+    title="{{ $judul }}"
+    halaman="{{ $halaman }}"
     :lang_on="true"
-    lang="{{$lang}}"
+    lang="{{ $lang }}"
 >
     <style>
         /* Typography Judul Pop-out */
         .title-text {
-            font-family: 'Fredoka', cursive, sans-serif;
+            font-family: "Fredoka", cursive, sans-serif;
             color: #fbbf24;
             -webkit-text-stroke: 1.5px #000000;
             paint-order: stroke fill;
@@ -19,7 +19,9 @@
             background-color: #ffffff;
             border-radius: 1.5rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
             cursor: pointer;
         }
 
@@ -30,28 +32,32 @@
 
         /* Font khusus teks kosakata */
         .word-text {
-            font-family: 'Fredoka', cursive, sans-serif;
+            font-family: "Fredoka", cursive, sans-serif;
             color: #1a100c;
         }
     </style>
 
-    <div class="flex flex-col items-center justify-between h-full w-full my-auto select-none">
-
-
+    <div
+        class="my-auto flex h-full w-full flex-col items-center justify-between select-none"
+    >
         <!-- Judul Atas -->
-        <div class="text-center my-4">
-            <h1 class="title-text sm:text-2xl text-xl font-extrabold tracking-wide leading-tight">
+        <div class="my-4 text-center">
+            <h1
+                class="title-text text-xl leading-tight font-extrabold tracking-wide sm:text-2xl"
+            >
                 Pengenalan huruf a,i,u,e,o diakhir
             </h1>
         </div>
 
         <!-- Grid 2 Kolom x 5 Baris Kartu Kosakata -->
-        <div class="grid grid-cols-2 gap-3 sm:gap-4 w-full px-1 sm:px-2 my-auto items-center justify-items-center ">
+        <div
+            class="my-auto grid w-full grid-cols-2 items-center justify-items-center gap-3 px-1 sm:gap-4 sm:px-2"
+        >
             @foreach ($items as $item)
                 <img
                     src="{{ $item['emoji'] }}"
                     alt="{{ $item['id'] }}"
-                    class="w-40 h-auto object-contain rounded-lg kosakata-card"
+                    class="kosakata-card h-auto w-40 rounded-lg object-contain"
                     data-audio="{{ $item['audio'] }}"
                 />
             @endforeach
@@ -60,32 +66,40 @@
 
     @push('scripts')
         <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                let audioPlayer = new Audio();
-                let isPlaying = false;
+            document.addEventListener("DOMContentLoaded", () => {
+                let audioPlayer = new Audio()
+                let isPlaying = false
 
-                document.querySelectorAll('.kosakata-card').forEach(card => {
-                    card.addEventListener('click', () => {
-                        if (isPlaying) return;
+                document.querySelectorAll(".kosakata-card").forEach((card) => {
+                    card.addEventListener("click", () => {
+                        if (isPlaying) return
 
-                        const src = card.dataset.audio;
-                        if (!src) return;
+                        const src = card.dataset.audio
+                        if (!src) return
 
-                        isPlaying = true;
+                        isPlaying = true
 
-                        audioPlayer.pause();
-                        audioPlayer.removeAttribute('src');
-                        audioPlayer.load();
+                        audioPlayer.pause()
+                        audioPlayer.removeAttribute("src")
+                        audioPlayer.load()
 
-                        audioPlayer = new Audio(src);
-                        audioPlayer.addEventListener('ended', () => { isPlaying = false; });
-                        audioPlayer.addEventListener('error', () => { isPlaying = false; });
-                        audioPlayer.play().catch(() => { isPlaying = false; });
+                        audioPlayer = new Audio(src)
+                        audioPlayer.addEventListener("ended", () => {
+                            isPlaying = false
+                        })
+                        audioPlayer.addEventListener("error", () => {
+                            isPlaying = false
+                        })
+                        audioPlayer.play().catch(() => {
+                            isPlaying = false
+                        })
 
-                        card.classList.add('drop-shadow-[0_0_12px_rgba(74,222,128,0.9)]');
-                    });
-                });
-            });
+                        card.classList.add(
+                            "drop-shadow-[0_0_12px_rgba(74,222,128,0.9)]",
+                        )
+                    })
+                })
+            })
         </script>
     @endpush
 </x-layout-game>

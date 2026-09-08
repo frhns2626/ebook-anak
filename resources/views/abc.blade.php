@@ -7,7 +7,10 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Fredoka / Bubble font -->
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&display=swap"
+        rel="stylesheet"
+    />
     <style>
         /* Custom Grid Background */
         .bg-grid-pattern {
@@ -20,7 +23,7 @@
 
         /* Bubble text style for alphabet */
         .alphabet-text {
-            font-family: 'Fredoka', cursive, sans-serif;
+            font-family: "Fredoka", cursive, sans-serif;
             color: #fbbf24; /* Yellow fill */
             -webkit-text-stroke: 2px #000000; /* Black border/outline */
             paint-order: stroke fill;
@@ -35,9 +38,13 @@
 </head>
 <body class="flex min-h-screen items-center justify-center bg-gray-800 p-4">
     <!-- Book Page Frame -->
-    <div class="bg-grid-pattern relative flex aspect-[1/1.41] w-full max-w-xl flex-col justify-between overflow-hidden rounded-xl border-8 border-black p-6 shadow-2xl">
+    <div
+        class="bg-grid-pattern relative flex aspect-[1/1.41] w-full max-w-xl flex-col justify-between overflow-hidden rounded-xl border-8 border-black p-6 shadow-2xl"
+    >
         <!-- Top White Wave Deco -->
-        <div class="cloud-shape-top pointer-events-none absolute -top-12 right-0 left-0 h-28 bg-white"></div>
+        <div
+            class="cloud-shape-top pointer-events-none absolute -top-12 right-0 left-0 h-28 bg-white"
+        ></div>
 
         <!-- Alphabet Grid Container -->
         <div class="relative z-10 my-auto px-4 pt-10 pb-8">
@@ -93,12 +100,20 @@
         </div>
 
         <!-- Bottom White Wave & Footer -->
-        <div class="pointer-events-none absolute right-0 -bottom-10 left-0 h-24 rounded-t-[50%] bg-white"></div>
+        <div
+            class="pointer-events-none absolute right-0 -bottom-10 left-0 h-24 rounded-t-[50%] bg-white"
+        ></div>
 
         <!-- Page Number Badge (Halaman 1) -->
         <div class="relative z-20 mx-auto mb-1">
-            <div class="rounded-xl border-2 border-black bg-[#facc15] px-5 py-0.5 shadow-[2px_2px_0px_rgba(0,0,0,1)]">
-                <span class="text-xs font-extrabold tracking-wide text-black sm:text-sm"> Halaman 1 </span>
+            <div
+                class="rounded-xl border-2 border-black bg-[#facc15] px-5 py-0.5 shadow-[2px_2px_0px_rgba(0,0,0,1)]"
+            >
+                <span
+                    class="text-xs font-extrabold tracking-wide text-black sm:text-sm"
+                >
+                    Halaman 1
+                </span>
             </div>
         </div>
     </div>

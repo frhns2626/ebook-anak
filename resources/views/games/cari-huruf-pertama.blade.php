@@ -1,13 +1,13 @@
 <x-layout-game
-    title="{{$judul}}"
-    halaman="{{$halaman}}"
+    title="{{ $judul }}"
+    halaman="{{ $halaman }}"
     :lang_on="true"
-    lang="{{$lang}}"
+    lang="{{ $lang }}"
 >
     <style>
         /* Typography Judul Pop-out */
         .title-text {
-            font-family: 'Fredoka', cursive, sans-serif;
+            font-family: "Fredoka", cursive, sans-serif;
             color: #fbbf24;
             -webkit-text-stroke: 1.5px #000000;
             paint-order: stroke fill;
@@ -56,34 +56,60 @@
         }
 
         @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-4px); }
-            40%, 80% { transform: translateX(4px); }
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+            20%,
+            60% {
+                transform: translateX(-4px);
+            }
+            40%,
+            80% {
+                transform: translateX(4px);
+            }
         }
     </style>
 
-    <div class="flex flex-col items-center justify-between h-full w-full my-auto select-none px-2">
-
+    <div
+        class="my-auto flex h-full w-full flex-col items-center justify-between px-2 select-none"
+    >
         <!-- Judul Aktivitas -->
-        <div class="text-center mt-1 mb-2">
-            <h1 class="title-text text-lg sm:text-xl md:text-2xl font-extrabold tracking-wide leading-tight flex items-center justify-center gap-1">
-                Temukan huruf depan setiap<br>objek berikut, beri tanda <span class="text-green-500 inline-block drop-shadow-none" style="-webkit-text-stroke: 0;">✔</span>
+        <div class="mt-1 mb-2 text-center">
+            <h1
+                class="title-text flex items-center justify-center gap-1 text-lg leading-tight font-extrabold tracking-wide sm:text-xl md:text-2xl"
+            >
+                Temukan huruf depan setiap<br />objek berikut, beri tanda
+                <span
+                    class="inline-block text-green-500 drop-shadow-none"
+                    style="-webkit-text-stroke: 0"
+                    >✔</span
+                >
             </h1>
         </div>
 
         <!-- Grid 2x2 Objek -->
-        <div class="grid grid-cols-2 gap-3 sm:gap-6 w-full max-w-xl my-auto">
+        <div class="my-auto grid w-full max-w-xl grid-cols-2 gap-3 sm:gap-6">
             @foreach ($items as $item)
                 <!-- {{ $item['id'] }} -->
-                <div class="item-card p-3 flex items-center justify-between">
-                    <div class="flex flex-col items-center justify-center space-y-1">
-{{--                        <span class="text-lg sm:text-xl font-extrabold text-black">{{ strtolower($item['id']) }}</span>--}}
-                        <img src="{{ $item['emoji'] }}" alt="{{ $item['id'] }}" class="w-30 h-auto object-contain pointer-events-none rounded" />
+                <div class="item-card flex items-center justify-between p-3">
+                    <div
+                        class="flex flex-col items-center justify-center space-y-1"
+                    >
+                        {{--                        <span class="text-lg sm:text-xl font-extrabold text-black">{{ strtolower($item['id']) }}</span>--}}
+                        <img
+                            src="{{ $item['emoji'] }}"
+                            alt="{{ $item['id'] }}"
+                            class="pointer-events-none h-auto w-30 rounded object-contain"
+                        />
                     </div>
                     <div class="flex flex-col space-y-2 pr-1">
                         @foreach ($item['options'] as $opt)
                             <div class="flex items-center space-x-2">
-                                <span class="text-4xl font-black text-black w-4 text-center">{{ $opt['letter'] }}</span>
+                                <span
+                                    class="w-4 text-center text-4xl font-black text-black"
+                                    >{{ $opt['letter'] }}</span
+                                >
                                 <div
                                     class="check-box"
                                     data-target="{{ $item['id'] }}"
@@ -101,63 +127,77 @@
 
     @push('scripts')
         <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                const checkBoxes = document.querySelectorAll('.check-box');
+            document.addEventListener("DOMContentLoaded", () => {
+                const checkBoxes = document.querySelectorAll(".check-box")
 
-                let audioPlayer = new Audio();
-                let isPlaying = false;
+                let audioPlayer = new Audio()
+                let isPlaying = false
 
-                checkBoxes.forEach(box => {
-                    box.addEventListener('click', () => {
-                        const isCorrect = box.dataset.correct === 'true';
-                        const targetName = box.dataset.target;
-                        const letter = box.dataset.letter;
+                checkBoxes.forEach((box) => {
+                    box.addEventListener("click", () => {
+                        const isCorrect = box.dataset.correct === "true"
+                        const targetName = box.dataset.target
+                        const letter = box.dataset.letter
 
-                        if (box.classList.contains('correct')) return;
+                        if (box.classList.contains("correct")) return
 
                         if (isCorrect) {
-                            const siblings = document.querySelectorAll(`.check-box[data-target="${targetName}"]`);
-                            siblings.forEach(s => {
-                                s.classList.remove('correct', 'wrong');
-                                s.innerHTML = '';
-                            });
+                            const siblings = document.querySelectorAll(
+                                `.check-box[data-target="${targetName}"]`,
+                            )
+                            siblings.forEach((s) => {
+                                s.classList.remove("correct", "wrong")
+                                s.innerHTML = ""
+                            })
 
-                            box.classList.add('correct');
-                            box.innerHTML = '✔';
+                            box.classList.add("correct")
+                            box.innerHTML = "✔"
 
-                            const src = box.dataset.audio;
+                            const src = box.dataset.audio
                             if (src && !isPlaying) {
-                                isPlaying = true;
+                                isPlaying = true
 
-                                audioPlayer.pause();
-                                audioPlayer.removeAttribute('src');
-                                audioPlayer.load();
+                                audioPlayer.pause()
+                                audioPlayer.removeAttribute("src")
+                                audioPlayer.load()
 
-                                audioPlayer = new Audio(src);
-                                audioPlayer.addEventListener('ended', () => { isPlaying = false; });
-                                audioPlayer.addEventListener('error', () => { isPlaying = false; });
-                                audioPlayer.play().catch(() => { isPlaying = false; });
+                                audioPlayer = new Audio(src)
+                                audioPlayer.addEventListener("ended", () => {
+                                    isPlaying = false
+                                })
+                                audioPlayer.addEventListener("error", () => {
+                                    isPlaying = false
+                                })
+                                audioPlayer.play().catch(() => {
+                                    isPlaying = false
+                                })
                             }
 
-                            if (typeof showFlashMessage === 'function') {
-                                showFlashMessage('success', `Benar! Huruf depan ${targetName} adalah '${letter}'`);
+                            if (typeof showFlashMessage === "function") {
+                                showFlashMessage(
+                                    "success",
+                                    `Benar! Huruf depan ${targetName} adalah '${letter}'`,
+                                )
                             }
                         } else {
-                            box.classList.add('wrong');
-                            box.innerHTML = '✖';
+                            box.classList.add("wrong")
+                            box.innerHTML = "✖"
 
-                            if (typeof showFlashMessage === 'function') {
-                                showFlashMessage('error', 'Salah, coba pilih huruf yang lain!');
+                            if (typeof showFlashMessage === "function") {
+                                showFlashMessage(
+                                    "error",
+                                    "Salah, coba pilih huruf yang lain!",
+                                )
                             }
 
                             setTimeout(() => {
-                                box.classList.remove('wrong');
-                                box.innerHTML = '';
-                            }, 500);
+                                box.classList.remove("wrong")
+                                box.innerHTML = ""
+                            }, 500)
                         }
-                    });
-                });
-            });
+                    })
+                })
+            })
         </script>
     @endpush
 </x-layout-game>

@@ -1,0 +1,50 @@
+{
+    "plugins": ["prettier-plugin-blade", "prettier-plugin-tailwindcss"],
+    "semi": false,
+    "overrides": [
+        {
+            "files": ["*.blade.php"],
+            "options": {
+                "parser": "blade",
+                "htmlWhitespaceSensitivity": "css",
+                "bladePhpFormatting": "safe",
+                "bladePhpFormattingTargets": [
+                    //                    "directiveArgs",
+                    "echo",
+                    "phpBlock",
+                    "phpTag"
+                ],
+                "bladeSyntaxPlugins": ["statamic"],
+                "bladeDirectiveCase": "preserve",
+                "bladeDirectiveArgSpacing": "none",
+                "bladeDirectiveArgSpacingOverrides": [
+                    "if",
+                    "elseif",
+                    "unless",
+                    "while",
+                    "for",
+                    "foreach",
+                    "forelse",
+                    "switch",
+                    "case"
+                ],
+                "bladeDirectiveBlockStyle": "preserve",
+                "bladeBlankLinesAroundDirectives": "preserve",
+                "bladeEchoSpacing": "space",
+                "bladeSlotClosingTag": "canonical",
+                "bladeVoidElementSlash": "always",
+                "bladeInlineIntentElements": ["p", "svg", "svg:*"],
+                "bladeComponentPrefixes": [
+                    "x",
+                    "s",
+                    "statamic",
+                    "flux",
+                    "livewire",
+                    "native"
+                ],
+                "bladeInsertOptionalClosingTags": false,
+                "bladeKeepHeadAndBodyAtRoot": true
+            }
+        }
+    ]
+}

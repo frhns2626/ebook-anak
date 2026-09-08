@@ -9,11 +9,14 @@
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @else
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+        />
     @endif
     <style>
         body {
-            font-family: 'Comic Neue', cursive;
+            font-family: "Comic Neue", cursive;
         }
 
         @keyframes rainbow-float {
@@ -137,7 +140,9 @@
         }
     </style>
 </head>
-<body class="min-h-screen overflow-x-hidden bg-gradient-to-b from-red-400 via-teal-400 via-yellow-200 to-sky-500">
+<body
+    class="min-h-screen overflow-x-hidden bg-gradient-to-b from-red-400 via-teal-400 via-yellow-200 to-sky-500"
+>
     {{-- Background Effects --}}
     <div class="pointer-events-none fixed inset-0 z-0 overflow-hidden">
         <div
@@ -165,16 +170,36 @@
             style="top: 40%; background: #6c5ce7; animation-delay: 0.8s"
         ></div>
         {{-- Floating objects --}}
-        <span class="animate-float1 absolute text-[3rem] opacity-30" style="top: 10%; left: 5%">🎨</span>
-        <span class="animate-float2 absolute text-[2.5rem] opacity-30" style="top: 15%; right: 8%">🌈</span>
-        <span class="animate-float1 absolute text-[3rem] opacity-30" style="top: 35%; left: 3%; animation-delay: 0.5s"
-            >🎨</span>
-        <span class="animate-float2 absolute text-[2.5rem] opacity-30" style="top: 45%; right: 5%">🌈</span>
+        <span
+            class="animate-float1 absolute text-[3rem] opacity-30"
+            style="top: 10%; left: 5%"
+            >🎨</span
+        >
+        <span
+            class="animate-float2 absolute text-[2.5rem] opacity-30"
+            style="top: 15%; right: 8%"
+            >🌈</span
+        >
+        <span
+            class="animate-float1 absolute text-[3rem] opacity-30"
+            style="top: 35%; left: 3%; animation-delay: 0.5s"
+            >🎨</span
+        >
+        <span
+            class="animate-float2 absolute text-[2.5rem] opacity-30"
+            style="top: 45%; right: 5%"
+            >🌈</span
+        >
         <span
             class="animate-float1 absolute text-[2.5rem] opacity-30"
             style="bottom: 25%; left: 8%; animation-delay: 2s"
-        >🎨</span>
-        <span class="animate-float2 absolute text-[3rem] opacity-30" style="bottom: 20%; right: 10%">🌈</span>
+            >🎨</span
+        >
+        <span
+            class="animate-float2 absolute text-[3rem] opacity-30"
+            style="bottom: 20%; right: 10%"
+            >🌈</span
+        >
     </div>
     {{-- Confetti container --}}
     <div class="confetti" id="confetti"></div>
@@ -182,7 +207,7 @@
     <div class="celebration" id="celebration">
         <h2
             class="mb-2 text-[2rem] font-bold text-white drop-shadow-lg md:text-[2.5rem]"
-            style="font-family: 'Fredoka One', cursive"
+            style="font-family: &quot;Fredoka One&quot;, cursive"
         >
             🎉 HEBAT! 🎉
         </h2>
@@ -190,7 +215,7 @@
         <button
             onclick="restartGame()"
             class="mt-4 cursor-pointer rounded-full bg-gradient-to-r from-violet-500 to-purple-500 px-6 py-3 text-[1rem] font-bold text-white shadow-xl transition-all hover:scale-105 md:px-8 md:py-4 md:text-[1.2rem]"
-            style="font-family: 'Fredoka One', cursive"
+            style="font-family: &quot;Fredoka One&quot;, cursive"
         >
             🔄 Main Lagi!
         </button>
@@ -200,10 +225,11 @@
         <a
             href="{{ route('home') }}"
             class="absolute top-1/2 left-5 -translate-y-1/2 rounded-full bg-white/20 px-5 py-2.5 text-sm font-bold text-white transition-all hover:bg-white/30"
-        >← Kembali</a>
+            >← Kembali</a
+        >
         <h1
             class="mb-3 text-[2rem] font-bold text-white drop-shadow-lg md:text-[2.5rem]"
-            style="font-family: 'Fredoka One', cursive"
+            style="font-family: &quot;Fredoka One&quot;, cursive"
         >
             🎨🎨 Belajar Warna 🏳️🌈🎨
         </h1>
@@ -222,14 +248,17 @@
                 <div
                     class="mb-2 text-[1.8rem] font-bold text-gray-800 md:text-[2.5rem]"
                     id="colorName"
-                    style="font-family: 'Fredoka One', cursive"
+                    style="font-family: &quot;Fredoka One&quot;, cursive"
                 >
                     MERAH
                 </div>
                 <p class="text-[1rem] text-gray-600 md:text-[1.2rem]">Warna apakah ini? Klik tombol di bawah! 👇</p>
             </div>
             {{-- Color Options --}}
-            <div class="mt-6 grid grid-cols-2 gap-3 md:gap-4" id="colorOptions"></div>
+            <div
+                class="mt-6 grid grid-cols-2 gap-3 md:gap-4"
+                id="colorOptions"
+            ></div>
             {{-- Feedback --}}
             <div
                 id="feedback"
@@ -240,14 +269,14 @@
                 <button
                     onclick="prevColor()"
                     class="flex cursor-pointer items-center gap-2 rounded-full bg-gradient-to-r from-red-400 to-red-300 px-5 py-3 text-[1rem] font-bold text-white shadow-lg transition-all hover:-translate-y-1 hover:scale-105 md:px-8 md:py-4 md:text-[1.2rem]"
-                    style="font-family: 'Fredoka One', cursive"
+                    style="font-family: &quot;Fredoka One&quot;, cursive"
                 >
                     ◀️ Sebelumnya
                 </button>
                 <button
                     onclick="nextColor()"
                     class="flex cursor-pointer items-center gap-2 rounded-full bg-gradient-to-r from-teal-400 to-cyan-300 px-5 py-3 text-[1rem] font-bold text-white shadow-lg transition-all hover:-translate-y-1 hover:scale-105 md:px-8 md:py-4 md:text-[1.2rem]"
-                    style="font-family: 'Fredoka One', cursive"
+                    style="font-family: &quot;Fredoka One&quot;, cursive"
                 >
                     Selanjutnya ▶️
                 </button>
@@ -263,20 +292,23 @@
                 </div>
             </div>
             {{-- Score --}}
-            <div class="mt-5 inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-yellow-300 to-orange-400 px-5 py-3 shadow-lg md:px-6">
+            <div
+                class="mt-5 inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-yellow-300 to-orange-400 px-5 py-3 shadow-lg md:px-6"
+            >
                 <span class="text-[1.3rem] md:text-[1.5rem]">⭐</span>
                 <span
                     class="text-[1.3rem] font-bold text-white md:text-[1.5rem]"
                     id="score"
-                    style="font-family: 'Fredoka One', cursive"
-                >0</span>
+                    style="font-family: &quot;Fredoka One&quot;, cursive"
+                    >0</span
+                >
                 <span class="text-white">Poin</span>
             </div>
             {{-- Sound Button --}}
             <button
                 onclick="speakColor()"
                 class="mx-auto mt-4 block cursor-pointer rounded-full bg-gradient-to-r from-violet-500 to-purple-400 px-5 py-3 text-[1rem] font-bold text-white shadow-lg transition-all hover:-translate-y-1 hover:scale-105 md:px-8 md:py-4 md:text-[1.2rem]"
-                style="font-family: 'Fredoka One', cursive"
+                style="font-family: &quot;Fredoka One&quot;, cursive"
             >
                 🔊 Dengarkan Warna
             </button>
@@ -303,53 +335,58 @@
     </style>
     <script>
         const colors = [
-            { name: 'MERAH', emoji: '🍎', color: '#FF6B6B', object: 'Apel' },
-            { name: 'KUNING', emoji: '🍌', color: '#FFE66D', object: 'Pisang' },
-            { name: 'HIJAU', emoji: '🥦', color: '#4ECDC4', object: 'Brokoli' },
-            { name: 'BIRU', emoji: '🫐', color: '#45B7D1', object: 'Blueberry' },
-            { name: 'UNGU', emoji: '🍇', color: '#6C5CE7', object: 'Anggur' },
-            { name: 'ORANYE', emoji: '🍊', color: '#FF9F43', object: 'Jeruk' },
-            { name: 'PINK', emoji: '🍓', color: '#FF9FF3', object: 'Stroberi' },
-            { name: 'COKLAT', emoji: '🍫', color: '#8B5A2B', object: 'Coklat' },
-        ];
+            { name: "MERAH", emoji: "🍎", color: "#FF6B6B", object: "Apel" },
+            { name: "KUNING", emoji: "🍌", color: "#FFE66D", object: "Pisang" },
+            { name: "HIJAU", emoji: "🥦", color: "#4ECDC4", object: "Brokoli" },
+            {
+                name: "BIRU",
+                emoji: "🫐",
+                color: "#45B7D1",
+                object: "Blueberry",
+            },
+            { name: "UNGU", emoji: "🍇", color: "#6C5CE7", object: "Anggur" },
+            { name: "ORANYE", emoji: "🍊", color: "#FF9F43", object: "Jeruk" },
+            { name: "PINK", emoji: "🍓", color: "#FF9FF3", object: "Stroberi" },
+            { name: "COKLAT", emoji: "🍫", color: "#8B5A2B", object: "Coklat" },
+        ]
 
-        let currentIndex = 0;
-        let score = 0;
-        let answered = false;
+        let currentIndex = 0
+        let score = 0
+        let answered = false
 
         function shuffle(array) {
-            const arr = [...array];
+            const arr = [...array]
             for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
+                const j = Math.floor(Math.random() * (i + 1))
+                ;[arr[i], arr[j]] = [arr[j], arr[i]]
             }
-            return arr;
+            return arr
         }
 
         function initGame() {
-            currentIndex = 0;
-            score = 0;
-            updateDisplay();
-            document.getElementById('score').textContent = score;
+            currentIndex = 0
+            score = 0
+            updateDisplay()
+            document.getElementById("score").textContent = score
         }
 
         function updateDisplay() {
-            const current = colors[currentIndex];
-            const circle = document.getElementById('colorCircle');
-            const nameEl = document.getElementById('colorName');
+            const current = colors[currentIndex]
+            const circle = document.getElementById("colorCircle")
+            const nameEl = document.getElementById("colorName")
 
-            circle.style.backgroundColor = current.color;
-            circle.classList.add('scale-110');
-            circle.textContent = current.emoji;
-            nameEl.textContent = current.name;
+            circle.style.backgroundColor = current.color
+            circle.classList.add("scale-110")
+            circle.textContent = current.emoji
+            nameEl.textContent = current.name
 
-            setTimeout(() => circle.classList.remove('scale-110'), 200);
+            setTimeout(() => circle.classList.remove("scale-110"), 200)
 
-            const otherColors = colors.filter((_, i) => i !== currentIndex);
-            const wrongOptions = shuffle(otherColors).slice(0, 3);
-            const options = shuffle([current, ...wrongOptions]);
+            const otherColors = colors.filter((_, i) => i !== currentIndex)
+            const wrongOptions = shuffle(otherColors).slice(0, 3)
+            const options = shuffle([current, ...wrongOptions])
 
-            const optionsContainer = document.getElementById('colorOptions');
+            const optionsContainer = document.getElementById("colorOptions")
             optionsContainer.innerHTML = options
                 .map(
                     (c) => `
@@ -360,91 +397,107 @@
                 </button>
             `,
                 )
-                .join('');
+                .join("")
 
-            document.getElementById('feedback').classList.add('hidden');
-            answered = false;
+            document.getElementById("feedback").classList.add("hidden")
+            answered = false
 
-            const progress = ((currentIndex + 1) / colors.length) * 100;
-            document.getElementById('progressFill').style.width = progress + '%';
-            document.getElementById('progressText').textContent = `${currentIndex + 1}/${colors.length}`;
+            const progress = ((currentIndex + 1) / colors.length) * 100
+            document.getElementById("progressFill").style.width = progress + "%"
+            document.getElementById("progressText").textContent =
+                `${currentIndex + 1}/${colors.length}`
         }
 
         function checkAnswer(selected, correct) {
-            if (answered) return;
-            answered = true;
+            if (answered) return
+            answered = true
 
-            const feedback = document.getElementById('feedback');
-            const buttons = document.querySelectorAll('#colorOptions button');
+            const feedback = document.getElementById("feedback")
+            const buttons = document.querySelectorAll("#colorOptions button")
 
             if (selected === correct) {
-                score += 10;
-                document.getElementById('score').textContent = score;
-                feedback.textContent = '🎉 Benar! ' + colors[currentIndex].object + ' warnanya ' + correct + '!';
+                score += 10
+                document.getElementById("score").textContent = score
+                feedback.textContent =
+                    "🎉 Benar! " +
+                    colors[currentIndex].object +
+                    " warnanya " +
+                    correct +
+                    "!"
                 feedback.className =
-                    'mt-5 p-4 rounded-2xl text-center text-[1.1rem] md:text-[1.3rem] font-bold animate-fadeIn bg-gradient-to-r from-teal-400 to-cyan-400 text-white';
-                feedback.classList.remove('hidden');
+                    "mt-5 p-4 rounded-2xl text-center text-[1.1rem] md:text-[1.3rem] font-bold animate-fadeIn bg-gradient-to-r from-teal-400 to-cyan-400 text-white"
+                feedback.classList.remove("hidden")
 
                 buttons.forEach((btn) => {
                     if (btn.textContent.trim() === correct) {
-                        btn.classList.add('animate-pulse-correct');
+                        btn.classList.add("animate-pulse-correct")
                     }
-                });
+                })
 
-                showConfetti();
-                speakText(correct + '! Benar!');
+                showConfetti()
+                speakText(correct + "! Benar!")
             } else {
-                feedback.textContent = '❌ Wah bukan! Coba lagi ya! 😊';
+                feedback.textContent = "❌ Wah bukan! Coba lagi ya! 😊"
                 feedback.className =
-                    'mt-5 p-4 rounded-2xl text-center text-[1.1rem] md:text-[1.3rem] font-bold animate-fadeIn bg-gradient-to-r from-red-400 to-pink-300 text-white';
-                feedback.classList.remove('hidden');
+                    "mt-5 p-4 rounded-2xl text-center text-[1.1rem] md:text-[1.3rem] font-bold animate-fadeIn bg-gradient-to-r from-red-400 to-pink-300 text-white"
+                feedback.classList.remove("hidden")
 
                 buttons.forEach((btn) => {
                     if (btn.textContent.trim() === selected) {
-                        btn.classList.add('animate-shake-wrong');
+                        btn.classList.add("animate-shake-wrong")
                     }
                     if (btn.textContent.trim() === correct) {
-                        btn.classList.add('animate-pulse-correct');
+                        btn.classList.add("animate-pulse-correct")
                     }
-                });
+                })
             }
         }
 
         function nextColor() {
             if (currentIndex < colors.length - 1) {
-                currentIndex++;
-                updateDisplay();
+                currentIndex++
+                updateDisplay()
             } else {
-                showCelebration();
+                showCelebration()
             }
         }
 
         function prevColor() {
             if (currentIndex > 0) {
-                currentIndex--;
-                updateDisplay();
+                currentIndex--
+                updateDisplay()
             }
         }
 
         function speakColor() {
-            const utterance = new SpeechSynthesisUtterance(colors[currentIndex].name);
-            utterance.lang = 'id-ID';
-            speechSynthesis.speak(utterance);
+            const utterance = new SpeechSynthesisUtterance(
+                colors[currentIndex].name,
+            )
+            utterance.lang = "id-ID"
+            speechSynthesis.speak(utterance)
         }
 
         function speakText(text) {
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'id-ID';
-            speechSynthesis.speak(utterance);
+            const utterance = new SpeechSynthesisUtterance(text)
+            utterance.lang = "id-ID"
+            speechSynthesis.speak(utterance)
         }
 
         function showConfetti() {
-            const confetti = document.getElementById('confetti');
-            const confettiColors = ['#FF6B6B', '#FFE66D', '#4ECDC4', '#45B7D1', '#6C5CE7', '#FF9F43', '#FF9FF3'];
+            const confetti = document.getElementById("confetti")
+            const confettiColors = [
+                "#FF6B6B",
+                "#FFE66D",
+                "#4ECDC4",
+                "#45B7D1",
+                "#6C5CE7",
+                "#FF9F43",
+                "#FF9FF3",
+            ]
 
             for (let i = 0; i < 50; i++) {
-                const piece = document.createElement('div');
-                piece.className = 'absolute';
+                const piece = document.createElement("div")
+                piece.className = "absolute"
                 piece.style.cssText = `
                     left: ${Math.random() * 100}%;
                     width: 15px;
@@ -453,24 +506,24 @@
                     border-radius: 3px;
                     animation: confetti-fall ${2 + Math.random()}s ease-out forwards;
                     animation-delay: ${Math.random() * 0.5}s;
-                `;
-                confetti.appendChild(piece);
+                `
+                confetti.appendChild(piece)
             }
 
-            setTimeout(() => (confetti.innerHTML = ''), 3000);
+            setTimeout(() => (confetti.innerHTML = ""), 3000)
         }
 
         function showCelebration() {
-            document.getElementById('celebration').classList.add('show');
-            speakText('Hebat! Kamu menyelesaikan semua warna!');
+            document.getElementById("celebration").classList.add("show")
+            speakText("Hebat! Kamu menyelesaikan semua warna!")
         }
 
         function restartGame() {
-            document.getElementById('celebration').classList.remove('show');
-            initGame();
+            document.getElementById("celebration").classList.remove("show")
+            initGame()
         }
 
-        initGame();
+        initGame()
     </script>
 </body>
 </html>

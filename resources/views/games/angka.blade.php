@@ -9,12 +9,20 @@
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @else
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+        />
     @endif
     <style>
         body {
-            font-family: 'Comic Neue', cursive;
-            background: linear-gradient(180deg, #fff9e6 0%, #e8f5e9 50%, #f0fff4 100%);
+            font-family: "Comic Neue", cursive;
+            background: linear-gradient(
+                180deg,
+                #fff9e6 0%,
+                #e8f5e9 50%,
+                #f0fff4 100%
+            );
             min-height: 100vh;
         }
 
@@ -118,49 +126,70 @@
     {{-- Background decorations --}}
     <div
         class="pointer-events-none fixed inset-0 z-0 overflow-hidden"
-        style="background: linear-gradient(180deg, #fff9e6 0%, #e8f5e9 50%, #f0fff4 100%)"
+        style="
+            background: linear-gradient(
+                180deg,
+                #fff9e6 0%,
+                #e8f5e9 50%,
+                #f0fff4 100%
+            );
+        "
     ></div>
     {{-- Floating stars --}}
-    <div class="animate-twinkle pointer-events-none fixed z-10" style="top: 5%; left: 3%">
+    <div
+        class="animate-twinkle pointer-events-none fixed z-10"
+        style="top: 5%; left: 3%"
+    >
         <svg width="35" height="35" viewBox="0 0 45 45" fill="none">
             <path d="M22.5 0L27.7 17.3H45L30.8 28L36 45L22.5 34.5L9 45L14.2 28L0 17.3H17.3L22.5 0Z" fill="#FBBF24" />
         </svg>
     </div>
-    <div class="animate-twinkle pointer-events-none fixed z-10" style="top: 8%; right: 5%; animation-delay: 0.5s">
+    <div
+        class="animate-twinkle pointer-events-none fixed z-10"
+        style="top: 8%; right: 5%; animation-delay: 0.5s"
+    >
         <svg width="28" height="28" viewBox="0 0 45 45" fill="none">
             <path d="M22.5 0L27.7 17.3H45L30.8 28L36 45L22.5 34.5L9 45L14.2 28L0 17.3H17.3L22.5 0Z" fill="#F472B6" />
         </svg>
     </div>
     {{-- Floating clouds --}}
-    <div class="animate-float-cloud pointer-events-none fixed z-10 hidden md:block" style="top: 15%; left: 10%">
+    <div
+        class="animate-float-cloud pointer-events-none fixed z-10 hidden md:block"
+        style="top: 15%; left: 10%"
+    >
         <svg width="100" height="60" viewBox="0 0 120 70" fill="none">
             <ellipse cx="30" cy="45" rx="28" ry="20" fill="white" fill-opacity="0.8" />
             <ellipse cx="60" cy="40" rx="35" ry="25" fill="white" fill-opacity="0.85" />
         </svg>
     </div>
     {{-- Main content --}}
-    <main class="relative z-10 flex min-h-screen flex-col items-center justify-center p-6">
+    <main
+        class="relative z-10 flex min-h-screen flex-col items-center justify-center p-6"
+    >
         {{-- Header --}}
-        <div class="relative mb-6 w-full max-w-md rounded-3xl bg-white p-6 text-center shadow-xl md:p-8">
+        <div
+            class="relative mb-6 w-full max-w-md rounded-3xl bg-white p-6 text-center shadow-xl md:p-8"
+        >
             <a
                 href="{{ route('home') }}"
                 class="absolute top-1/2 left-4 -translate-y-1/2 rounded-full bg-red-100 px-4 py-2 text-sm font-bold text-red-500 transition-all hover:bg-red-200"
-            >← Kembali</a>
+                >← Kembali</a
+            >
             <h1
                 class="mb-3 text-[2rem] font-bold text-blue-700 md:text-[2.5rem]"
-                style="font-family: 'Fredoka One', cursive"
+                style="font-family: &quot;Fredoka One&quot;, cursive"
             >
                 🔢 Belajar Angka 🧮
             </h1>
             <p class="text-[1rem] text-gray-500 md:text-[1.1rem]">Hitung benda ini dan klik angka yang benar!</p>
         </div>
-        <div class="w-full max-w-lg rounded-3xl bg-white p-8 text-center shadow-2xl md:p-10">
+        <div
+            class="w-full max-w-lg rounded-3xl bg-white p-8 text-center shadow-2xl md:p-10"
+        >
             <p
                 class="mb-5 text-[1.2rem] font-bold text-blue-700 md:text-[1.4rem]"
-                style="font-family: 'Fredoka One', cursive"
-            >
-                Hitung benda ini! 🧮
-            </p>
+                style="font-family: &quot;Fredoka One&quot;, cursive"
+            >Hitung benda ini! 🧮</p>
             <div
                 class="mb-6 inline-block rounded-3xl bg-sky-100 p-6 text-[2.5rem] shadow-lg md:p-8 md:text-[3rem]"
                 id="emoji-display"
@@ -168,16 +197,19 @@
                 🍎🍎🍎
             </div>
             <p class="mb-6 text-[1.1rem] text-gray-600 md:text-[1.3rem]">Berapa jumlahnya? 🤔</p>
-            <div class="flex flex-wrap justify-center gap-3 md:gap-4" id="options"></div>
+            <div
+                class="flex flex-wrap justify-center gap-3 md:gap-4"
+                id="options"
+            ></div>
             <div
                 class="mt-6 min-h-[50px] text-[1.5rem] font-bold md:text-[1.8rem]"
-                style="font-family: 'Fredoka One', cursive"
+                style="font-family: &quot;Fredoka One&quot;, cursive"
                 id="result"
             ></div>
             <button
                 onclick="nextQuestion()"
                 class="mt-5 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 px-6 py-3 text-[1rem] font-bold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl md:px-8 md:py-4 md:text-[1.2rem]"
-                style="font-family: 'Fredoka One', cursive"
+                style="font-family: &quot;Fredoka One&quot;, cursive"
             >
                 ➡️ Soal Lain
             </button>
@@ -200,33 +232,38 @@
     </svg>
     <script>
         const numberData = [
-            { count: 1, emoji: '🍎' },
-            { count: 2, emoji: '🍌🍌' },
-            { count: 3, emoji: '🍊🍊🍊' },
-            { count: 4, emoji: '🍇🍇🍇🍇' },
-            { count: 5, emoji: '🍓🍓🍓🍓🍓' },
-            { count: 6, emoji: '🥝🥝🥝🥝🥝🥝' },
-            { count: 7, emoji: '🍒🍒🍒🍒🍒🍒🍒' },
-            { count: 8, emoji: '🍑🍑🍑🍑🍑🍑🍑🍑' },
-        ];
+            { count: 1, emoji: "🍎" },
+            { count: 2, emoji: "🍌🍌" },
+            { count: 3, emoji: "🍊🍊🍊" },
+            { count: 4, emoji: "🍇🍇🍇🍇" },
+            { count: 5, emoji: "🍓🍓🍓🍓🍓" },
+            { count: 6, emoji: "🥝🥝🥝🥝🥝🥝" },
+            { count: 7, emoji: "🍒🍒🍒🍒🍒🍒🍒" },
+            { count: 8, emoji: "🍑🍑🍑🍑🍑🍑🍑🍑" },
+        ]
 
-        let currentQuestion = null;
+        let currentQuestion = null
 
         function initGame() {
-            currentQuestion = numberData[Math.floor(Math.random() * numberData.length)];
+            currentQuestion =
+                numberData[Math.floor(Math.random() * numberData.length)]
 
-            document.getElementById('emoji-display').textContent = currentQuestion.emoji;
-            document.getElementById('result').textContent = '';
-            document.getElementById('result').className = 'mt-6 text-[1.5rem] md:text-[1.8rem] font-bold min-h-[50px]';
+            document.getElementById("emoji-display").textContent =
+                currentQuestion.emoji
+            document.getElementById("result").textContent = ""
+            document.getElementById("result").className =
+                "mt-6 text-[1.5rem] md:text-[1.8rem] font-bold min-h-[50px]"
 
             const wrongAnswers = numberData
                 .filter((n) => n.count !== currentQuestion.count)
                 .sort(() => Math.random() - 0.5)
-                .slice(0, 3);
+                .slice(0, 3)
 
-            const options = [currentQuestion, ...wrongAnswers].sort(() => Math.random() - 0.5);
+            const options = [currentQuestion, ...wrongAnswers].sort(
+                () => Math.random() - 0.5,
+            )
 
-            document.getElementById('options').innerHTML = options
+            document.getElementById("options").innerHTML = options
                 .map(
                     (opt) => `
                 <button class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-pink-400 to-pink-500 text-white border-none rounded-2xl text-[2rem] md:text-[2.5rem] font-bold shadow-xl hover:scale-110 hover:rotate-3 hover:shadow-2xl transition-all cursor-pointer" style="font-family: 'Fredoka One', cursive;"
@@ -235,41 +272,43 @@
                 </button>
             `,
                 )
-                .join('');
+                .join("")
         }
 
         function checkAnswer(count, btn) {
-            const result = document.getElementById('result');
+            const result = document.getElementById("result")
 
             if (count === currentQuestion.count) {
-                result.textContent = '🎉🎉 BENAR! KAMU HEBAT! ⭐🎉🎉';
+                result.textContent = "🎉🎉 BENAR! KAMU HEBAT! ⭐🎉🎉"
                 result.className =
-                    'mt-6 text-[1.5rem] md:text-[1.8rem] font-bold min-h-[50px] text-green-500 animate-popIn';
+                    "mt-6 text-[1.5rem] md:text-[1.8rem] font-bold min-h-[50px] text-green-500 animate-popIn"
                 btn.className =
-                    'w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-green-500 to-green-600 text-white border-none rounded-2xl text-[2rem] md:text-[2.5rem] font-bold shadow-xl animate-pop cursor-pointer';
-                document.querySelectorAll('#options button').forEach((b) => (b.disabled = true));
-                btn.disabled = false;
+                    "w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-green-500 to-green-600 text-white border-none rounded-2xl text-[2rem] md:text-[2.5rem] font-bold shadow-xl animate-pop cursor-pointer"
+                document
+                    .querySelectorAll("#options button")
+                    .forEach((b) => (b.disabled = true))
+                btn.disabled = false
             } else {
-                result.textContent = `❌ Belum tepat... Jawabannya adalah ${currentQuestion.count}! 💪`;
+                result.textContent = `❌ Belum tepat... Jawabannya adalah ${currentQuestion.count}! 💪`
                 result.className =
-                    'mt-6 text-[1.5rem] md:text-[1.8rem] font-bold min-h-[50px] text-red-500 animate-popIn';
+                    "mt-6 text-[1.5rem] md:text-[1.8rem] font-bold min-h-[50px] text-red-500 animate-popIn"
                 btn.className =
-                    'w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-red-500 to-red-600 text-white border-none rounded-2xl text-[2rem] md:text-[2.5rem] font-bold shadow-xl animate-shake cursor-pointer';
-                document.querySelectorAll('#options button').forEach((b) => {
+                    "w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-red-500 to-red-600 text-white border-none rounded-2xl text-[2rem] md:text-[2.5rem] font-bold shadow-xl animate-shake cursor-pointer"
+                document.querySelectorAll("#options button").forEach((b) => {
                     if (parseInt(b.textContent) === currentQuestion.count) {
                         b.className =
-                            'w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-green-500 to-green-600 text-white border-none rounded-2xl text-[2rem] md:text-[2.5rem] font-bold shadow-xl animate-pop cursor-pointer';
+                            "w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-green-500 to-green-600 text-white border-none rounded-2xl text-[2rem] md:text-[2.5rem] font-bold shadow-xl animate-pop cursor-pointer"
                     }
-                    b.disabled = true;
-                });
+                    b.disabled = true
+                })
             }
         }
 
         function nextQuestion() {
-            initGame();
+            initGame()
         }
 
-        initGame();
+        initGame()
     </script>
 </body>
 </html>

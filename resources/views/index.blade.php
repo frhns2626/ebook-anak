@@ -18,7 +18,7 @@
     @endif
     <style>
         body {
-            font-family: 'Nunito', sans-serif;
+            font-family: "Nunito", sans-serif;
         }
 
         @keyframes twinkle {
@@ -99,40 +99,69 @@
         }
     </style>
 </head>
-<body class="relative min-h-screen overflow-x-hidden bg-gradient-to-b from-yellow-50 via-emerald-50 to-green-50">
+<body
+    class="relative min-h-screen overflow-x-hidden bg-gradient-to-b from-yellow-50 via-emerald-50 to-green-50"
+>
     {{-- Background overlay --}}
     <div
         class="pointer-events-none fixed inset-0 z-0"
         style="
             background:
-                radial-gradient(ellipse at 20% 20%, rgba(255, 248, 225, 0.8) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 80%, rgba(200, 245, 219, 0.6) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+                radial-gradient(
+                    ellipse at 20% 20%,
+                    rgba(255, 248, 225, 0.8) 0%,
+                    transparent 50%
+                ),
+                radial-gradient(
+                    ellipse at 80% 80%,
+                    rgba(200, 245, 219, 0.6) 0%,
+                    transparent 50%
+                ),
+                radial-gradient(
+                    ellipse at 50% 50%,
+                    rgba(255, 255, 255, 0.3) 0%,
+                    transparent 70%
+                );
         "
     ></div>
     {{-- Floating stars --}}
-    <div class="animate-twinkle pointer-events-none fixed z-10" style="top: 5%; left: 3%">
+    <div
+        class="animate-twinkle pointer-events-none fixed z-10"
+        style="top: 5%; left: 3%"
+    >
         <svg width="60" height="60" viewBox="0 0 45 45" fill="none">
             <path d="M22.5 0L27.7 17.3H45L30.8 28L36 45L22.5 34.5L9 45L14.2 28L0 17.3H17.3L22.5 0Z" fill="#FBBF24" />
         </svg>
     </div>
-    <div class="animate-twinkle pointer-events-none fixed z-10" style="top: 8%; right: 5%; animation-delay: 0.5s">
+    <div
+        class="animate-twinkle pointer-events-none fixed z-10"
+        style="top: 8%; right: 5%; animation-delay: 0.5s"
+    >
         <svg width="50" height="50" viewBox="0 0 45 45" fill="none">
             <path d="M22.5 0L27.7 17.3H45L30.8 28L36 45L22.5 34.5L9 45L14.2 28L0 17.3H17.3L22.5 0Z" fill="#F472B6" />
         </svg>
     </div>
-    <div class="animate-twinkle pointer-events-none fixed z-10" style="top: 25%; left: 2%; animation-delay: 1s">
+    <div
+        class="animate-twinkle pointer-events-none fixed z-10"
+        style="top: 25%; left: 2%; animation-delay: 1s"
+    >
         <svg width="40" height="40" viewBox="0 0 45 45" fill="none">
             <path d="M22.5 0L27.7 17.3H45L30.8 28L36 45L22.5 34.5L9 45L14.2 28L0 17.3H17.3L22.5 0Z" fill="#A78BFA" />
         </svg>
     </div>
-    <div class="animate-twinkle pointer-events-none fixed z-10" style="top: 30%; right: 3%; animation-delay: 1.5s">
+    <div
+        class="animate-twinkle pointer-events-none fixed z-10"
+        style="top: 30%; right: 3%; animation-delay: 1.5s"
+    >
         <svg width="52" height="52" viewBox="0 0 45 45" fill="none">
             <path d="M22.5 0L27.7 17.3H45L30.8 28L36 45L22.5 34.5L9 45L14.2 28L0 17.3H17.3L22.5 0Z" fill="#34D399" />
         </svg>
     </div>
     {{-- Floating clouds --}}
-    <div class="animate-float-cloud pointer-events-none fixed z-10 hidden md:block" style="top: 6%; left: 8%">
+    <div
+        class="animate-float-cloud pointer-events-none fixed z-10 hidden md:block"
+        style="top: 6%; left: 8%"
+    >
         <svg width="120" height="70" viewBox="0 0 120 70" fill="none">
             <ellipse cx="30" cy="45" rx="28" ry="20" fill="white" fill-opacity="0.9" />
             <ellipse cx="60" cy="40" rx="35" ry="25" fill="white" fill-opacity="0.95" />
@@ -156,7 +185,10 @@
     >
         🐰
     </div>
-    <div class="animate-float-gentle pointer-events-none fixed z-10 text-[3.5rem]" style="bottom: 22%; right: 4%">
+    <div
+        class="animate-float-gentle pointer-events-none fixed z-10 text-[3.5rem]"
+        style="bottom: 22%; right: 4%"
+    >
         🦊
     </div>
     <div
@@ -165,7 +197,12 @@
     >
         🐻
     </div>
-    <div class="animate-float-gentle pointer-events-none fixed z-10 text-[3.5rem]" style="top: 22%; right: 6%">🐱</div>
+    <div
+        class="animate-float-gentle pointer-events-none fixed z-10 text-[3.5rem]"
+        style="top: 22%; right: 6%"
+    >
+        🐱
+    </div>
     {{-- Butterflies --}}
     <div
         class="animate-float-side pointer-events-none fixed z-10 hidden text-[3rem] md:block"
@@ -180,8 +217,18 @@
         🦋
     </div>
     {{-- Decorative flowers --}}
-    <div class="pointer-events-none fixed z-10 hidden text-[2.5rem] md:block" style="bottom: 15%; left: 4%">🌸</div>
-    <div class="pointer-events-none fixed z-10 text-[2.5rem]" style="bottom: 20%; right: 5%">🌺</div>
+    <div
+        class="pointer-events-none fixed z-10 hidden text-[2.5rem] md:block"
+        style="bottom: 15%; left: 4%"
+    >
+        🌸
+    </div>
+    <div
+        class="pointer-events-none fixed z-10 text-[2.5rem]"
+        style="bottom: 20%; right: 5%"
+    >
+        🌺
+    </div>
     {{-- Main content --}}
     <main class="relative z-20 mx-auto max-w-4xl px-8 py-10">
         {{-- Header --}}
@@ -189,14 +236,15 @@
         <a
             href="{{ route('home') }}"
             class="fixed top-8 left-4 z-30 rounded-full bg-red-100 px-4 py-2 text-sm font-bold text-red-500 transition-all hover:bg-red-200"
-        >← Kembali</a>
+            >← Kembali</a
+        >
         <header class="animate-bounce-subtle mb-12 text-center">
-            <h1 class="mb-4 bg-gradient-to-r from-violet-600 via-indigo-500 to-blue-500 bg-clip-text text-[3rem] leading-tight font-black text-transparent drop-shadow-lg md:text-[3.5rem]">
+            <h1
+                class="mb-4 bg-gradient-to-r from-violet-600 via-indigo-500 to-blue-500 bg-clip-text text-[3rem] leading-tight font-black text-transparent drop-shadow-lg md:text-[3.5rem]"
+            >
                 🎓 Belajar Yuk!
             </h1>
-            <p class="text-[1.2rem] font-bold text-gray-600 md:text-[1.4rem]">
-                📖 Belajar Huruf dan Kosakata yang Menyenangkan! 🎉
-            </p>
+            <p class="text-[1.2rem] font-bold text-gray-600 md:text-[1.4rem]">📖 Belajar Huruf dan Kosakata yang Menyenangkan! 🎉</p>
         </header>
         {{-- Module Cards Grid --}}
         <section class="mb-12 grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -587,30 +635,42 @@
             @endphp
 
             @foreach ($modules as $module)
-                <article class="bg-white rounded-3xl p-6 shadow-2xl border-4 border-white relative overflow-hidden transition-all duration-300 hover:-translate-y-3 hover:shadow-2xl hover:border-{{ $module['accent'] }}-100 group">
+                <article
+                    class="bg-white rounded-3xl p-6 shadow-2xl border-4 border-white relative overflow-hidden transition-all duration-300 hover:-translate-y-3 hover:shadow-2xl hover:border-{{ $module['accent'] }}-100 group"
+                >
                     <!-- Top Gradient -->
                     <div
                         class="absolute top-0 right-0 left-0 h-2 rounded-t-3xl"
                         style="background: linear-gradient(90deg, {{ $module['top_color'] }}, {{ $module['bottom_color'] }});"
                     ></div>
                     <!-- Icon -->
-                    <div class="w-full h-28 rounded-xl flex items-center justify-center mb-4 bg-gradient-to-br from-{{ $module['accent'] }}-100 to-{{ $module['accent'] }}-200">
+                    <div
+                        class="w-full h-28 rounded-xl flex items-center justify-center mb-4 bg-gradient-to-br from-{{ $module['accent'] }}-100 to-{{ $module['accent'] }}-200"
+                    >
                         <span
                             class="relative z-10 text-[4rem] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
-                            style="filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.2))"
+                            style="
+                                filter: drop-shadow(
+                                    0 8px 20px rgba(0, 0, 0, 0.2)
+                                );
+                            "
                         >
                             {{ $module['emoji'] }}
                         </span>
                     </div>
                     <div class="text-center">
-                        <h2 class="mb-2 text-[1.3rem] font-black text-gray-800">{{ $module['title'] }}</h2>
+                        <h2 class="mb-2 text-[1.3rem] font-black text-gray-800">
+                            {{ $module['title'] }}
+                        </h2>
                         <p class="mb-5 text-[0.9rem] leading-relaxed font-semibold text-gray-500">
                             {{ $module['subtitle'] }}
                         </p>
                         <a
                             href="{{ route($module['route']) }}"
                             class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 via-orange-400 to-amber-400 px-4 py-3 text-[1.1rem] font-extrabold text-white shadow-lg transition-all hover:-translate-y-1 hover:scale-105"
-                            style="box-shadow: 0 8px 25px rgba(249, 115, 22, 0.4)"
+                            style="
+                                box-shadow: 0 8px 25px rgba(249, 115, 22, 0.4);
+                            "
                         >
                             <span class="text-[1.2rem]">📚</span>
                             Buka
@@ -620,7 +680,9 @@
             @endforeach
         </section>
         {{-- Progress Section --}}
-        <section class="rounded-3xl border-4 border-white bg-white p-8 text-center shadow-xl">
+        <section
+            class="rounded-3xl border-4 border-white bg-white p-8 text-center shadow-xl"
+        >
             <p class="mb-4 text-[1.2rem] font-extrabold text-gray-700">
                 <span class="text-[1.3rem]">🌟</span>
                 Ayo mulai belajar! Pilih modul di atas untuk memulai!

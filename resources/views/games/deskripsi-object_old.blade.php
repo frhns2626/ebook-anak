@@ -1,13 +1,20 @@
-<x-layout-game
-    title="{{$judul}}"
-    halaman="{{$halaman}}"
->
+<x-layout-game title="{{ $judul }}" halaman="{{ $halaman }}">
     <main class="relative z-10 mx-auto max-w-4xl p-6">
-        <div class="relative mb-8 overflow-hidden rounded-3xl bg-white p-6 text-center shadow-xl">
+        <div
+            class="relative mb-8 overflow-hidden rounded-3xl bg-white p-6 text-center shadow-xl"
+        >
             <div
                 class="absolute top-0 right-0 left-0 h-2"
                 style="
-                    background: linear-gradient(90deg, #ff6b6b, #ff9f43, #ffe66d, #4ecdc4, #6c5ce7, #ff6b6b);
+                    background: linear-gradient(
+                        90deg,
+                        #ff6b6b,
+                        #ff9f43,
+                        #ffe66d,
+                        #4ecdc4,
+                        #6c5ce7,
+                        #ff6b6b
+                    );
                     background-size: 200% 100%;
                     animation: rainbow 3s linear infinite;
                 "
@@ -20,14 +27,22 @@
             </a>
             <!-- Big Animal -->
             <div class="mb-4 text-[7rem] md:text-[9rem]">{{ $iconText }}</div>
-            <h1 class="mb-1 text-[2rem] font-black text-gray-800 md:text-[2.5rem]">{{ $judul }}</h1>
+            <h1
+                class="mb-1 text-[2rem] font-black text-gray-800 md:text-[2.5rem]"
+            >
+                {{ $judul }}
+            </h1>
             <p class="text-gray-500">{{ $deskripsi }}</p>
         </div>
         <!-- Facts List -->
         <div class="rounded-3xl bg-white p-6 shadow-xl">
-            <h2 class="mb-6 flex items-center gap-3 text-xl font-bold text-gray-800">
+            <h2
+                class="mb-6 flex items-center gap-3 text-xl font-bold text-gray-800"
+            >
                 <span>Fakta tentang {{ $object }}</span>
-                <span class="text-sm font-normal text-gray-500">({{ count($items) }} Fakta)</span>
+                <span class="text-sm font-normal text-gray-500"
+                    >({{ count($items) }} Fakta)</span
+                >
             </h2>
             <div class="space-y-3" id="factsList">
                 @foreach ($items as $item)
@@ -35,10 +50,16 @@
                         class="fact-item group flex items-center gap-4 rounded-2xl border border-transparent bg-gray-50 p-5 transition-all hover:border-emerald-200 hover:bg-gray-100"
                         data-id="{{ $item['id'] }}"
                     >
-                        <div class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-lg font-bold text-emerald-700">
+                        <div
+                            class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-lg font-bold text-emerald-700"
+                        >
                             {{ $item['id'] }}
                         </div>
-                        <div class="flex-1 text-[1.1rem] leading-relaxed text-gray-700">{{ $item['text'] }}</div>
+                        <div
+                            class="flex-1 text-[1.1rem] leading-relaxed text-gray-700"
+                        >
+                            {{ $item['text'] }}
+                        </div>
                         <button
                             onclick="playAudio({{ $item['id'] }})"
                             id="play-btn-{{ $item['id'] }}"
@@ -53,8 +74,14 @@
         <!-- Progress -->
         <div class="mt-6 rounded-2xl bg-white p-4 shadow-lg">
             <div class="mb-2 flex items-center justify-between">
-                <span class="text-sm font-bold text-gray-600">Progress Mendengarkan</span>
-                <span id="progressText" class="text-sm font-bold text-emerald-500">0 / {{ count($items) }}</span>
+                <span class="text-sm font-bold text-gray-600"
+                    >Progress Mendengarkan</span
+                >
+                <span
+                    id="progressText"
+                    class="text-sm font-bold text-emerald-500"
+                    >0 / {{ count($items) }}</span
+                >
             </div>
             <div class="h-4 overflow-hidden rounded-full bg-gray-200">
                 <div
@@ -66,39 +93,43 @@
         </div>
     </main>
     <script>
-        let audioPlayer = new Audio();
-        let completed = new Set();
+        let audioPlayer = new Audio()
+        let completed = new Set()
 
         function playAudio(id) {
-            const item = @json($items).find((i) => i.id === id);
+            const item = @json($items).find((i) => i.id === id)
             if (!item || !item.audio) {
-                return;
+                return
             }
 
-            const btn = document.getElementById(`play-btn-${id}`);
+            const btn = document.getElementById(`play-btn-${id}`)
 
             // Reset semua tombol
-            document.querySelectorAll('.play-button').forEach((b) => (b.textContent = '▶️'));
+            document
+                .querySelectorAll(".play-button")
+                .forEach((b) => (b.textContent = "▶️"))
 
             // Play audio
-            audioPlayer.pause();
-            audioPlayer = new Audio(item.audio);
+            audioPlayer.pause()
+            audioPlayer = new Audio(item.audio)
 
             audioPlayer.onended = () => {
-                btn.textContent = '✅';
-                btn.classList.add('!bg-green-500');
-                completed.add(id);
-                updateProgress();
-            };
+                btn.textContent = "✅"
+                btn.classList.add("!bg-green-500")
+                completed.add(id)
+                updateProgress()
+            }
 
-            audioPlayer.play().catch((e) => console.log('Audio error' + e));
-            btn.textContent = '⏸️';
+            audioPlayer.play().catch((e) => console.log("Audio error" + e))
+            btn.textContent = "⏸️"
         }
 
         function updateProgress() {
-            const count = completed.size;
-            document.getElementById('progressText').textContent = count + ' / ' + {{ count($items) }};
-            document.getElementById('progressBar').style.width = (count / {{ count($items) }}) * 100 + '%';
+            const count = completed.size
+            document.getElementById("progressText").textContent =
+                count + " / " + {{ count($items) }}
+            document.getElementById("progressBar").style.width =
+                (count / {{ count($items) }}) * 100 + "%"
         }
 
         // Optional: Auto play first item when page loads

@@ -1,13 +1,13 @@
 <x-layout-game
-    title="{{$judul}}"
-    halaman="{{$halaman}}"
+    title="{{ $judul }}"
+    halaman="{{ $halaman }}"
     :lang_on="true"
-    lang="{{$lang}}"
+    lang="{{ $lang }}"
 >
     <style>
         /* Typography Judul Pop-out */
         .title-text {
-            font-family: 'Fredoka', cursive, sans-serif;
+            font-family: "Fredoka", cursive, sans-serif;
             color: #fbbf24;
             -webkit-text-stroke: 1.5px #000000;
             paint-order: stroke fill;
@@ -22,7 +22,7 @@
 
         /* Font khusus untuk kata di bawah ilustrasi */
         .vowel-word {
-            font-family: 'Fredoka', cursive, sans-serif;
+            font-family: "Fredoka", cursive, sans-serif;
             color: #000000;
         }
 
@@ -35,24 +35,32 @@
         $grouped = collect($items)->groupBy('vocal');
     @endphp
 
-
-
-    <div class="flex flex-col items-center justify-between h-full w-full my-auto">
-
+    <div
+        class="my-auto flex h-full w-full flex-col items-center justify-between"
+    >
         <!-- Judul Atas -->
-        <div class="text-center  mb-2">
-            <h1 class="title-text text-2xl sm:text-3xl font-extrabold tracking-wide">
+        <div class="mb-2 text-center">
+            <h1
+                class="title-text text-2xl font-extrabold tracking-wide sm:text-3xl"
+            >
                 Huruf vokal
             </h1>
         </div>
         <!-- Daftar Baris Huruf Vokal (A, I, U, E, O) -->
-        <div class="flex flex-col space-y-3 w-full my-auto px-1">
+        <div class="my-auto flex w-full flex-col space-y-3 px-1">
             @foreach ($grouped as $vocal => $group)
                 @php $lower = strtolower($vocal); @endphp
-                    <!-- Baris {{ $vocal }}{{ $lower }} -->
-                <div class="vowel-card p-3 flex items-center justify-between shadow-sm">
-                    <span class="text-3xl sm:text-4xl font-extrabold text-black w-12 text-center">{{ $vocal }}{{ $lower }}</span>
-                    <div class="grid grid-cols-3 gap-2 flex-1 text-center items-end">
+                <!-- Baris {{ $vocal }}{{ $lower }} -->
+                <div
+                    class="vowel-card flex items-center justify-between p-3 shadow-sm"
+                >
+                    <span
+                        class="w-12 text-center text-3xl font-extrabold text-black sm:text-4xl"
+                        >{{ $vocal }}{{ $lower }}</span
+                    >
+                    <div
+                        class="grid flex-1 grid-cols-3 items-end gap-2 text-center"
+                    >
                         @foreach ($group as $item)
                             @php $word = str($item['id'])->after('-'); @endphp
                             <div class="flex flex-col items-center">
@@ -60,7 +68,7 @@
                                     src="{{ $item['emoji'] }}"
                                     alt="{{ $item['id'] }}"
                                     data-audio="{{ $item['audio'] }}"
-                                    class="vocal-img w-auto sm:h-24 h-[4rem] object-contain "
+                                    class="vocal-img h-[4rem] w-auto object-contain sm:h-24"
                                 />
                             </div>
                         @endforeach
@@ -71,38 +79,46 @@
     </div>
     @push('scripts')
         <script>
-            (function () {
-                if (window.__vocalAudioBound) return; // prevent double-binding if script runs twice
-                window.__vocalAudioBound = true;
+            ;(function () {
+                if (window.__vocalAudioBound) return // prevent double-binding if script runs twice
+                window.__vocalAudioBound = true
 
-                document.addEventListener('DOMContentLoaded', () => {
-                    let audioPlayer = new Audio();
-                    let isPlaying = false;
+                document.addEventListener("DOMContentLoaded", () => {
+                    let audioPlayer = new Audio()
+                    let isPlaying = false
 
-                    document.querySelectorAll('.vocal-img').forEach(img => {
-                        img.addEventListener('click', () => {
-                            if (isPlaying) return; // ignore repeat trigger while one is in-flight
+                    document.querySelectorAll(".vocal-img").forEach((img) => {
+                        img.addEventListener("click", () => {
+                            if (isPlaying) return // ignore repeat trigger while one is in-flight
 
-                            const src = img.dataset.audio;
-                            if (!src) return;
+                            const src = img.dataset.audio
+                            if (!src) return
 
-                            isPlaying = true;
+                            isPlaying = true
 
-                            audioPlayer.pause();
-                            audioPlayer.removeAttribute('src');
-                            audioPlayer.load();
+                            audioPlayer.pause()
+                            audioPlayer.removeAttribute("src")
+                            audioPlayer.load()
 
-                            audioPlayer = new Audio(src);
-                            audioPlayer.addEventListener('ended', () => { isPlaying = false; });
-                            audioPlayer.addEventListener('error', () => { isPlaying = false; });
+                            audioPlayer = new Audio(src)
+                            audioPlayer.addEventListener("ended", () => {
+                                isPlaying = false
+                            })
+                            audioPlayer.addEventListener("error", () => {
+                                isPlaying = false
+                            })
 
-                            audioPlayer.play().catch(() => { isPlaying = false; });
+                            audioPlayer.play().catch(() => {
+                                isPlaying = false
+                            })
 
-                            img.classList.add('drop-shadow-[0_0_12px_rgba(74,222,128,0.9)]');
-                        });
-                    });
-                });
-            })();
+                            img.classList.add(
+                                "drop-shadow-[0_0_12px_rgba(74,222,128,0.9)]",
+                            )
+                        })
+                    })
+                })
+            })()
         </script>
     @endpush
 </x-layout-game>

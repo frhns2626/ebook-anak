@@ -8,12 +8,20 @@
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @else
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+        />
     @endif
     <style>
         body {
-            font-family: 'Comic Neue', cursive;
-            background: linear-gradient(180deg, #fff9e6 0%, #e8f5e9 50%, #f0fff4 100%);
+            font-family: "Comic Neue", cursive;
+            background: linear-gradient(
+                180deg,
+                #fff9e6 0%,
+                #e8f5e9 50%,
+                #f0fff4 100%
+            );
             min-height: 100vh;
         }
 
@@ -104,20 +112,45 @@
 <body class="min-h-screen overflow-x-hidden">
     <div
         class="pointer-events-none fixed inset-0 z-0 overflow-hidden"
-        style="background: linear-gradient(180deg, #fff9e6 0%, #e8f5e9 50%, #f0fff4 100%)"
+        style="
+            background: linear-gradient(
+                180deg,
+                #fff9e6 0%,
+                #e8f5e9 50%,
+                #f0fff4 100%
+            );
+        "
     ></div>
-    <div class="animate-twinkle pointer-events-none fixed z-10" style="top: 5%; left: 3%">
+    <div
+        class="animate-twinkle pointer-events-none fixed z-10"
+        style="top: 5%; left: 3%"
+    >
         <svg width="35" height="35" viewBox="0 0 45 45" fill="none">
             <path d="M22.5 0L27.7 17.3H45L30.8 28L36 45L22.5 34.5L9 45L14.2 28L0 17.3H17.3L22.5 0Z" fill="#FBBF24" />
         </svg>
     </div>
-    <div class="animate-float-gentle pointer-events-none fixed z-10" style="bottom: 22%; right: 4%">🥬</div>
+    <div
+        class="animate-float-gentle pointer-events-none fixed z-10"
+        style="bottom: 22%; right: 4%"
+    >
+        🥬
+    </div>
     <main class="relative z-10 mx-auto max-w-4xl p-6">
-        <div class="relative mb-6 overflow-hidden rounded-3xl bg-white p-6 text-center shadow-xl">
+        <div
+            class="relative mb-6 overflow-hidden rounded-3xl bg-white p-6 text-center shadow-xl"
+        >
             <div
                 class="absolute top-0 right-0 left-0 h-2"
                 style="
-                    background: linear-gradient(90deg, #ff6b6b, #ff9f43, #ffe66d, #4ecdc4, #6c5ce7, #ff6b6b);
+                    background: linear-gradient(
+                        90deg,
+                        #ff6b6b,
+                        #ff9f43,
+                        #ffe66d,
+                        #4ecdc4,
+                        #6c5ce7,
+                        #ff6b6b
+                    );
                     background-size: 200% 100%;
                     animation: rainbow 3s linear infinite;
                 "
@@ -125,9 +158,14 @@
             <a
                 href="{{ route('belajar.index') }}"
                 class="absolute top-1/2 left-4 -translate-y-1/2 rounded-full bg-red-100 px-4 py-2 text-sm font-bold text-red-500 transition-all hover:bg-red-200"
-            >← Kembali</a>
+                >← Kembali</a
+            >
             <span class="animate-bounce-subtle mb-2 block text-[3rem]">🥬</span>
-            <h1 class="mb-1 text-[1.8rem] font-black text-gray-800 md:text-[2.2rem]">Halaman 18 - Sayuran & Buah 🥬</h1>
+            <h1
+                class="mb-1 text-[1.8rem] font-black text-gray-800 md:text-[2.2rem]"
+            >
+                Halaman 18 - Sayuran & Buah 🥬
+            </h1>
             <p class="text-[1rem] text-gray-500">Mengenal macam-macam!</p>
         </div>
         <div class="mb-6 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
@@ -142,14 +180,31 @@
                     >
                         {{ $item['emoji'] }}
                     </div>
-                    <h3 class="mb-1 text-[1.2rem] font-black text-gray-800 md:text-[1.4rem]">{{ $item['name'] }}</h3>
+                    <h3
+                        class="mb-1 text-[1.2rem] font-black text-gray-800 md:text-[1.4rem]"
+                    >
+                        {{ $item['name'] }}
+                    </h3>
                     <p class="text-xs text-gray-500">{{ $item['name'] }}</p>
                 </div>
             @endforeach
         </div>
-        <div id="itemDisplay" class="mb-6 hidden rounded-3xl bg-white p-8 text-center shadow-2xl">
-            <div class="animate-pop mb-4 text-[8rem] md:text-[10rem]" id="itemEmoji">🥬</div>
-            <h2 class="mb-2 text-[2.5rem] font-black text-gray-800 md:text-[3rem]" id="itemName">Bayam</h2>
+        <div
+            id="itemDisplay"
+            class="mb-6 hidden rounded-3xl bg-white p-8 text-center shadow-2xl"
+        >
+            <div
+                class="animate-pop mb-4 text-[8rem] md:text-[10rem]"
+                id="itemEmoji"
+            >
+                🥬
+            </div>
+            <h2
+                class="mb-2 text-[2.5rem] font-black text-gray-800 md:text-[3rem]"
+                id="itemName"
+            >
+                Bayam
+            </h2>
             <p class="mb-6 text-[1.2rem] text-gray-500" id="itemHint">Bayam adalah sayuran hijau yang sehat!</p>
             <div class="flex flex-wrap justify-center gap-4">
                 <button
@@ -169,7 +224,9 @@
         <div class="rounded-2xl bg-white p-4 shadow-lg">
             <div class="mb-2 flex items-center justify-between">
                 <span class="text-sm font-bold text-gray-600">Progress</span>
-                <span id="progressText" class="text-sm font-bold text-green-500">0 / {{ count($items) }}</span>
+                <span id="progressText" class="text-sm font-bold text-green-500"
+                    >0 / {{ count($items) }}</span
+                >
             </div>
             <div class="h-4 overflow-hidden rounded-full bg-gray-200">
                 <div
@@ -195,46 +252,50 @@
         </defs>
     </svg>
     <script>
-        const items = @json($items);
-        let currentIndex = 0;
-        let viewed = new Set();
+        const items = @json($items)
+        let currentIndex = 0
+        let viewed = new Set()
 
         function selectItem(id) {
-            currentIndex = items.findIndex((item) => item.id === id);
-            showItem();
-            viewed.add(id);
-            updateProgress();
-            document.getElementById('itemDisplay').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            currentIndex = items.findIndex((item) => item.id === id)
+            showItem()
+            viewed.add(id)
+            updateProgress()
+            document
+                .getElementById("itemDisplay")
+                .scrollIntoView({ behavior: "smooth", block: "center" })
         }
 
         function showItem() {
-            const item = items[currentIndex];
-            document.getElementById('itemDisplay').classList.remove('hidden');
-            document.getElementById('itemEmoji').textContent = item.emoji;
-            document.getElementById('itemName').textContent = item.name;
-            document.getElementById('itemHint').textContent = item.hint;
+            const item = items[currentIndex]
+            document.getElementById("itemDisplay").classList.remove("hidden")
+            document.getElementById("itemEmoji").textContent = item.emoji
+            document.getElementById("itemName").textContent = item.name
+            document.getElementById("itemHint").textContent = item.hint
         }
 
         function updateProgress() {
-            const count = viewed.size;
-            document.getElementById('progressText').textContent = count + ' / ' + items.length;
-            document.getElementById('progressBar').style.width = (count / items.length) * 100 + '%';
+            const count = viewed.size
+            document.getElementById("progressText").textContent =
+                count + " / " + items.length
+            document.getElementById("progressBar").style.width =
+                (count / items.length) * 100 + "%"
         }
 
         function playAudio() {
-            const item = items[currentIndex];
-            const utterance = new SpeechSynthesisUtterance(item.name);
-            utterance.lang = 'id-ID';
-            utterance.rate = 0.8;
-            speechSynthesis.speak(utterance);
+            const item = items[currentIndex]
+            const utterance = new SpeechSynthesisUtterance(item.name)
+            utterance.lang = "id-ID"
+            utterance.rate = 0.8
+            speechSynthesis.speak(utterance)
         }
 
         function nextItem() {
-            currentIndex = (currentIndex + 1) % items.length;
-            showItem();
+            currentIndex = (currentIndex + 1) % items.length
+            showItem()
         }
 
-        showItem();
+        showItem()
     </script>
 </body>
 </html>

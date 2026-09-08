@@ -1,13 +1,20 @@
-<x-layout-game
-    title="{{$judul}}"
-    halaman="{{$halaman}}"
->
+<x-layout-game title="{{ $judul }}" halaman="{{ $halaman }}">
     <main class="relative z-10 mx-auto max-w-4xl p-6">
-        <div class="relative mb-6 overflow-hidden rounded-3xl bg-white p-6 text-center shadow-xl">
+        <div
+            class="relative mb-6 overflow-hidden rounded-3xl bg-white p-6 text-center shadow-xl"
+        >
             <div
                 class="absolute top-0 right-0 left-0 h-2"
                 style="
-                    background: linear-gradient(90deg, #ff6b6b, #ff9f43, #ffe66d, #4ecdc4, #6c5ce7, #ff6b6b);
+                    background: linear-gradient(
+                        90deg,
+                        #ff6b6b,
+                        #ff9f43,
+                        #ffe66d,
+                        #4ecdc4,
+                        #6c5ce7,
+                        #ff6b6b
+                    );
                     background-size: 200% 100%;
                     animation: rainbow 3s linear infinite;
                 "
@@ -15,17 +22,26 @@
             <a
                 href="{{ route('belajar.index') }}"
                 class="absolute top-1/2 left-4 -translate-y-1/2 rounded-full bg-red-100 px-4 py-2 text-sm font-bold text-red-500 transition-all hover:bg-red-200"
-            >← Kembali</a>
+                >← Kembali</a
+            >
             <span class="animate-bounce-subtle mb-2 block text-[3rem]">🔤</span>
-            <h1 class="mb-1 text-[1.8rem] font-black text-gray-800 md:text-[2.2rem]">{{ $judul }}</h1>
+            <h1
+                class="mb-1 text-[1.8rem] font-black text-gray-800 md:text-[2.2rem]"
+            >
+                {{ $judul }}
+            </h1>
             <p class="text-[1rem] text-gray-500">{{ $deskripsi }}</p>
         </div>
         <div class="mb-6 space-y-4">
             @foreach ($items as $rowIndex => $item)
                 <div class="rounded-3xl bg-white p-4 shadow-xl md:p-6">
                     <div class="w-full">
-                        <div class="mb-3 flex w-full items-center justify-between">
-                            <span class="text-lg font-black text-gray-800"> Pola Vokal {{ $item['vokal'] }} </span>
+                        <div
+                            class="mb-3 flex w-full items-center justify-between"
+                        >
+                            <span class="text-lg font-black text-gray-800">
+                                Pola Vokal {{ $item['vokal'] }}
+                            </span>
 
                             <button
                                 type="button"
@@ -36,8 +52,12 @@
                             </button>
                         </div>
 
-                        <div class="flex w-full items-center gap-3 overflow-x-auto pb-1 md:gap-4">
-                            <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-purple-400 to-purple-500 text-2xl font-black text-white shadow-md md:h-16 md:w-16">
+                        <div
+                            class="flex w-full items-center gap-3 overflow-x-auto pb-1 md:gap-4"
+                        >
+                            <div
+                                class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-purple-400 to-purple-500 text-2xl font-black text-white shadow-md md:h-16 md:w-16"
+                            >
                                 {{ $item['vokal'] }}
                             </div>
 
@@ -63,7 +83,8 @@
             <div class="mb-2 flex items-center justify-between">
                 <span class="text-sm font-bold text-gray-600">Progress</span>
                 <span id="progressText" class="text-sm font-bold text-green-500"
-                    >0 / {{ collect($items)->sum(fn($i) => count($i['suku_kata']) - 1) }}</span>
+                    >0 / {{ collect($items)->sum(fn($i) => count($i['suku_kata']) - 1) }}</span
+                >
             </div>
             <div class="h-4 overflow-hidden rounded-full bg-gray-200">
                 <div
@@ -89,48 +110,57 @@
         </defs>
     </svg>
     <script>
-        let clicked = new Set();
-        const totalSuku = {{ collect($items)->sum(fn($i) => count($i['suku_kata']) - 1) }};
+        let clicked = new Set()
+        const totalSuku = {{ collect($items)->sum(fn($i) => count($i['suku_kata']) - 1) }}
 
         function playRowAudio(src) {
-            new Audio(src).play();
+            new Audio(src).play()
         }
 
-        let cachedVoices = [];
+        let cachedVoices = []
 
         function loadVoices() {
-            cachedVoices = speechSynthesis.getVoices();
+            cachedVoices = speechSynthesis.getVoices()
         }
 
-        loadVoices();
-        speechSynthesis.onvoiceschanged = loadVoices;
+        loadVoices()
+        speechSynthesis.onvoiceschanged = loadVoices
 
         function speakSuku(btn, text) {
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'id-ID';
-            utterance.rate = 0.7;
+            const utterance = new SpeechSynthesisUtterance(text)
+            utterance.lang = "id-ID"
+            utterance.rate = 0.7
 
-            const voice = cachedVoices.find((v) => v.name === 'Google Bahasa Indonesia');
+            const voice = cachedVoices.find((v) => v.name === "Google Bahasa Indonesia")
             if (voice) {
-                utterance.voice = voice;
+                utterance.voice = voice
             } else {
-                console.log('Voice "Google Bahasa Indonesia" not found, falling back to default id-ID voice');
+                console.log(
+                    'Voice "Google Bahasa Indonesia" not found, falling back to default id-ID voice',
+                )
             }
 
-            speechSynthesis.speak(utterance);
+            speechSynthesis.speak(utterance)
 
-            const key = btn.dataset.row + '-' + btn.dataset.suku;
+            const key = btn.dataset.row + "-" + btn.dataset.suku
             if (!clicked.has(key)) {
-                clicked.add(key);
-                btn.classList.remove('bg-gray-100', 'hover:bg-orange-100');
-                btn.classList.add('bg-gradient-to-r', 'from-orange-400', 'to-orange-500', 'text-white');
-                updateProgress();
+                clicked.add(key)
+                btn.classList.remove("bg-gray-100", "hover:bg-orange-100")
+                btn.classList.add(
+                    "bg-gradient-to-r",
+                    "from-orange-400",
+                    "to-orange-500",
+                    "text-white",
+                )
+                updateProgress()
             }
         }
 
         function updateProgress() {
-            document.getElementById('progressText').textContent = clicked.size + ' / ' + totalSuku;
-            document.getElementById('progressBar').style.width = (clicked.size / totalSuku) * 100 + '%';
+            document.getElementById("progressText").textContent =
+                clicked.size + " / " + totalSuku
+            document.getElementById("progressBar").style.width =
+                (clicked.size / totalSuku) * 100 + "%"
         }
     </script>
 </x-layout-game>

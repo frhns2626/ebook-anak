@@ -1,11 +1,8 @@
-<x-layout-game
-    title="{{$judul}}"
-    halaman="{{$halaman}}"
->
+<x-layout-game title="{{ $judul }}" halaman="{{ $halaman }}">
     <style>
         /* Style Judul Pop-out */
         .title-text {
-            font-family: 'Fredoka', cursive, sans-serif;
+            font-family: "Fredoka", cursive, sans-serif;
             color: #fbbf24;
             -webkit-text-stroke: 1.5px #000000;
             paint-order: stroke fill;
@@ -28,11 +25,21 @@
         }
 
         /* Warna Suku Kata */
-        .c-green  { color: #10b981; }
-        .c-purple { color: #818cf8; }
-        .c-yellow { color: #eab308; }
-        .c-red    { color: #ef4444; }
-        .c-blue   { color: #3b82f6; }
+        .c-green {
+            color: #10b981;
+        }
+        .c-purple {
+            color: #818cf8;
+        }
+        .c-yellow {
+            color: #eab308;
+        }
+        .c-red {
+            color: #ef4444;
+        }
+        .c-blue {
+            color: #3b82f6;
+        }
 
         /* Container Bergelombang Biru Muda */
         .wavy-container {
@@ -56,110 +63,181 @@
         }
 
         @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-5px); }
-            40%, 80% { transform: translateX(5px); }
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+            20%,
+            60% {
+                transform: translateX(-5px);
+            }
+            40%,
+            80% {
+                transform: translateX(5px);
+            }
         }
     </style>
 
     <!-- Container Utama Dalam Layout Game -->
-    <div class="wavy-container relative flex h-full w-full flex-col justify-between overflow-hidden p-2  my-auto select-none">
-
+    <div
+        class="wavy-container relative my-auto flex h-full w-full flex-col justify-between overflow-hidden p-2 select-none"
+    >
         <!-- Judul Aktivitas -->
         <div class="z-10 mt-1 text-center">
-            <h1 class="title-text text-lg sm:text-2xl font-extrabold tracking-wide">
+            <h1
+                class="title-text text-lg font-extrabold tracking-wide sm:text-2xl"
+            >
                 Temukan 5 suku kata “ba”.
             </h1>
-            <h2 class="title-text mt-0.5 text-lg sm:text-2xl font-extrabold tracking-wide">
+            <h2
+                class="title-text mt-0.5 text-lg font-extrabold tracking-wide sm:text-2xl"
+            >
                 Kemudian hubungkan !
             </h2>
         </div>
 
         <!-- Grid Sebaran Suku Kata -->
-        <div class="relative  grid w-full flex-grow grid-cols-3 items-center justify-items-center  text-center">
-
+        <div
+            class="relative grid w-full flex-grow grid-cols-3 items-center justify-items-center text-center"
+        >
             <!-- Baris 1 -->
-            <div class="syllable-item c-purple col-start-1" data-syllable="bi">bi</div>
-            <div class="syllable-item c-green col-start-3" data-syllable="be">be</div>
+            <div class="syllable-item c-purple col-start-1" data-syllable="bi">
+                bi
+            </div>
+            <div class="syllable-item c-green col-start-3" data-syllable="be">
+                be
+            </div>
 
             <!-- Baris 2 -->
-            <div class="syllable-item c-green relative col-start-1" data-syllable="ba">ba</div>
-            <div class="syllable-item c-yellow col-start-2" data-syllable="bu">bu</div>
-            <div class="syllable-item c-red col-start-3" data-syllable="bo">bo</div>
+            <div
+                class="syllable-item c-green relative col-start-1"
+                data-syllable="ba"
+            >
+                ba
+            </div>
+            <div class="syllable-item c-yellow col-start-2" data-syllable="bu">
+                bu
+            </div>
+            <div class="syllable-item c-red col-start-3" data-syllable="bo">
+                bo
+            </div>
 
             <!-- Baris 3 -->
-            <div class="syllable-item c-red col-start-1" data-syllable="bi">bi</div>
-            <div class="syllable-item c-green col-start-2" data-syllable="ba">ba</div>
-            <div class="syllable-item c-blue col-start-3" data-syllable="be">be</div>
+            <div class="syllable-item c-red col-start-1" data-syllable="bi">
+                bi
+            </div>
+            <div class="syllable-item c-green col-start-2" data-syllable="ba">
+                ba
+            </div>
+            <div class="syllable-item c-blue col-start-3" data-syllable="be">
+                be
+            </div>
 
             <!-- Baris 4 -->
-            <div class="syllable-item c-yellow col-start-1" data-syllable="bo">bo</div>
-            <div class="syllable-item c-purple col-start-3" data-syllable="bo">bo</div>
+            <div class="syllable-item c-yellow col-start-1" data-syllable="bo">
+                bo
+            </div>
+            <div class="syllable-item c-purple col-start-3" data-syllable="bo">
+                bo
+            </div>
 
             <!-- Baris 5 -->
-            <div class="syllable-item c-red col-start-2" data-syllable="bu">bu</div>
-            <div class="syllable-item c-green col-start-3" data-syllable="ba">ba</div>
+            <div class="syllable-item c-red col-start-2" data-syllable="bu">
+                bu
+            </div>
+            <div class="syllable-item c-green col-start-3" data-syllable="ba">
+                ba
+            </div>
 
             <!-- Baris 6 -->
-            <div class="syllable-item c-purple col-start-1" data-syllable="ba">ba</div>
-            <div class="syllable-item c-yellow col-start-2" data-syllable="bo">bo</div>
-            <div class="syllable-item c-blue col-start-3" data-syllable="bu">bu</div>
+            <div class="syllable-item c-purple col-start-1" data-syllable="ba">
+                ba
+            </div>
+            <div class="syllable-item c-yellow col-start-2" data-syllable="bo">
+                bo
+            </div>
+            <div class="syllable-item c-blue col-start-3" data-syllable="bu">
+                bu
+            </div>
 
             <!-- Baris 7 -->
-            <div class="syllable-item c-green col-start-1" data-syllable="be">be</div>
-            <div class="syllable-item c-blue col-start-2" data-syllable="bi">bi</div>
-            <div class="syllable-item c-red col-start-3" data-syllable="be">be</div>
+            <div class="syllable-item c-green col-start-1" data-syllable="be">
+                be
+            </div>
+            <div class="syllable-item c-blue col-start-2" data-syllable="bi">
+                bi
+            </div>
+            <div class="syllable-item c-red col-start-3" data-syllable="be">
+                be
+            </div>
 
             <!-- Baris 8 -->
-            <div class="syllable-item c-yellow col-start-1" data-syllable="ba">ba</div>
-            <div class="syllable-item c-red col-start-2" data-syllable="bi">bi</div>
-            <div class="syllable-item c-yellow col-start-3" data-syllable="bu">bu</div>
-
+            <div class="syllable-item c-yellow col-start-1" data-syllable="ba">
+                ba
+            </div>
+            <div class="syllable-item c-red col-start-2" data-syllable="bi">
+                bi
+            </div>
+            <div class="syllable-item c-yellow col-start-3" data-syllable="bu">
+                bu
+            </div>
         </div>
     </div>
 
     @push('scripts')
         <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                const items = document.querySelectorAll('.syllable-item');
-                let foundCount = 0;
-                const targetCount = 5;
+            document.addEventListener("DOMContentLoaded", () => {
+                const items = document.querySelectorAll(".syllable-item")
+                let foundCount = 0
+                const targetCount = 5
 
-                items.forEach(item => {
-                    item.addEventListener('click', () => {
-                        const text = item.dataset.syllable;
+                items.forEach((item) => {
+                    item.addEventListener("click", () => {
+                        const text = item.dataset.syllable
 
                         // Abaikan jika item ini sudah berhasil ditemukan
-                        if (item.classList.contains('found-box')) {
-                            return;
+                        if (item.classList.contains("found-box")) {
+                            return
                         }
 
-                        if (text === 'ba') {
+                        if (text === "ba") {
                             // Tambahkan Kotak Hijau pada suku kata "ba"
-                            item.classList.add('found-box', 'animate-pop');
-                            foundCount++;
+                            item.classList.add("found-box", "animate-pop")
+                            foundCount++
 
-                            if (typeof showFlashMessage === 'function') {
+                            if (typeof showFlashMessage === "function") {
                                 if (foundCount < targetCount) {
-                                    showFlashMessage('success', `Benar! (${foundCount}/${targetCount})`,true);
+                                    showFlashMessage(
+                                        "success",
+                                        `Benar! (${foundCount}/${targetCount})`,
+                                        true,
+                                    )
                                 } else {
-                                    showFlashMessage('success', 'Hebat! Semua "ba" ditemukan! 🎉',true);
+                                    showFlashMessage(
+                                        "success",
+                                        'Hebat! Semua "ba" ditemukan! 🎉',
+                                        true,
+                                    )
                                 }
                             }
                         } else {
                             // Animasi salah sementara
-                            item.classList.add('wrong-box');
-                            if (typeof showFlashMessage === 'function') {
-                                showFlashMessage('salah', 'Coba cari "ba"!',true);
+                            item.classList.add("wrong-box")
+                            if (typeof showFlashMessage === "function") {
+                                showFlashMessage(
+                                    "salah",
+                                    'Coba cari "ba"!',
+                                    true,
+                                )
                             }
 
                             setTimeout(() => {
-                                item.classList.remove('wrong-box');
-                            }, 400);
+                                item.classList.remove("wrong-box")
+                            }, 400)
                         }
-                    });
-                });
-            });
+                    })
+                })
+            })
         </script>
     @endpush
 </x-layout-game>

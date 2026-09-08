@@ -1,13 +1,20 @@
-<x-layout-game
-    title="{{$judul}}"
-    halaman="{{$halaman}}"
->
+<x-layout-game title="{{ $judul }}" halaman="{{ $halaman }}">
     <main class="relative z-10 mx-auto max-w-4xl p-6">
-        <div class="relative mb-6 overflow-hidden rounded-3xl bg-white p-6 text-center shadow-xl">
+        <div
+            class="relative mb-6 overflow-hidden rounded-3xl bg-white p-6 text-center shadow-xl"
+        >
             <div
                 class="absolute top-0 right-0 left-0 h-2"
                 style="
-                    background: linear-gradient(90deg, #ff6b6b, #ff9f43, #ffe66d, #4ecdc4, #6c5ce7, #ff6b6b);
+                    background: linear-gradient(
+                        90deg,
+                        #ff6b6b,
+                        #ff9f43,
+                        #ffe66d,
+                        #4ecdc4,
+                        #6c5ce7,
+                        #ff6b6b
+                    );
                     background-size: 200% 100%;
                     animation: rainbow 3s linear infinite;
                 "
@@ -15,12 +22,19 @@
             <a
                 href="{{ route('belajar.index') }}"
                 class="absolute top-1/2 left-4 -translate-y-1/2 rounded-full bg-red-100 px-4 py-2 text-sm font-bold text-red-500 transition-all hover:bg-red-200"
-            >← Kembali</a>
+                >← Kembali</a
+            >
             <span class="animate-bounce-subtle mb-2 block text-[3rem]">🏠</span>
-            <h1 class="mb-1 text-[1.8rem] font-black text-gray-800 md:text-[2.2rem]">{{ $judul }}</h1>
+            <h1
+                class="mb-1 text-[1.8rem] font-black text-gray-800 md:text-[2.2rem]"
+            >
+                {{ $judul }}
+            </h1>
             <p class="text-[1rem] text-gray-500">{{ $deskripsi }}</p>
         </div>
-        <div class="mb-6 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 md:gap-6">
+        <div
+            class="mb-6 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 md:gap-6"
+        >
             @foreach ($items as $index => $item)
                 <div
                     id="card-{{ $item['id'] }}"
@@ -33,7 +47,9 @@
                         style="animation-delay: {{ ($index % 5) * 0.3 }}s"
                     >
                         @if (! empty($item['emoji']))
-                            <span class="text-[2.5rem] md:text-[3rem]"> {{ $item['emoji'] }} </span>
+                            <span class="text-[2.5rem] md:text-[3rem]">
+                                {{ $item['emoji'] }}
+                            </span>
                         @elseif (! empty($item['icon']))
                             <img
                                 src="{{ $item['icon'] }}"
@@ -42,17 +58,35 @@
                             />
                         @endif
                     </div>
-                    <h3 class="mb-1 text-[1.2rem] font-black text-gray-800 md:text-[1.4rem]">{{ $item['name'] }}</h3>
+                    <h3
+                        class="mb-1 text-[1.2rem] font-black text-gray-800 md:text-[1.4rem]"
+                    >
+                        {{ $item['name'] }}
+                    </h3>
                     <p class="text-xs text-gray-500">{{ $item['name'] }}</p>
                 </div>
             @endforeach
         </div>
-        <div id="itemDisplay" class="mb-6 hidden rounded-3xl bg-white p-8 text-center shadow-2xl">
-            <div class="animate-pop mb-4 text-[8rem] md:text-[10rem]" id="itemEmoji">🪑</div>
-            <h2 class="mb-2 text-[2.5rem] font-black tracking-widest text-gray-800 md:text-[3rem]" id="itemName">
+        <div
+            id="itemDisplay"
+            class="mb-6 hidden rounded-3xl bg-white p-8 text-center shadow-2xl"
+        >
+            <div
+                class="animate-pop mb-4 text-[8rem] md:text-[10rem]"
+                id="itemEmoji"
+            >
+                🪑
+            </div>
+            <h2
+                class="mb-2 text-[2.5rem] font-black tracking-widest text-gray-800 md:text-[3rem]"
+                id="itemName"
+            >
                 Meja
             </h2>
-            <div id="syllableOptions" class="mb-4 flex flex-wrap justify-center gap-3"></div>
+            <div
+                id="syllableOptions"
+                class="mb-4 flex flex-wrap justify-center gap-3"
+            ></div>
             <p id="checkFeedback" class="mb-2 h-6 text-sm font-bold"></p>
             <p class="mb-6 text-[1.2rem] text-gray-500" id="itemHint">Meja adalah furniture untuk meletakkan barang!</p>
             <div class="flex flex-wrap justify-center gap-4">
@@ -74,7 +108,9 @@
         <div class="rounded-2xl bg-white p-4 shadow-lg">
             <div class="mb-2 flex items-center justify-between">
                 <span class="text-sm font-bold text-gray-600">Progress</span>
-                <span id="progressText" class="text-sm font-bold text-green-500">0 / {{ count($items) }}</span>
+                <span id="progressText" class="text-sm font-bold text-green-500"
+                    >0 / {{ count($items) }}</span
+                >
             </div>
             <div class="h-4 overflow-hidden rounded-full bg-gray-200">
                 <div
@@ -100,129 +136,146 @@
         </defs>
     </svg>
     <script>
-        const items = @json($items);
-        let currentIndex = 0;
-        let viewed = new Set();
-        let blankIndex = 0;
-        let solved = false;
-        let selectedChoice = null;
-        let selectedBtn = null;
-        let cachedVoices = [];
+        const items = @json($items)
+        let currentIndex = 0
+        let viewed = new Set()
+        let blankIndex = 0
+        let solved = false
+        let selectedChoice = null
+        let selectedBtn = null
+        let cachedVoices = []
 
         function loadVoices() {
-            cachedVoices = speechSynthesis.getVoices();
+            cachedVoices = speechSynthesis.getVoices()
         }
 
-        loadVoices();
-        speechSynthesis.onvoiceschanged = loadVoices;
+        loadVoices()
+        speechSynthesis.onvoiceschanged = loadVoices
 
         function updateLocks() {
             items.forEach((item, i) => {
-                const card = document.getElementById('card-' + item.id);
-                const unlocked = i === 0 || viewed.has(items[i - 1].id);
+                const card = document.getElementById("card-" + item.id)
+                const unlocked = i === 0 || viewed.has(items[i - 1].id)
                 if (unlocked) {
-                    card.classList.remove('opacity-40', 'grayscale', 'pointer-events-none');
+                    card.classList.remove(
+                        "opacity-40",
+                        "grayscale",
+                        "pointer-events-none",
+                    )
                 } else {
-                    card.classList.add('opacity-40', 'grayscale', 'pointer-events-none');
+                    card.classList.add("opacity-40", "grayscale", "pointer-events-none")
                 }
-            });
+            })
         }
 
         function selectItem(id) {
-            currentIndex = items.findIndex((item) => item.id === id);
-            showItem();
-            document.getElementById('itemDisplay').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            currentIndex = items.findIndex((item) => item.id === id)
+            showItem()
+            document
+                .getElementById("itemDisplay")
+                .scrollIntoView({ behavior: "smooth", block: "center" })
         }
 
         function showItem() {
-            const item = items[currentIndex];
-            solved = false;
-            selectedChoice = null;
-            selectedBtn = null;
-            blankIndex = item.syllables.length - 1;
+            const item = items[currentIndex]
+            solved = false
+            selectedChoice = null
+            selectedBtn = null
+            blankIndex = item.syllables.length - 1
 
-            document.getElementById('itemDisplay').classList.remove('hidden');
-            document.getElementById('itemEmoji').textContent = item.emoji;
-            document.getElementById('itemHint').textContent = item.hint;
-            document.getElementById('checkFeedback').textContent = '';
-            document.getElementById('checkBtn').disabled = false;
-            renderSyllablePuzzle(item);
+            document.getElementById("itemDisplay").classList.remove("hidden")
+            document.getElementById("itemEmoji").textContent = item.emoji
+            document.getElementById("itemHint").textContent = item.hint
+            document.getElementById("checkFeedback").textContent = ""
+            document.getElementById("checkBtn").disabled = false
+            renderSyllablePuzzle(item)
         }
 
         function renderSyllablePuzzle(item) {
-            const display = item.syllables.map((s, i) => (i === blankIndex ? '...' : s)).join(' – ');
-            document.getElementById('itemName').textContent = display;
+            const display = item.syllables
+                .map((s, i) => (i === blankIndex ? "..." : s))
+                .join(" – ")
+            document.getElementById("itemName").textContent = display
 
             const distractorPool = items
                 .flatMap((i) => i.syllables)
-                .filter((s) => s.toLowerCase() !== item.syllables[blankIndex].toLowerCase());
-            const distractors = [...new Set(distractorPool)].sort(() => Math.random() - 0.5).slice(0, 2);
+                .filter(
+                    (s) => s.toLowerCase() !== item.syllables[blankIndex].toLowerCase(),
+                )
+            const distractors = [...new Set(distractorPool)]
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 2)
 
-            const options = [item.syllables[blankIndex], ...distractors];
+            const options = [item.syllables[blankIndex], ...distractors]
 
-            const container = document.getElementById('syllableOptions');
-            container.innerHTML = '';
+            const container = document.getElementById("syllableOptions")
+            container.innerHTML = ""
             options.forEach((opt) => {
-                const btn = document.createElement('button');
-                btn.textContent = opt;
+                const btn = document.createElement("button")
+                btn.textContent = opt
                 btn.className =
-                    'bg-gradient-to-r from-purple-400 to-purple-500 text-white px-5 py-2 rounded-full font-bold shadow-lg hover:scale-105 transition-all';
-                btn.onclick = () => selectChoice(opt, btn);
-                container.appendChild(btn);
-            });
+                    "bg-gradient-to-r from-purple-400 to-purple-500 text-white px-5 py-2 rounded-full font-bold shadow-lg hover:scale-105 transition-all"
+                btn.onclick = () => selectChoice(opt, btn)
+                container.appendChild(btn)
+            })
         }
 
         function selectChoice(opt, btn) {
-            if (solved) return;
-            if (selectedBtn) selectedBtn.classList.remove('ring-4', 'ring-blue-300');
-            selectedChoice = opt;
-            selectedBtn = btn;
-            btn.classList.add('ring-4', 'ring-blue-300');
+            if (solved) return
+            if (selectedBtn) selectedBtn.classList.remove("ring-4", "ring-blue-300")
+            selectedChoice = opt
+            selectedBtn = btn
+            btn.classList.add("ring-4", "ring-blue-300")
         }
 
         function checkAnswer() {
-            if (solved || !selectedChoice) return;
-            const item = items[currentIndex];
-            const feedback = document.getElementById('checkFeedback');
+            if (solved || !selectedChoice) return
+            const item = items[currentIndex]
+            const feedback = document.getElementById("checkFeedback")
 
-            if (selectedChoice.toLowerCase() === item.syllables[blankIndex].toLowerCase()) {
-                solved = true;
-                document.getElementById('itemName').textContent = item.name;
-                document.getElementById('checkBtn').disabled = true;
-                feedback.textContent = '🎉 Benar sekali!';
-                feedback.className = 'h-6 mb-2 font-bold text-sm text-green-500';
-                selectedBtn.classList.add('ring-4', 'ring-green-400');
-                viewed.add(item.id);
-                updateProgress();
-                updateLocks();
-                playAudio();
-                setTimeout(nextItem, 2000);
+            if (
+                selectedChoice.toLowerCase() ===
+                item.syllables[blankIndex].toLowerCase()
+            ) {
+                solved = true
+                document.getElementById("itemName").textContent = item.name
+                document.getElementById("checkBtn").disabled = true
+                feedback.textContent = "🎉 Benar sekali!"
+                feedback.className = "h-6 mb-2 font-bold text-sm text-green-500"
+                selectedBtn.classList.add("ring-4", "ring-green-400")
+                viewed.add(item.id)
+                updateProgress()
+                updateLocks()
+                playAudio()
+                setTimeout(nextItem, 2000)
             } else {
-                feedback.textContent = 'Coba lagi ya!';
-                feedback.className = 'h-6 mb-2 font-bold text-sm text-red-400';
-                selectedBtn.classList.add('animate-shake');
-                document.getElementById('checkBtn').disabled = true;
-                setTimeout(() => showItem(), 2000);
+                feedback.textContent = "Coba lagi ya!"
+                feedback.className = "h-6 mb-2 font-bold text-sm text-red-400"
+                selectedBtn.classList.add("animate-shake")
+                document.getElementById("checkBtn").disabled = true
+                setTimeout(() => showItem(), 2000)
             }
         }
 
         function updateProgress() {
-            const count = viewed.size;
-            document.getElementById('progressText').textContent = count + ' / ' + items.length;
-            document.getElementById('progressBar').style.width = (count / items.length) * 100 + '%';
+            const count = viewed.size
+            document.getElementById("progressText").textContent =
+                count + " / " + items.length
+            document.getElementById("progressBar").style.width =
+                (count / items.length) * 100 + "%"
         }
 
         function playAudio() {
-            const item = items[currentIndex];
-            new Audio(item.audio).play();
+            const item = items[currentIndex]
+            new Audio(item.audio).play()
         }
 
         function nextItem() {
-            currentIndex = (currentIndex + 1) % items.length;
-            showItem();
+            currentIndex = (currentIndex + 1) % items.length
+            showItem()
         }
 
-        updateLocks();
-        selectItem(items[0].id);
+        updateLocks()
+        selectItem(items[0].id)
     </script>
 </x-layout-game>
