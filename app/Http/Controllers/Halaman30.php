@@ -12,14 +12,14 @@ use Override;
 class Halaman30 extends Controller
 {
     /**
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\View\View
+     * @param Request $request
+     * @return View
      */
     #[Override]
     public function index(Request $request): View
     {
         try {
-            $lang = $request->query('lang', 'id');
+            $lang = $request->input('lang', 'id');
             $judul = $lang === 'en' ? 'Page 30 - Read and Rewrite' : 'Halaman 30 - Baca dan Tulis Kembali';
             $deskripsi = $lang === 'en' ? 'Read the syllables, then rewrite the full word!' : 'Baca suku katanya, lalu tulis kembali kata utuhnya!';
 

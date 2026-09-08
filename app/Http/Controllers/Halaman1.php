@@ -8,18 +8,19 @@ use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Override;
+use Exception;
 
 class Halaman1 extends Controller
 {
     /**
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\View\View
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @param Request $request
+     * @return View
+     * @throws Exception
      */
     #[Override]
     public function index(Request $request): View
     {
-        $lang = $request->query('lang', 'id');
+        $lang = $request->input('lang', 'id');
 
         return $this->abcdHuruf(
             data: $this->getDataPublicHalaman1($lang),
@@ -33,7 +34,7 @@ class Halaman1 extends Controller
     /**
      * @throws BindingResolutionException
      */
-    public function getDataPublicHalaman1($lang): array
+    public function getDataPublicHalaman1(string $lang): array
     {
         $en = [
             ['huruf' => 'A', 'spelling' => 'A', 'audio' => asset('audio/en/Halaman 1/1.A.m4a'),],
@@ -94,8 +95,8 @@ class Halaman1 extends Controller
         ];
 
         return [
-            'items' => $lang === 'en' ? $en : $id,
-            'lang' => $lang,
+            'items'      => $lang === 'en' ? $en : $id,
+            'lang'       => $lang,
             'total_item' => 26,
         ];
     }

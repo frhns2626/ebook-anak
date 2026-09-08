@@ -124,7 +124,7 @@
 
         </div>
 
-        <div class="flex-1 min-h-[40px] z-10"></div>
+        <div class="flex-1 min-h-10 z-10"></div>
     </div>
 
     @push('scripts')
@@ -132,7 +132,6 @@
             document.addEventListener('DOMContentLoaded', () => {
                 const inputs = document.querySelectorAll('.rewrite-input');
 
-{{--                const wrongAudio = new Audio('{{ asset("audio/wrong.mp3") }}');--}}
 
                 inputs.forEach(input => {
                     input.addEventListener('input', (e) => {
@@ -156,9 +155,6 @@
                             }
                         } else if (val.length >= correctAnswer.length) {
                             input.classList.add('wrong');
-                            // wrongAudio.currentTime = 0;
-                            // wrongAudio.play().catch(() => {});
-
                             if (typeof showFlashMessage === 'function') {
                                 showFlashMessage('error', 'Salah, coba tulis ulang dengan benar!');
                             }

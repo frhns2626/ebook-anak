@@ -12,14 +12,14 @@ use Override;
 class Halaman33 extends Controller
 {
     /**
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\View\View
+     * @param Request $request
+     * @return View
      */
     #[Override]
     public function index(Request $request): View
     {
         try {
-            $lang = $request->query('lang', 'id');
+            $lang = $request->input('lang', 'id');
             $judul = $lang === 'en' ? 'Page 33 - Word Search 🔍' : 'Halaman 33 - Cari Kata 🔍';
             $deskripsi = $lang === 'en' ? 'Find the hidden words!' : 'Temukan kata yang tersembunyi!';
 
@@ -38,7 +38,7 @@ class Halaman33 extends Controller
     /**
      * @param string $lang 'id' (default) | 'en'
      * @return array
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws Exception
      */
     public function getDataPublicHalaman33(string $lang = 'id'): array
     {

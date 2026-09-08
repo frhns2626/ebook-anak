@@ -88,9 +88,9 @@
                     element.classList.remove('playing');
                 }, 400);
 
-                if (typeof showFlashMessage === 'function') {
-                    showFlashMessage('success', `Huruf ${letter}!`);
-                }
+                // if (typeof showFlashMessage === 'function') {
+                //     showFlashMessage('success', `Huruf ${letter}!`);
+                // }
 
                 const unlock = () => {
                     isPlaying = false;

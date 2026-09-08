@@ -1,9 +1,4 @@
-<x-layout-game
-    title="{{$judul}}"
-    halaman="{{$halaman}}"
-    lang="{{$lang}}"
-    lang_on={{true}}
->
+<x-layout-game title="{{ $judul }}" halaman="{{ $halaman }}" lang="{{ $lang }}" :lang_on="true">
     <style>
         /* Typography Judul Pop-out */
         .title-text {
@@ -102,16 +97,14 @@
                         ['q', 'd', 'b', 'k', 'u', 'e', 'p', 'a'], // row 1: kue  (1,3 -> 1,5)
                         ['r', 'b', 'u', 'k', 'u', 't', 'l', 'h'], // row 2: buku (2,1 -> 2,4)
                         ['u', 'd', 'a', 'n', 'g', 'k', 'l', 'c'], // row 3: udang(3,0 -> 3,4)
-                        ['y', 'f', 'j', 'h', 's', 'a', 'p', 'i']  // row 4: sapi (4,4 -> 4,7)
+                        ['y', 'f', 'j', 'h', 's', 'a', 'p', 'i'], // row 4: sapi (4,4 -> 4,7)
                     ];
                 @endphp
 
-                @foreach($grid as $r => $row)
-                    @foreach($row as $c => $char)
-                        <div class="grid-cell"
-                             data-row="{{ $r }}"
-                             data-col="{{ $c }}"
-                             data-char="{{ $char }}">
+                @foreach ($grid as $r => $row)
+                    @foreach ($row as $c => $char)
+                        <div class="grid-cell" data-row="{{ $r }}" data-col="{{ $c }}"
+                            data-char="{{ $char }}">
                             {{ $char }}
                         </div>
                     @endforeach
@@ -123,26 +116,31 @@
             <div class="grid grid-cols-3 gap-2 sm:gap-4">
                 <!-- Meja -->
                 <div class="target-card" data-word="meja" data-audio="{{ $byWord['meja']['audio'] }}">
-                    <img src="{{ $byWord['meja']['emoji'] }}" alt="meja" class="size-28 object-contain pointer-events-none" />
+                    <img src="{{ $byWord['meja']['emoji'] }}" alt="meja"
+                        class="size-28 object-contain pointer-events-none" />
                 </div>
                 <!-- Kue -->
                 <div class="target-card" data-word="kue" data-audio="{{ $byWord['kue']['audio'] }}">
-                    <img src="{{ $byWord['kue']['emoji'] }}" alt="kue" class="size-28 object-contain pointer-events-none" />
+                    <img src="{{ $byWord['kue']['emoji'] }}" alt="kue"
+                        class="size-28 object-contain pointer-events-none" />
                 </div>
                 <!-- Buku -->
                 <div class="target-card" data-word="buku" data-audio="{{ $byWord['buku']['audio'] }}">
-                    <img src="{{ $byWord['buku']['emoji'] }}" alt="buku" class="size-28 object-contain pointer-events-none" />
+                    <img src="{{ $byWord['buku']['emoji'] }}" alt="buku"
+                        class="size-28 object-contain pointer-events-none" />
                 </div>
             </div>
 
             <div class="grid grid-cols-2 gap-2 sm:gap-4 max-w-xs mx-auto">
                 <!-- Udang -->
                 <div class="target-card" data-word="udang" data-audio="{{ $byWord['udang']['audio'] }}">
-                    <img src="{{ $byWord['udang']['emoji'] }}" alt="udang" class="size-28 object-contain pointer-events-none" />
+                    <img src="{{ $byWord['udang']['emoji'] }}" alt="udang"
+                        class="size-28 object-contain pointer-events-none" />
                 </div>
                 <!-- Sapi -->
                 <div class="target-card" data-word="sapi" data-audio="{{ $byWord['sapi']['audio'] }}">
-                    <img src="{{ $byWord['sapi']['emoji'] }}" alt="sapi" class="size-28 object-contain pointer-events-none" />
+                    <img src="{{ $byWord['sapi']['emoji'] }}" alt="sapi"
+                        class="size-28 object-contain pointer-events-none" />
                 </div>
             </div>
         </div>
@@ -155,18 +153,43 @@
                 const cells = document.querySelectorAll('.grid-cell');
 
                 const targetWords = {
-                    'meja': [[0,0], [0,1], [0,2], [0,3]],
-                    'kue':  [[1,3], [1,4], [1,5]],
-                    'buku': [[2,1], [2,2], [2,3], [2,4]],
-                    'udang':[[3,0], [3,1], [3,2], [3,3], [3,4]],
-                    'sapi': [[4,4], [4,5], [4,6], [4,7]]
+                    'meja': [
+                        [0, 0],
+                        [0, 1],
+                        [0, 2],
+                        [0, 3]
+                    ],
+                    'kue': [
+                        [1, 3],
+                        [1, 4],
+                        [1, 5]
+                    ],
+                    'buku': [
+                        [2, 1],
+                        [2, 2],
+                        [2, 3],
+                        [2, 4]
+                    ],
+                    'udang': [
+                        [3, 0],
+                        [3, 1],
+                        [3, 2],
+                        [3, 3],
+                        [3, 4]
+                    ],
+                    'sapi': [
+                        [4, 4],
+                        [4, 5],
+                        [4, 6],
+                        [4, 7]
+                    ]
                 };
 
                 let isSelecting = false;
                 let selectedCells = [];
                 let foundWords = [];
 
-{{--                const wrongAudio = new Audio('{{ asset("audio/wrong.mp3") }}');--}}
+                {{--                const wrongAudio = new Audio('{{ asset("audio/wrong.mp3") }}'); --}}
 
                 function getCell(r, c) {
                     return document.querySelector(`.grid-cell[data-row="${r}"][data-col="${c}"]`);
@@ -202,7 +225,8 @@
                         if (foundWords.includes(word)) continue;
 
                         const isMatch = coords.length === selectedCells.length && coords.every(([r, c]) => {
-                            return selectedCells.some(sc => parseInt(sc.dataset.row) === r && parseInt(sc.dataset.col) === c);
+                            return selectedCells.some(sc => parseInt(sc.dataset.row) === r && parseInt(sc
+                                .dataset.col) === c);
                         });
 
                         if (isMatch) {
@@ -236,8 +260,12 @@
                     } else {
                         selectedCells.forEach(c => c.classList.remove('selecting'));
                         if (selectedCells.length > 1) {
-                            // wrongAudio.currentTime = 0;
-                            // wrongAudio.play().catch(() => {});
+                            if (typeof showFlashMessage === 'function') {
+                                showFlashMessage(
+                                    'error',
+                                    'Ups! Kata yang kamu pilih belum tepat. Coba lagi!'
+                                );
+                            }
                         }
                     }
 
@@ -263,7 +291,9 @@
                     if (targetEl && targetEl.classList.contains('grid-cell')) {
                         extendSelection(targetEl);
                     }
-                }, { passive: false });
+                }, {
+                    passive: false
+                });
 
                 document.addEventListener('touchend', endSelection);
             });

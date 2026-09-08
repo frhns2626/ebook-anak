@@ -12,14 +12,14 @@ use Override;
 class Halaman9 extends Controller
 {
     /**
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\View\View
+     * @param Request $request
+     * @return View
      */
     #[Override]
     public function index(Request $request): View
     {
         try {
-            $lang = $request->query('lang', 'id');
+            $lang = (string) $request->query('lang', 'id');
             return $this->hubungkanSukukataTerakhir(
                 data: $this->getDataPublicHalaman9($lang),
                 halaman: 9,
@@ -44,7 +44,7 @@ class Halaman9 extends Controller
      *
      * @param string $lang 'id' (default) | 'en'
      * @return array{items: list<array{id: string, suffix: string, name: string, emoji: string, hint: string, audio: string}>, total_item: int}
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws Exception
      */
     public function getDataPublicHalaman9(string $lang): array
     {

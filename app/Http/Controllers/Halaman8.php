@@ -12,14 +12,14 @@ use Override;
 class Halaman8 extends Controller
 {
     /**
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\View\View
+     * @param Request $request
+     * @return View
      */
     #[Override]
     public function index(Request $request): View
     {
         try {
-            $lang = $request->query('lang', 'id');
+            $lang = $request->input('lang', 'id');
             return $this->hubungkanGame(
                 data: $this->getDataPublicHalaman8($lang),
                 halaman: 8,

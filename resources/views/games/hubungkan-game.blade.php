@@ -1,9 +1,4 @@
-<x-layout-game
-    title="{{$judul}}"
-    halaman="{{$halaman}}"
-    :lang_on="true"
-    lang="{{$lang}}"
->
+<x-layout-game title="{{ $judul }}" halaman="{{ $halaman }}" :lang_on="true" lang="{{ $lang }}">
     <style>
         #gameContainer {
             touch-action: none;
@@ -40,7 +35,8 @@
             touch-action: none;
         }
 
-        .connect-dot:hover, .connect-dot.active {
+        .connect-dot:hover,
+        .connect-dot.active {
             transform: scale(1.35);
             background-color: #2563eb;
             box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.3);
@@ -56,29 +52,34 @@
         <div class="grid grid-cols-4 gap-3 sm:gap-4 w-full px-2 mt-2 z-10">
             @foreach (collect($items)->shuffle() as $item)
                 <div class="flex flex-col items-center space-y-2">
-                    <div class="item-card w-full h-16 sm:h-20 text-3xl sm:text-4xl font-extrabold text-black">{{ $item['letter'] }}</div>
-                    <div class="connect-dot" data-type="top" data-id="{{ $item['letter'][0] }}" data-match="{{ strtolower($item['id']) }}"></div>
+                    <div class="item-card w-full h-16 sm:h-20 text-3xl sm:text-4xl font-extrabold text-black">
+                        {{ $item['letter'] }}</div>
+                    <div class="connect-dot" data-type="top" data-id="{{ $item['letter'][0] }}"
+                        data-match="{{ strtolower($item['id']) }}"></div>
                 </div>
             @endforeach
         </div>
         <div class="flex-1 min-h-[120px]"></div>
-        <div class="grid grid-cols-4 gap-3 sm:gap-4 w-full px-2 mb-2 z-10">
+        <div class="grid grid-cols-5 gap-4 w-full px-2 mb-2 z-10">
             @foreach (collect($items)->shuffle() as $item)
-                <div class="flex flex-col items-center space-y-2">
-                    <div class="connect-dot"
-                         data-type="bottom"
-                         data-id="{{ strtolower($item['id']) }}"
-                         data-audio="{{ $item['audio'] }}"></div>
-                    <div class="flex flex-col items-center w-full">
-                        <img
-                            src="{{ $item['emoji'] }}"
-                            alt="{{ strtolower($item['id']) }}"
-                            @class([
-                               'min-w-36' => strtolower($item['id']) === 'hiu',
-                               'max-w-28' => strtolower($item['id']) === 'gurita',
-                               'h-32 sm:h-36 object-contain pointer-events-none',
-                           ])
-                        />
+                @php
+                    $id = strtolower($item['id']);
+                @endphp
+
+            <div @class([
+                    'flex flex-col items-center space-y-2',
+                    'col-span-2' => $id === 'hiu',
+                    'col-span-1' => $id !== 'hiu',
+                ])>
+                    <div class="connect-dot" data-type="bottom" data-id="{{ $id }}"
+                        data-audio="{{ $item['audio'] }}"></div>
+
+                    <div class="flex w-full items-center justify-center  ">
+                        <img src="{{ $item['emoji'] }}" alt="{{ $id }}" @class([
+                            'w-32 h-32 sm:h-36 object-contain pointer-events-none',
+                            'min-w-32' => $id === 'hiu',
+                            'max-w-24' => $id === 'gurita',
+                        ]) />
                     </div>
                 </div>
             @endforeach
@@ -97,12 +98,14 @@
                     if (!src) return;
                     audioPlayer.pause();
                     audioPlayer = new Audio(src);
-                    audioPlayer.play().catch(() => {
-                    });
+                    audioPlayer.play().catch(() => {});
                 }
 
                 let selectedDot = null;
-                let currentMousePos = {x: 0, y: 0};
+                let currentMousePos = {
+                    x: 0,
+                    y: 0
+                };
                 let connections = [];
 
                 function resizeCanvas() {
@@ -192,7 +195,10 @@
                     const bottomDot = startDot.dataset.type === 'bottom' ? startDot : endDot;
 
                     if (topDot.dataset.match === bottomDot.dataset.id) {
-                        connections.push({from: topDot, to: bottomDot});
+                        connections.push({
+                            from: topDot,
+                            to: bottomDot
+                        });
                         drawLines();
                         showFlashMessage('success', 'Benar!');
                         playAudio(bottomDot.dataset.audio);
@@ -224,7 +230,9 @@
                         e.preventDefault();
                     }
                     updateMousePos(e);
-                }, {passive: false});
+                }, {
+                    passive: false
+                });
 
                 // Release pointer (click-off / touch-off) to evaluate connection
                 function endDrag(e) {
@@ -242,7 +250,9 @@
 
                 dots.forEach(dot => {
                     dot.addEventListener('mousedown', startDrag);
-                    dot.addEventListener('touchstart', startDrag, {passive: false});
+                    dot.addEventListener('touchstart', startDrag, {
+                        passive: false
+                    });
                 });
 
                 window.addEventListener('mouseup', endDrag);

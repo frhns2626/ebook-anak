@@ -141,16 +141,16 @@
 
                             if (typeof showFlashMessage === 'function') {
                                 if (foundCount < targetCount) {
-                                    showFlashMessage('success', `Benar! (${foundCount}/${targetCount})`);
+                                    showFlashMessage('success', `Benar! (${foundCount}/${targetCount})`,true);
                                 } else {
-                                    showFlashMessage('success', 'Hebat! Semua "ba" ditemukan! 🎉');
+                                    showFlashMessage('success', 'Hebat! Semua "ba" ditemukan! 🎉',true);
                                 }
                             }
                         } else {
                             // Animasi salah sementara
                             item.classList.add('wrong-box');
                             if (typeof showFlashMessage === 'function') {
-                                showFlashMessage('error', 'Coba cari "ba"!');
+                                showFlashMessage('salah', 'Coba cari "ba"!',true);
                             }
 
                             setTimeout(() => {

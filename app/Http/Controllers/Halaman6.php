@@ -13,14 +13,14 @@ use Override;
 class Halaman6 extends Controller
 {
     /**
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\View\View
+     * @param Request $request
+     * @return View
      */
     #[Override]
     public function index(Request $request): View
     {
         try {
-            $lang = $request->query('lang', 'id');
+            $lang = (string)$request->string('lang', 'id');
             return $this->melengkapiHuruf(
                 hurufs: $this->getDataPublicHalaman6(lang: $lang),
                 halaman: 6,
