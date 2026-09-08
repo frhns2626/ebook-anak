@@ -12,11 +12,9 @@ use Override;
 
 class Halaman5 extends Controller
 {
-
-
     /**
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\View\View
+     * @param  Request  $request
+     * @return View
      */
     #[Override]
     public function index(Request $request): View

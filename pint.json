@@ -1,5 +1,6 @@
 {
     "rules": {
-        "Pint/laravel_blade": true
+        "no_superfluous_phpdoc_tags": false,
+        "phpdoc_to_comment": false
     }
 }

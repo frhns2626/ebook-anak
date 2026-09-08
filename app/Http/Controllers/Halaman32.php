@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Override;
-use Illuminate\Http\Request;
 
 class Halaman32 extends Controller
 {
@@ -19,7 +19,7 @@ class Halaman32 extends Controller
     {
 
         return $this->deskripsiObject(
-            data:  $this->getDataPublicHalaman32(),
+            data: $this->getDataPublicHalaman32(),
             halaman: 32,
             object: 'Mountain',
             iconText: '🏔️',

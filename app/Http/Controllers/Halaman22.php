@@ -12,14 +12,14 @@ use Override;
 class Halaman22 extends Controller
 {
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return View
      */
     #[Override]
     public function index(Request $request): View
     {
         try {
-            $lang = (string)$request->string('lang', 'id');
+            $lang = (string) $request->string('lang', 'id');
             $judul = $lang === 'en' ? 'Page 22 - Guess the First Letter 🔤' : 'Halaman 22 - Tebak Huruf Depan 🔤';
             $deskripsi = $lang === 'en' ? 'Look at the picture, guess the first letter!' : 'Lihat gambarnya, tebak huruf depannya!';
 
@@ -36,8 +36,9 @@ class Halaman22 extends Controller
     }
 
     /**
-     * @param string $lang 'id' (default) | 'en'
+     * @param  string  $lang  'id' (default) | 'en'
      * @return array
+     *
      * @throws Exception
      */
     public function getDataPublicHalaman22(string $lang = 'id'): array
@@ -139,4 +140,3 @@ class Halaman22 extends Controller
         ];
     }
 }
-

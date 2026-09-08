@@ -27,10 +27,10 @@ class Halaman14 extends Controller
         );
     }
 
-
     /**
      * @return array
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
+     * @throws BindingResolutionException
      */
     public function getDataPublicHalaman14(): array
     {

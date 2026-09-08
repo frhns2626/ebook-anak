@@ -18,6 +18,7 @@ class Halaman2 extends Controller
     public function index(Request $request): View
     {
         $lang = $request->query('lang', 'id');
+
         return $this->pengenalanAudio(
             data: $this->getDataPublicHalaman2($lang),
             halaman: 2,

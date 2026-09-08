@@ -12,7 +12,7 @@ use Override;
 class Halaman9 extends Controller
 {
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return View
      */
     #[Override]
@@ -20,6 +20,7 @@ class Halaman9 extends Controller
     {
         try {
             $lang = (string) $request->query('lang', 'id');
+
             return $this->hubungkanSukukataTerakhir(
                 data: $this->getDataPublicHalaman9($lang),
                 halaman: 9,
@@ -42,8 +43,9 @@ class Halaman9 extends Controller
      *   - hint   : deskripsi singkat (tooltip / penjelasan)
      *   - audio  : path file audio per bahasa
      *
-     * @param string $lang 'id' (default) | 'en'
+     * @param  string  $lang  'id' (default) | 'en'
      * @return array{items: list<array{id: string, suffix: string, name: string, emoji: string, hint: string, audio: string}>, total_item: int}
+     *
      * @throws Exception
      */
     public function getDataPublicHalaman9(string $lang): array

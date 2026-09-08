@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Override;
@@ -12,7 +13,7 @@ use Override;
 class Halaman30 extends Controller
 {
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return View
      */
     #[Override]
@@ -28,7 +29,7 @@ class Halaman30 extends Controller
                 halaman: 30,
                 judul: $judul,
                 deskripsi: $deskripsi,
-                lang:$lang
+                lang: $lang
             );
         } catch (Exception $e) {
             abort(404, $e->getMessage());
@@ -36,9 +37,10 @@ class Halaman30 extends Controller
     }
 
     /**
-     * @param string $lang 'id' (default) | 'en'
+     * @param  string  $lang  'id' (default) | 'en'
      * @return array
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
+     * @throws BindingResolutionException
      */
     public function getDataPublicHalaman30(string $lang = 'id'): array
     {
@@ -67,4 +69,3 @@ class Halaman30 extends Controller
         ];
     }
 }
-

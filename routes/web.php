@@ -35,60 +35,58 @@ use App\Http\Controllers\Halaman8;
 use App\Http\Controllers\Halaman9;
 use Illuminate\Support\Facades\Route;
 
-//Route::middleware(CacheResponse::for(minutes(10)))->group(function () {
+// Route::middleware(CacheResponse::for(minutes(10)))->group(function () {
 
 // Home page
-//Route::get('/home', function () {
+// Route::get('/home', function () {
 //    return view('home');
-//})->name('home/index');
+// })->name('home/index');
 // Home page
 
-//------------TEST-------------------
+// ------------TEST-------------------
 
 // Games list page
-//Route::get('/games', function () {
+// Route::get('/games', function () {
 //    return view('games.index');
-//})->name('games.index');
+// })->name('games.index');
 
 // Game pages (still accessible)
-//Route::get('/games/abjad', function () {
+// Route::get('/games/abjad', function () {
 //    return view('games.abjad');
-//})->name('games.abjad');
+// })->name('games.abjad');
 
-//Route::get('/games/angka', function () {
+// Route::get('/games/angka', function () {
 //    return view('games.angka');
-//})->name('games.angka');
+// })->name('games.angka');
 
-//Route::get('/games/susun-huruf', function () {
+// Route::get('/games/susun-huruf', function () {
 //    return view('games.susun-huruf');
-//})->name('games.susun-huruf');
+// })->name('games.susun-huruf');
 
-//Route::get('/games/warna', function () {
+// Route::get('/games/warna', function () {
 //    return view('games.warna');
-//})->name('games.warna');
+// })->name('games.warna');
 
 // Belajar Yuk! - Main learning page
-//Route::get('/belajar', function () {
+// Route::get('/belajar', function () {
 //    return view('index');
-//})->name('belajar.index');
+// })->name('belajar.index');
 
-//Route::get('/book', fn() => view('book'))->name('test.index');
-//Route::get('/belajar/abc', fn() => view('abc'))->name('belajar.abc');
-//Route::get('/belajar/temukan-suku-kata', fn() => view('temukan-suku-kata'))->name('belajar.temukan-suku-kata');
-//Route::get('/belajar/aiueo', fn() => view('aiueo'))->name('belajar.aiueo');
-//Route::get('/belajar/ayo-coba-baca', fn() => view('ayo-coba-baca'))->name('belajar.ayo-coba-baca');
-//Route::get('/belajar/huruf-objek', fn() => view('pertama.huruf-objek'))->name('belajar.huruf-objek');
-//------------TEST-------------------
-
+// Route::get('/book', fn() => view('book'))->name('test.index');
+// Route::get('/belajar/abc', fn() => view('abc'))->name('belajar.abc');
+// Route::get('/belajar/temukan-suku-kata', fn() => view('temukan-suku-kata'))->name('belajar.temukan-suku-kata');
+// Route::get('/belajar/aiueo', fn() => view('aiueo'))->name('belajar.aiueo');
+// Route::get('/belajar/ayo-coba-baca', fn() => view('ayo-coba-baca'))->name('belajar.ayo-coba-baca');
+// Route::get('/belajar/huruf-objek', fn() => view('pertama.huruf-objek'))->name('belajar.huruf-objek');
+// ------------TEST-------------------
 
 // Belajar module
-Route::get('/', fn()=> view('book'))->name('home');
-Route::get('/belajar/cover', fn() => view('pertama.cover'))->name('pertama.cover');
-Route::get('/belajar/kata-pengantar', fn() => view('pertama.kata-pengantar'))->name('pertama.kata-pengantar');
-Route::get('/belajar/petujuk-penggunaan', fn() => view('pertama.petunjuk-penggunaan'))->name('pertama.petujuk-penggunaan');
-Route::get('/belajar/penutupan', fn() => view('pertama.penutupan'))->name('belajar.penutupan');
-Route::get('/belajar/penutupan-blank', fn() => view('pertama.penutupan-blank'))->name('belajar.penutupan-blank');
-
+Route::get('/', fn () => view('book'))->name('home');
+Route::get('/belajar/cover', fn () => view('pertama.cover'))->name('pertama.cover');
+Route::get('/belajar/kata-pengantar', fn () => view('pertama.kata-pengantar'))->name('pertama.kata-pengantar');
+Route::get('/belajar/petujuk-penggunaan', fn () => view('pertama.petunjuk-penggunaan'))->name('pertama.petujuk-penggunaan');
+Route::get('/belajar/penutupan', fn () => view('pertama.penutupan'))->name('belajar.penutupan');
+Route::get('/belajar/penutupan-blank', fn () => view('pertama.penutupan-blank'))->name('belajar.penutupan-blank');
 
 Route::get('/belajar/halaman-1', [Halaman1::class, 'index'])->name('belajar.halaman-1');
 Route::get('/belajar/halaman-2', [Halaman2::class, 'index'])->name('belajar.halaman-2'); // sudah
@@ -123,4 +121,4 @@ Route::get('/belajar/halaman-30', [Halaman30::class, 'index'])->name('belajar.ha
 Route::get('/belajar/halaman-31', [Halaman31::class, 'index'])->name('belajar.halaman-31'); // sudah
 Route::get('/belajar/halaman-32', [Halaman32::class, 'index'])->name('belajar.halaman-32'); // -----------  eng belum
 Route::get('/belajar/halaman-33', [Halaman33::class, 'index'])->name('belajar.halaman-33'); // sudah
-//});
+// });

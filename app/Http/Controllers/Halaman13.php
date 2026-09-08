@@ -12,9 +12,10 @@ use Override;
 class Halaman13 extends Controller
 {
     /**
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\View\View
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @param  Request  $request
+     * @return View
+     *
+     * @throws BindingResolutionException
      */
     #[Override]
     public function index(Request $request): View

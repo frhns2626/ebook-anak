@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
-use Illuminate\View\View;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Override;
-
 
 class Halaman11 extends Controller
 {
@@ -19,6 +18,7 @@ class Halaman11 extends Controller
     public function index(Request $request): View
     {
         $lang = $request->query('lang', 'id');
+
         return $this->belajarHurufVokalKonsonan(
             data: $this->getDataPublicHalaman11(),
             halaman: 11,
@@ -40,7 +40,7 @@ class Halaman11 extends Controller
             [
                 'vokal' => 'A',
                 'suku_kata' => [
-//                    ['text' => 'A', 'audio' => asset('audio/id/Halaman 11/a.wav')],
+                    //                    ['text' => 'A', 'audio' => asset('audio/id/Halaman 11/a.wav')],
                     ['text' => 'na', 'audio' => asset('audio/id/Halaman 11/na.wav')],
                     ['text' => 'pa', 'audio' => asset('audio/id/Halaman 11/pa.wav')],
                     ['text' => 'qa', 'audio' => asset('audio/id/Halaman 11/qa.wav')],
@@ -57,7 +57,7 @@ class Halaman11 extends Controller
             [
                 'vokal' => 'I',
                 'suku_kata' => [
-//                    ['text' => 'I', 'audio' => asset('audio/id/Halaman 11/i.wav')],
+                    //                    ['text' => 'I', 'audio' => asset('audio/id/Halaman 11/i.wav')],
                     ['text' => 'ni', 'audio' => asset('audio/id/Halaman 11/ni.wav')],
                     ['text' => 'pi', 'audio' => asset('audio/id/Halaman 11/pi.wav')],
                     ['text' => 'qi', 'audio' => asset('audio/id/Halaman 11/qi.wav')],
@@ -74,7 +74,7 @@ class Halaman11 extends Controller
             [
                 'vokal' => 'U',
                 'suku_kata' => [
-//                    ['text' => 'U', 'audio' => asset('audio/id/Halaman 11/u.wav')],
+                    //                    ['text' => 'U', 'audio' => asset('audio/id/Halaman 11/u.wav')],
                     ['text' => 'nu', 'audio' => asset('audio/id/Halaman 11/nu.wav')],
                     ['text' => 'pu', 'audio' => asset('audio/id/Halaman 11/pu.wav')],
                     ['text' => 'qu', 'audio' => asset('audio/id/Halaman 11/qu.wav')],
@@ -91,7 +91,7 @@ class Halaman11 extends Controller
             [
                 'vokal' => 'E',
                 'suku_kata' => [
-//                    ['text' => 'E', 'audio' => asset('audio/id/Halaman 11/e.wav')],
+                    //                    ['text' => 'E', 'audio' => asset('audio/id/Halaman 11/e.wav')],
                     ['text' => 'ne', 'audio' => asset('audio/id/Halaman 11/ne.wav')],
                     ['text' => 'pe', 'audio' => asset('audio/id/Halaman 11/pe.wav')],
                     ['text' => 'qe', 'audio' => asset('audio/id/Halaman 11/qe.wav')],
@@ -108,7 +108,7 @@ class Halaman11 extends Controller
             [
                 'vokal' => 'O',
                 'suku_kata' => [
-//                    ['text' => 'O', 'audio' => asset('audio/id/Halaman 11/o.wav')],
+                    //                    ['text' => 'O', 'audio' => asset('audio/id/Halaman 11/o.wav')],
                     ['text' => 'no', 'audio' => asset('audio/id/Halaman 11/no.wav')],
                     ['text' => 'po', 'audio' => asset('audio/id/Halaman 11/po.wav')],
                     ['text' => 'qo', 'audio' => asset('audio/id/Halaman 11/qo.wav')],

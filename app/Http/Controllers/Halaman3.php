@@ -12,14 +12,16 @@ use Override;
 class Halaman3 extends Controller
 {
     /**
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\View\View
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @param  Request  $request
+     * @return View
+     *
+     * @throws BindingResolutionException
      */
     #[Override]
     public function index(Request $request): View
     {
         $lang = $request->query('lang', 'id');
+
         return $this->pengenalanAudio(
             data: $this->getDataPublicHalaman3($lang),
             halaman: 3,

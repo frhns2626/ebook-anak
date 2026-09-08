@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Override;
@@ -12,8 +13,8 @@ use Override;
 class Halaman29 extends Controller
 {
     /**
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\View\View
+     * @param  Request  $request
+     * @return View
      */
     #[Override]
     public function index(Request $request): View
@@ -36,9 +37,10 @@ class Halaman29 extends Controller
     }
 
     /**
-     * @param string $lang 'id' (default) | 'en'
+     * @param  string  $lang  'id' (default) | 'en'
      * @return array
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
+     * @throws BindingResolutionException
      */
     public function getDataPublicHalaman29(string $lang = 'id'): array
     {
@@ -48,17 +50,17 @@ class Halaman29 extends Controller
                 [
                     'id' => 'Tomat',
                     'emoji' => asset('gambar/halaman_29/tomat.webp'),
-                    'audio' => asset('audio/en/Halaman 29 -30/1. tomat.m4a')
+                    'audio' => asset('audio/en/Halaman 29 -30/1. tomat.m4a'),
                 ],
                 [
                     'id' => 'Kelinci',
                     'emoji' => asset('gambar/halaman_29/kelinci.webp'),
-                    'audio' => asset('audio/en/Halaman 29 -30/3. kelinci.m4a')
+                    'audio' => asset('audio/en/Halaman 29 -30/3. kelinci.m4a'),
                 ],
                 [
                     'id' => 'Payung',
                     'emoji' => asset('gambar/halaman_29/payung.webp'),
-                    'audio' => asset('audio/en/Halaman 29 -30/2. payung.m4a')
+                    'audio' => asset('audio/en/Halaman 29 -30/2. payung.m4a'),
                 ],
             ];
         } else {
@@ -67,17 +69,17 @@ class Halaman29 extends Controller
                 [
                     'id' => 'Tomat',
                     'emoji' => asset('gambar/halaman_29/tomat.webp'),
-                    'audio' => asset('audio/id/Halaman 29/tomat.wav')
+                    'audio' => asset('audio/id/Halaman 29/tomat.wav'),
                 ],
                 [
                     'id' => 'Kelinci',
                     'emoji' => asset('gambar/halaman_29/kelinci.webp'),
-                    'audio' => asset('audio/id/Halaman 29/kelinci.wav')
+                    'audio' => asset('audio/id/Halaman 29/kelinci.wav'),
                 ],
                 [
                     'id' => 'Payung',
                     'emoji' => asset('gambar/halaman_29/payung.webp'),
-                    'audio' => asset('audio/id/Halaman 29/payung.wav')
+                    'audio' => asset('audio/id/Halaman 29/payung.wav'),
                 ],
             ];
         }
@@ -89,4 +91,3 @@ class Halaman29 extends Controller
         ];
     }
 }
-

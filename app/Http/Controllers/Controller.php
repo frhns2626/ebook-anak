@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use Exception;
 
 abstract class Controller
 {
@@ -30,7 +30,7 @@ abstract class Controller
     ];
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return View
      */
     abstract public function index(Request $request): View;
@@ -52,11 +52,11 @@ abstract class Controller
     }
 
     /**
-     * @param array $data
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
-     * @param string $lang
+     * @param  array  $data
+     * @param  int  $halaman
+     * @param  string  $judul
+     * @param  string  $deskripsi
+     * @param  string  $lang
      * @return View
      */
     public function tulisKata(array $data, int $halaman, string $judul, string $deskripsi, string $lang): View
@@ -71,16 +71,16 @@ abstract class Controller
                 'lang' => $lang,
             ]);
         } catch (Exception $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
     /**
-     * @param array $data
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
-     * @param string $lang
+     * @param  array  $data
+     * @param  int  $halaman
+     * @param  string  $judul
+     * @param  string  $deskripsi
+     * @param  string  $lang
      * @return View
      */
     public function melengkapiSukukata(array $data, int $halaman, string $judul, string $deskripsi, string $lang): View
@@ -96,16 +96,16 @@ abstract class Controller
 
             ]);
         } catch (Exception $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
     /**
-     * @param array $data
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
-     * @param string $lang
+     * @param  array  $data
+     * @param  int  $halaman
+     * @param  string  $judul
+     * @param  string  $deskripsi
+     * @param  string  $lang
      * @return View
      */
     public function sukuBerakhiran(array $data, int $halaman, string $judul, string $deskripsi, string $lang): View
@@ -117,20 +117,19 @@ abstract class Controller
                 'halaman' => $halaman,
                 'judul' => $judul,
                 'deskripsi' => $deskripsi,
-                'lang' => $lang
+                'lang' => $lang,
             ]);
         } catch (Exception $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
-
     /**
-     * @param array $data
-     * @param array $items
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
+     * @param  array  $data
+     * @param  array  $items
+     * @param  int  $halaman
+     * @param  string  $judul
+     * @param  string  $deskripsi
      * @return View
      */
     public function sukuBerakhiranOld(array $data, array $items, int $halaman, string $judul, string $deskripsi): View
@@ -144,28 +143,26 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (Exception $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
-
     /**
-     * @param array $data
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
-     * @param string $lang
+     * @param  array  $data
+     * @param  int  $halaman
+     * @param  string  $judul
+     * @param  string  $deskripsi
+     * @param  string  $lang
      * @return View
      */
     public function hubungkanAudioDanGambar(
-        array  $data,
-        int    $halaman,
+        array $data,
+        int $halaman,
         string $judul,
         string $deskripsi,
         string $lang
 
-    ): View
-    {
+    ): View {
         try {
             return view('games.hubungkan-audio-gambar', [
                 'data' => $data,
@@ -176,22 +173,22 @@ abstract class Controller
                 'lang' => $lang,
             ]);
         } catch (Exception $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
     /**
-     * @param array $data
-     * @param array $items
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
+     * @param  array  $data
+     * @param  array  $items
+     * @param  int  $halaman
+     * @param  string  $judul
+     * @param  string  $deskripsi
      * @return View
      */
     public function hubungkanAudioDanGambarOld(
-        array  $data,
-        array  $items,
-        int    $halaman,
+        array $data,
+        array $items,
+        int $halaman,
         string $judul,
         string $deskripsi): View
     {
@@ -204,18 +201,17 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (Exception $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
-
 
     /**
      * @return View
      */
     public function hubungkanSukukataTerakhirOld(
-        array  $data,
-        array  $items,
-        int    $halaman,
+        array $data,
+        array $items,
+        int $halaman,
         string $judul,
         string $deskripsi)
     {
@@ -228,24 +224,23 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (Exception $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
     /**
-     * @param array $data
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
+     * @param  array  $data
+     * @param  int  $halaman
+     * @param  string  $judul
+     * @param  string  $deskripsi
      * @return View
      */
     public function hubungkanSukukataTerakhir(
-        array  $data,
-        int    $halaman,
+        array $data,
+        int $halaman,
         string $judul,
         string $deskripsi
-    ): View
-    {
+    ): View {
         try {
             return view('games.hubungkan-sukukata-terakhir', [
                 'data' => $data,
@@ -255,27 +250,26 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (Exception $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
     // ---------------------------
 
     /**
-     * @param array $data
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
-     * @param string $lang
+     * @param  array  $data
+     * @param  int  $halaman
+     * @param  string  $judul
+     * @param  string  $deskripsi
+     * @param  string  $lang
      * @return View
      */
     public function tebakAkhirHuruf(
-        array  $data,
-        int    $halaman,
+        array $data,
+        int $halaman,
         string $judul,
         string $deskripsi,
         string $lang
-    ): View
-    {
+    ): View {
         try {
             return view('games.tebak-akhir-huruf', [
                 'data' => $data,
@@ -283,25 +277,25 @@ abstract class Controller
                 'halaman' => $halaman,
                 'judul' => $judul,
                 'deskripsi' => $deskripsi,
-                'lang' => $lang
+                'lang' => $lang,
             ]);
         } catch (Exception $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
     /**
-     * @param array $data
-     * @param array $items
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
+     * @param  array  $data
+     * @param  array  $items
+     * @param  int  $halaman
+     * @param  string  $judul
+     * @param  string  $deskripsi
      * @return View
      */
     public function tebakAkhirHurufOld(
-        array  $data,
-        array  $items,
-        int    $halaman,
+        array $data,
+        array $items,
+        int $halaman,
         string $judul,
         string $deskripsi): View
     {
@@ -314,7 +308,7 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (Exception $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
@@ -322,13 +316,12 @@ abstract class Controller
      * @return Factory|\Illuminate\Contracts\View\View|View|void
      */
     public function belajarHurufVokalKonsonanOld(
-        array  $data,
-        array  $items,
-        int    $halaman,
+        array $data,
+        array $items,
+        int $halaman,
         string $judul,
         string $deskripsi
-    )
-    {
+    ) {
         try {
             return view('games.belajar-huruf-vokal-konsonan_old', [
                 'data' => $data,
@@ -338,7 +331,7 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (Exception $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
@@ -346,12 +339,11 @@ abstract class Controller
      * @return Factory|\Illuminate\Contracts\View\View|View|void
      */
     public function belajarHurufVokalKonsonan(
-        array  $data,
-        int    $halaman,
+        array $data,
+        int $halaman,
         string $judul,
         string $deskripsi
-    )
-    {
+    ) {
         try {
             return view('games.belajar-huruf-vokal-konsonan', [
                 'data' => $data,
@@ -361,37 +353,37 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (Exception $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
     /**
-     * @param array $data
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
-     * @param string $lang
+     * @param  array  $data
+     * @param  int  $halaman
+     * @param  string  $judul
+     * @param  string  $deskripsi
+     * @param  string  $lang
      * @return View
      */
     public function cariKataGame(array $data, int $halaman, string $judul, string $deskripsi, string $lang): View
     {
         try {
             return view('games.cari-kata-game', [
-//                'grid' => $this->generateGrid($items),
+                //                'grid' => $this->generateGrid($items),
                 'items' => $data['items'],
                 'size' => $this->size,
                 'halaman' => $halaman,
                 'judul' => $judul,
                 'deskripsi' => $deskripsi,
-                'lang' => $lang
+                'lang' => $lang,
             ]);
         } catch (Exception $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
     /**
-     * @param array $items
+     * @param  array  $items
      * @return array
      */
     protected function generateGrid(array $items): array
@@ -399,14 +391,14 @@ abstract class Controller
         $size = $this->size;
         $grid = array_fill(0, $size, array_fill(0, $size, null));
 
-        $words = array_map(fn($item) => strtoupper($item['name']), $items);
-        usort($words, fn($a, $b) => strlen($b) - strlen($a));
+        $words = array_map(fn ($item) => strtoupper($item['name']), $items);
+        usort($words, fn ($a, $b) => strlen($b) - strlen($a));
 
         foreach ($words as $word) {
             $placed = false;
             $attempts = 0;
 
-            while (!$placed && $attempts < 200) {
+            while (! $placed && $attempts < 200) {
                 $attempts++;
                 [$dr, $dc] = $this->directions[array_rand($this->directions)];
                 $len = strlen($word);
@@ -457,11 +449,11 @@ abstract class Controller
     // ---------------------------
 
     /**
-     * @param array $data
-     * @param array $items
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
+     * @param  array  $data
+     * @param  array  $items
+     * @param  int  $halaman
+     * @param  string  $judul
+     * @param  string  $deskripsi
      * @return View
      */
     public function aiueoPilih(array $data, array $items, int $halaman, string $judul, string $deskripsi): View
@@ -475,27 +467,25 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (Exception $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
-
     /**
-     * @param array $data
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
-     * @param string $lang
+     * @param  array  $data
+     * @param  int  $halaman
+     * @param  string  $judul
+     * @param  string  $deskripsi
+     * @param  string  $lang
      * @return View
      */
     public function cariHurufPertama(
-        array  $data,
-        int    $halaman,
+        array $data,
+        int $halaman,
         string $judul,
         string $deskripsi,
         string $lang
-    ): View
-    {
+    ): View {
         try {
             return view('games.cari-huruf-pertama', [
                 'data' => $data,
@@ -503,25 +493,25 @@ abstract class Controller
                 'halaman' => $halaman,
                 'judul' => $judul,
                 'deskripsi' => $deskripsi,
-                'lang' => $lang
+                'lang' => $lang,
             ]);
         } catch (Exception $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
     /**
-     * @param array $data
-     * @param int $halaman
-     * @param string $object
-     * @param string $iconText
-     * @param string $judul
-     * @param string $deskripsi
+     * @param  array  $data
+     * @param  int  $halaman
+     * @param  string  $object
+     * @param  string  $iconText
+     * @param  string  $judul
+     * @param  string  $deskripsi
      * @return View
      */
     public function deskripsiObject(
-        array  $data,
-        int    $halaman,
+        array $data,
+        int $halaman,
         string $object,
         string $iconText,
         string $judul,
@@ -538,24 +528,24 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (Exception $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
     /**
-     * @param array $data
-     * @param array $items
-     * @param int $halaman
-     * @param string $object
-     * @param string $iconText
-     * @param string $judul
-     * @param string $deskripsi
+     * @param  array  $data
+     * @param  array  $items
+     * @param  int  $halaman
+     * @param  string  $object
+     * @param  string  $iconText
+     * @param  string  $judul
+     * @param  string  $deskripsi
      * @return View
      */
     public function deskripsiObjectOld(
-        array  $data,
-        array  $items,
-        int    $halaman,
+        array $data,
+        array $items,
+        int $halaman,
         string $object,
         string $iconText,
         string $judul,
@@ -572,26 +562,25 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (Exception $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
     /**
-     * @param array $data
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
-     * @param string $lang
+     * @param  array  $data
+     * @param  int  $halaman
+     * @param  string  $judul
+     * @param  string  $deskripsi
+     * @param  string  $lang
      * @return View
      */
     public function hubungkanGame(
-        array  $data,
-        int    $halaman,
+        array $data,
+        int $halaman,
         string $judul,
         string $deskripsi,
         string $lang
-    ): View
-    {
+    ): View {
         try {
             return view('games.hubungkan-game', [
                 'data' => $data,
@@ -602,22 +591,22 @@ abstract class Controller
                 'lang' => $lang,
             ]);
         } catch (Exception $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
     /**
-     * @param array $data
-     * @param array $items
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
+     * @param  array  $data
+     * @param  array  $items
+     * @param  int  $halaman
+     * @param  string  $judul
+     * @param  string  $deskripsi
      * @return View
      */
     public function hubungkanGameOld(
-        array  $data,
-        array  $items,
-        int    $halaman,
+        array $data,
+        array $items,
+        int $halaman,
         string $judul,
         string $deskripsi): View
     {
@@ -630,26 +619,25 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (Exception $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
     /**
-     * @param array $data
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
-     * @param string $lang
+     * @param  array  $data
+     * @param  int  $halaman
+     * @param  string  $judul
+     * @param  string  $deskripsi
+     * @param  string  $lang
      * @return View
      */
     public function hubungkanTulisGame(
-        array  $data,
-        int    $halaman,
+        array $data,
+        int $halaman,
         string $judul,
         string $deskripsi,
         string $lang
-    ): View
-    {
+    ): View {
         try {
             return view('games.hubungkan-tulis-game', [
                 'data' => $data,
@@ -657,21 +645,21 @@ abstract class Controller
                 'halaman' => $halaman,
                 'judul' => $judul,
                 'deskripsi' => $deskripsi,
-                'lang' => $lang
+                'lang' => $lang,
 
             ]);
         } catch (Exception $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
     /**
-     * @param array $data
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
-     * @param $lang
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|View|void
+     * @param  array  $data
+     * @param  int  $halaman
+     * @param  string  $judul
+     * @param  string  $deskripsi
+     * @param  $lang
+     * @return Factory|\Illuminate\Contracts\View\View|View|void
      */
     public function aioeoGame(array $data, int $halaman, string $judul, string $deskripsi, $lang)
     {
@@ -685,17 +673,17 @@ abstract class Controller
                 'lang' => $lang,
             ]);
         } catch (Exception $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
     /**
-     * @param array $data
-     * @param array $items
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|View|void
+     * @param  array  $data
+     * @param  array  $items
+     * @param  int  $halaman
+     * @param  string  $judul
+     * @param  string  $deskripsi
+     * @return Factory|\Illuminate\Contracts\View\View|View|void
      */
     public function aioeoGameOld(array $data, array $items, int $halaman, string $judul, string $deskripsi)
     {
@@ -708,7 +696,7 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (Exception $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
@@ -716,9 +704,9 @@ abstract class Controller
      * @return Factory|\Illuminate\Contracts\View\View|View|void
      */
     public function susunKataKata(
-        array  $items,
-        array  $data,
-        int    $halaman,
+        array $items,
+        array $data,
+        int $halaman,
         string $judul,
         string $deskripsi)
     {
@@ -731,27 +719,25 @@ abstract class Controller
                 'deskripsi' => $deskripsi,
             ]);
         } catch (Exception $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
-
     /**
-     * @param array $data
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
-     * @param string $lang
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|View|void
+     * @param  array  $data
+     * @param  int  $halaman
+     * @param  string  $judul
+     * @param  string  $deskripsi
+     * @param  string  $lang
+     * @return Factory|\Illuminate\Contracts\View\View|View|void
      */
     public function pengenalanAudio(
-        array  $data,
-        int    $halaman,
+        array $data,
+        int $halaman,
         string $judul,
         string $deskripsi,
         string $lang,
-    )
-    {
+    ) {
         try {
             return view('games.pengenalan-nama', [
                 'data' => $data,
@@ -762,28 +748,27 @@ abstract class Controller
                 'lang' => $lang,
             ]);
         } catch (Exception $e) {
-            abort(404, 'terjadi Kesalahan :' . $e->getMessage());
+            abort(404, 'terjadi Kesalahan :'.$e->getMessage());
         }
     }
 
-
     /**
-     * @param array $hurufs
-     * @param int $halaman
-     * @param string $judul
-     * @param string $lang
-     * @param string $deskripsi
+     * @param  array  $hurufs
+     * @param  int  $halaman
+     * @param  string  $judul
+     * @param  string  $lang
+     * @param  string  $deskripsi
      * @return View
+     *
      * @throws Exception
      */
     public function melengkapiHuruf(
-        array  $hurufs,
-        int    $halaman,
+        array $hurufs,
+        int $halaman,
         string $judul,
         string $lang,
         string $deskripsi,
-    ): Factory|\Illuminate\Contracts\View\View|View
-    {
+    ): Factory|\Illuminate\Contracts\View\View|View {
         return view('games.melengkapi-huruf', [
             'hurufs' => $hurufs,
             'halaman' => $halaman,
@@ -793,20 +778,20 @@ abstract class Controller
         ]);
     }
 
-
     /**
-     * @param array $hurufs
-     * @param array $hurufHilang
-     * @param int $halaman
-     * @param string $judul
-     * @param string $deskripsi
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|View
+     * @param  array  $hurufs
+     * @param  array  $hurufHilang
+     * @param  int  $halaman
+     * @param  string  $judul
+     * @param  string  $deskripsi
+     * @return Factory|\Illuminate\Contracts\View\View|View
+     *
      * @throws \Illuminate\Contracts\Container\Exception
      */
     public function melengkapiHurufOld(
-        array  $hurufs,
-        array  $hurufHilang,
-        int    $halaman,
+        array $hurufs,
+        array $hurufHilang,
+        int $halaman,
         string $judul,
         string $deskripsi): Factory|\Illuminate\Contracts\View\View|View
     {
@@ -818,5 +803,4 @@ abstract class Controller
             'deskripsi' => $deskripsi,
         ]);
     }
-
 }

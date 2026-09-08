@@ -19,7 +19,7 @@ class Halaman21 extends Controller
     {
 
         return $this->deskripsiObject(
-            data:  $this->getDataPublicHalaman21(),
+            data: $this->getDataPublicHalaman21(),
             halaman: 21,
             object: 'Rhino',
             iconText: '🦏',

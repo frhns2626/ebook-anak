@@ -12,7 +12,7 @@ use Override;
 class Halaman33 extends Controller
 {
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return View
      */
     #[Override]
@@ -36,8 +36,9 @@ class Halaman33 extends Controller
     }
 
     /**
-     * @param string $lang 'id' (default) | 'en'
+     * @param  string  $lang  'id' (default) | 'en'
      * @return array
+     *
      * @throws Exception
      */
     public function getDataPublicHalaman33(string $lang = 'id'): array
@@ -109,4 +110,3 @@ class Halaman33 extends Controller
         ];
     }
 }
-

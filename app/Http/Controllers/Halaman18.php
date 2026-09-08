@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Override;
@@ -12,8 +13,8 @@ use Override;
 class Halaman18 extends Controller
 {
     /**
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\View\View
+     * @param  Request  $request
+     * @return View
      */
     #[Override]
     public function index(Request $request): View
@@ -40,9 +41,10 @@ class Halaman18 extends Controller
     }
 
     /**
-     * @param string $lang 'id' (default) | 'en'
+     * @param  string  $lang  'id' (default) | 'en'
      * @return array
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
+     * @throws BindingResolutionException
      */
     public function getDataPublicHalaman18(string $lang = 'id'): array
     {

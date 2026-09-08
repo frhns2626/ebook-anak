@@ -4,11 +4,14 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "format": "prettier --write .",
+        "format:check": "prettier --check ."
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",
         "concurrently": "^9.0.1",
+        "fontaine": "^0.8.1",
         "laravel-vite-plugin": "^3.1",
         "prettier": "^3.9.6",
         "prettier-plugin-blade": "^3.2.2",

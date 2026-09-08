@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Override;
@@ -12,8 +13,8 @@ use Override;
 class Halaman25 extends Controller
 {
     /**
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\View\View
+     * @param  Request  $request
+     * @return View
      */
     #[Override]
     public function index(Request $request): View
@@ -40,26 +41,27 @@ class Halaman25 extends Controller
     }
 
     /**
-     * @param string $lang 'id' (default) | 'en'
+     * @param  string  $lang  'id' (default) | 'en'
      * @return array{items: array[], total_item: int}
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
+     * @throws BindingResolutionException
      */
     public function getDataPublicHalaman25(string $lang = 'id'): array
     {
         if ($lang === 'en') {
             $items = [
                 [
-                    'id'    => 'Robot',
+                    'id' => 'Robot',
                     'emoji' => asset('gambar/halaman_25/robot.webp'),
                     'audio' => asset('audio/en/Halaman 25/1. robot.m4a'),
                 ],
                 [
-                    'id'    => 'Lilin',
+                    'id' => 'Lilin',
                     'emoji' => asset('gambar/halaman_25/lilin.webp'),
                     'audio' => asset('audio/en/Halaman 25/2. lilin.m4a'),
                 ],
                 [
-                    'id'    => 'Mobil',
+                    'id' => 'Mobil',
                     'emoji' => asset('gambar/halaman_25/mobil.webp'),
                     'audio' => asset('audio/en/Halaman 25/3. mobil.m4a'),
                 ],
@@ -67,17 +69,17 @@ class Halaman25 extends Controller
         } else {
             $items = [
                 [
-                    'id'    => 'Robot',
+                    'id' => 'Robot',
                     'emoji' => asset('gambar/halaman_25/robot.webp'),
                     'audio' => asset('audio/id/Halaman 25/robot.mp3'),
                 ],
                 [
-                    'id'    => 'Lilin',
+                    'id' => 'Lilin',
                     'emoji' => asset('gambar/halaman_25/lilin.webp'),
                     'audio' => asset('audio/id/Halaman 25/lilin.mp3'),
                 ],
                 [
-                    'id'    => 'Mobil',
+                    'id' => 'Mobil',
                     'emoji' => asset('gambar/halaman_25/mobil.webp'),
                     'audio' => asset('audio/id/Halaman 25/mobil.mp3'),
                 ],
@@ -85,7 +87,7 @@ class Halaman25 extends Controller
         }
 
         return [
-            'items'      => $items,
+            'items' => $items,
             'total_item' => count($items),
         ];
     }

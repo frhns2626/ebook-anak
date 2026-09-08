@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Override;
@@ -12,14 +13,15 @@ use Override;
 class Halaman7 extends Controller
 {
     /**
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\View\View
+     * @param  Request  $request
+     * @return View
      */
     #[Override]
     public function index(Request $request): View
     {
         try {
             $lang = $request->query('lang', 'id');
+
             return $this->aioeoGame(
                 data: $this->getDataPublicHalaman7($lang),
                 halaman: 7,
@@ -40,9 +42,10 @@ class Halaman7 extends Controller
      *   - vocal : huruf vokal utama
      *   - audio : path file audio sesuai bahasa yang dipilih
      *
-     * @param string $lang 'id' (Indonesia, default) atau 'en' (English)
+     * @param  string  $lang  'id' (Indonesia, default) atau 'en' (English)
      * @return array{items: list<array{id: string, emoji: string, vocal: string, audio: string}>, total_item: int}
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
+     * @throws BindingResolutionException
      */
     public function getDataPublicHalaman7(string $lang): array
     {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Override;
@@ -12,7 +13,7 @@ use Override;
 class Halaman8 extends Controller
 {
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return View
      */
     #[Override]
@@ -20,6 +21,7 @@ class Halaman8 extends Controller
     {
         try {
             $lang = $request->input('lang', 'id');
+
             return $this->hubungkanGame(
                 data: $this->getDataPublicHalaman8($lang),
                 halaman: 8,
@@ -46,9 +48,10 @@ class Halaman8 extends Controller
      *   - items      : list data hewan
      *   - total_item : jumlah total item
      *
-     * @param string $lang 'id' (default) | 'en'
+     * @param  string  $lang  'id' (default) | 'en'
      * @return array{audio: string, items: list<array{id: string, letter: string, emoji: string, audio: string}>, total_item: int}
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
+     * @throws BindingResolutionException
      */
     public function getDataPublicHalaman8(string $lang): array
     {

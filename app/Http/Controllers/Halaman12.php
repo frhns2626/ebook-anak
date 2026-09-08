@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Override;
@@ -12,14 +13,15 @@ use Override;
 class Halaman12 extends Controller
 {
     /**
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\View\View
+     * @param  Request  $request
+     * @return View
      */
     #[Override]
     public function index(Request $request): View
     {
         try {
             $lang = $request->query('lang', 'id');
+
             return $this->tebakAkhirHuruf(
                 data: $this->getDataPublicHalaman12($lang),
                 halaman: 12,
@@ -38,13 +40,14 @@ class Halaman12 extends Controller
      * Item = 10 benda/hewan:
      *   meja, kursi, buku, lele, piano, bola, sapi, kue, sate, foto
      *
-     * @param string $lang 'id' (Bahasa Indonesia, default) | 'en' (English)
+     * @param  string  $lang  'id' (Bahasa Indonesia, default) | 'en' (English)
      * @return array{
      *     pembukaan: string,
      *     items: list<array{id: string, emoji: string, audio: string}>,
      *     total_item: int
      * }
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
+     * @throws BindingResolutionException
      */
     public function getDataPublicHalaman12(string $lang): array
     {
